@@ -666,6 +666,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+  airDodgeDuration: 0.25
   airControlAllowed: 1
   vx: 0
   horizCheckOffset: 0.4
@@ -738,7 +739,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1942655679}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c452f8ef853a54b53bdec56976f199da, type: 3}
   m_Name: 

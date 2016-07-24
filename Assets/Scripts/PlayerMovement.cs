@@ -28,26 +28,34 @@ public class PlayerMovement : GameplayPausable {
 	bool hasDoubleJump = false;
 
 	public AnimationCurve airDodgeMovementCurve;
-	private bool disabled = false;
+	public float airDodgeMovementDistance = 2f;
+	public float airDodgeDuration = 0.25f;
 
+
+	private bool disabled = false;
 	// Use this for initialization
 	void Start () {
 		animator = gameObject.GetComponent<Animator>();
 	}
 
-	IEnumerator AirDodge(Vector3 direction, float duration) {
+	IEnumerator AirDodge() {
 		float dt = 0f;
 		disabled = true;
+		yield return new WaitForSeconds(0.25f);
+
+		Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized * airDodgeMovementDistance;
 		Vector3 startPosition = transform.position;
 		Vector3 endPosition = transform.position + direction;
 		while (true){
-			transform.position = Vector3.Lerp(startPosition, endPosition, airDodgeMovementCurve.Evaluate(dt/duration));
+			transform.position = Vector3.Lerp(startPosition, endPosition, airDodgeMovementCurve.Evaluate(dt/airDodgeDuration));
 			yield return null;
 			dt += Time.deltaTime;
-			if (dt >= duration)
+			if (dt >= airDodgeDuration)
 				break;
 		}
 		disabled = false;
+		vx = 0f;
+		vy = 0f;
 	}
 
 	// Woo not fixedupdate
@@ -55,7 +63,7 @@ public class PlayerMovement : GameplayPausable {
 		if (disabled)
 			return;
 		if (Input.GetButtonDown("Airdodge")) {
-			StartCoroutine(AirDodge(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized * 2f, 0.25f));
+			StartCoroutine(AirDodge());
 			return;
 		}
 		moveUpDown();
