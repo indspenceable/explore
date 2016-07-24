@@ -5,7 +5,7 @@ using System.Collections;
 public class PlayerMovement : GameplayPausable {
 	Animator animator;
 
-	private bool facingLeft = true;
+	public bool facingLeft = true;
 
 	public float walkSpeed = 2f;
 
