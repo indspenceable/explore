@@ -27,17 +27,37 @@ public class PlayerMovement : GameplayPausable {
 	bool initiatedJump;
 	bool hasDoubleJump = false;
 
+	public AnimationCurve airDodgeMovementCurve;
+	private bool disabled = false;
 
 	// Use this for initialization
 	void Start () {
 		animator = gameObject.GetComponent<Animator>();
 	}
 
+	IEnumerator AirDodge(Vector3 direction, float duration) {
+		float dt = 0f;
+		disabled = true;
+		Vector3 startPosition = transform.position;
+		Vector3 endPosition = transform.position + direction;
+		while (true){
+			transform.position = Vector3.Lerp(startPosition, endPosition, airDodgeMovementCurve.Evaluate(dt/duration));
+			yield return null;
+			dt += Time.deltaTime;
+			if (dt >= duration)
+				break;
+		}
+		disabled = false;
+	}
+
 	// Woo not fixedupdate
 	public override void UnpausedUpdate () {
-		if (Input.GetKeyDown(KeyCode.Z)) {
+		if (disabled)
+			return;
+		if (Input.GetButtonDown("Fire2")) {
 			//Only if we're actually able to shoot...
-			animator.SetTrigger("casting");
+			StartCoroutine(AirDodge(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized * 2f, 0.25f));
+			return;
 		}
 		moveUpDown();
 		moveLeftRight();
