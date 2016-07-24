@@ -14,9 +14,8 @@ public class PlayerAttacks : GameplayPausable {
 	}
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown("Fire2")) {
-			Debug.Log("down down down.");
-			animator.SetBool("casting", Input.GetButtonDown("Fire2") && canShootMissile);
+		if (Input.GetButtonDown("Ranged")) {
+			animator.SetBool("casting", canShootMissile);
 		}
 	}
 	// Triggered from the animator, shoots a fireball.

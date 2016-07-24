@@ -54,8 +54,7 @@ public class PlayerMovement : GameplayPausable {
 	public override void UnpausedUpdate () {
 		if (disabled)
 			return;
-		if (Input.GetButtonDown("Fire2")) {
-			//Only if we're actually able to shoot...
+		if (Input.GetButtonDown("Airdodge")) {
 			StartCoroutine(AirDodge(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized * 2f, 0.25f));
 			return;
 		}
@@ -174,7 +173,7 @@ public class PlayerMovement : GameplayPausable {
 			vy = 0f;
 			hasDoubleJump = true;
 			// We can jump, here.
-			if (Input.GetButtonDown("Fire1")) {
+			if (Input.GetButtonDown("Jump")) {
 				vy = highJumpEnabled ? highJumpStrength :jumpStrength;
 				jumpVx = vx;
 				initiatedJump = true;
@@ -192,12 +191,12 @@ public class PlayerMovement : GameplayPausable {
 			if (vy < -maxGravity)
 				vy = -maxGravity;
 
-			if (Input.GetButtonDown("Fire1")) {
+			if (Input.GetButtonDown("Jump")) {
 				if (hasDoubleJump) {
 					vy = jumpStrength*2/3f;
 					hasDoubleJump = false;
 				}
-			} else if (Input.GetButtonUp("Fire1") && vy > 0) {
+			} else if (Input.GetButtonUp("Jump") && vy > 0) {
 				vy /= 2f;
 			}
 
