@@ -4,9 +4,12 @@ using System.Collections;
 [RequireComponent(typeof(Animator))]
 public class PlayerAttacks : GameplayPausable {
 	Animator animator;
-	bool canShootMissile = true;
+	bool mayInitiateAttack = true;
 	public float bulletVelocity = 5f;
+	public float meleeOffset = 1f;
+
 	public GameObject bulletPrefab;
+	public GameObject meleeHitPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -14,20 +17,30 @@ public class PlayerAttacks : GameplayPausable {
 	}
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown("Ranged")) {
-			animator.SetBool("casting", canShootMissile);
+		if (Input.GetButtonDown("Ranged") && mayInitiateAttack) {
+			ShootMissile();
+		} else if (Input.GetButtonDown("Melee") && mayInitiateAttack) {
+			Melee();
 		}
 	}
-	// Triggered from the animator, shoots a fireball.
+
 	public void ShootMissile() {
-		canShootMissile = false;
+		mayInitiateAttack = false;
+		animator.SetTrigger("shoot");
 		float dx = GetComponent<SpriteRenderer>().flipX ? bulletVelocity : -bulletVelocity;
 		Bullet b = (GameObject.Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject).GetComponent<Bullet>();
 		b.direction = new Vector3(dx, 0f);
 	}
 
+	public void Melee() {
+		animator.SetTrigger("melee");
+		mayInitiateAttack = false;
+		Vector3 dx = new Vector3(GetComponent<SpriteRenderer>().flipX ? meleeOffset : -meleeOffset, 0f);
+		(GameObject.Instantiate(meleeHitPrefab, transform.position + dx, Quaternion.identity) as GameObject).GetComponent<SpriteRenderer>().flipX = GetComponent<SpriteRenderer>().flipX;
+	}
+
 	// Triggered from the animator, tells us we're done shooting a fireball.
-	public void NotShooting() {
-		canShootMissile = true;
+	public void AbleToAttack() {
+		mayInitiateAttack = true;
 	}
 }
