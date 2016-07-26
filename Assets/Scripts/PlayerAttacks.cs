@@ -2,6 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerAttacks : GameplayPausable {
 	Animator animator;
 	bool mayInitiateAttack = true;
@@ -11,17 +12,24 @@ public class PlayerAttacks : GameplayPausable {
 	public GameObject bulletPrefab;
 	public GameObject meleeHitPrefab;
 
+	private PlayerMovement movement;
+
 	// Use this for initialization
 	void Start () {
-		animator = gameObject.GetComponent<Animator>();
+		animator = GetComponent<Animator>();
+		movement = GetComponent<PlayerMovement>();
 	}
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown("Ranged") && mayInitiateAttack) {
+		if (Input.GetButtonDown("Ranged") && MayInitiateAttack()) {
 			ShootMissile();
-		} else if (Input.GetButtonDown("Melee") && mayInitiateAttack) {
+		} else if (Input.GetButtonDown("Melee") && MayInitiateAttack()) {
 			Melee();
 		}
+	}
+
+	private bool MayInitiateAttack() {
+		return mayInitiateAttack && movement.controlsAreEnabled;
 	}
 
 	public void ShootMissile() {

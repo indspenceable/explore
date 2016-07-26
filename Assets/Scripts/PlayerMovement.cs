@@ -2,6 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(PlayerTakeDamage))]
 public class PlayerMovement : GameplayPausable {
 	Animator animator;
 
@@ -33,14 +34,17 @@ public class PlayerMovement : GameplayPausable {
 
 
 	private bool disabled = false;
+	private PlayerTakeDamage health;
 	// Use this for initialization
 	void Start () {
-		animator = gameObject.GetComponent<Animator>();
+		animator = GetComponent<Animator>();
+		health = GetComponent<PlayerTakeDamage>();
 	}
 
 	IEnumerator AirDodge() {
 		float dt = 0f;
 		disabled = true;
+		health.currentlyInIframes = true;
 		yield return new WaitForSeconds(0.25f);
 
 		Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized * airDodgeMovementDistance;
@@ -53,6 +57,7 @@ public class PlayerMovement : GameplayPausable {
 			if (dt >= airDodgeDuration)
 				break;
 		}
+		health.currentlyInIframes = false;
 		disabled = false;
 		vx = 0f;
 		vy = 0f;
@@ -74,21 +79,46 @@ public class PlayerMovement : GameplayPausable {
 	}
 
 	private void FlipIfNeeded() {
-		if (Mathf.Abs(vx) > 0) {
+		if (Mathf.Abs(vx) > 0 && controlsAreEnabled) {
 			facingLeft = (vx < 0);
 		}
 		GetComponent<SpriteRenderer>().flipX = !facingLeft;
+	}
+
+	public bool controlsAreEnabled = true;
+
+	public IEnumerator DisableControlsForTimeframe(float time) {
+		controlsAreEnabled = false;
+		animator.SetBool("injured", true);
+		float dt = 0f;
+		while (dt < time) {
+			yield return null;
+			dt += Time.deltaTime;
+		}
+		animator.SetBool("injured", false);
+		controlsAreEnabled = true;
+	}
+
+	public float knockbackXVel = 6f;
+	public float knockbackYVel = 5f;
+	public float knockbackDisableDuration = 0.25f;
+	public void KnockBack() {
+		vx = (facingLeft ? knockbackXVel : -knockbackXVel);
+		vy = knockbackYVel;
+		StartCoroutine(DisableControlsForTimeframe(knockbackDisableDuration));
 	}
 
 	public bool airControlAllowed = true;
 	public float vx = 0f;
 
 	void moveLeftRight() {
-		grounded = vertCheck(-yAxisWallCollisionDistance) && vy <= 0f;
-		if (grounded || airControlAllowed || (jumpVx == 0f && vy < 0f && initiatedJump)) {
-			vx = walkSpeed * Input.GetAxis("Horizontal");
-		} else {
-			vx = jumpVx;
+		if (controlsAreEnabled) {
+			grounded = vertCheck(-yAxisWallCollisionDistance) && vy <= 0f;
+			if (grounded || airControlAllowed || (jumpVx == 0f && vy < 0f && initiatedJump)) {
+				vx = walkSpeed * Input.GetAxis("Horizontal");
+			} else {
+				vx = jumpVx;
+			}
 		}
 
 		animator.SetBool("horiz", vx!=0f);
@@ -181,7 +211,7 @@ public class PlayerMovement : GameplayPausable {
 			vy = 0f;
 			hasDoubleJump = true;
 			// We can jump, here.
-			if (Input.GetButtonDown("Jump")) {
+			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
 				vy = highJumpEnabled ? highJumpStrength :jumpStrength;
 				jumpVx = vx;
 				initiatedJump = true;
@@ -199,7 +229,7 @@ public class PlayerMovement : GameplayPausable {
 			if (vy < -maxGravity)
 				vy = -maxGravity;
 
-			if (Input.GetButtonDown("Jump")) {
+			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
 				if (hasDoubleJump) {
 					vy = jumpStrength*2/3f;
 					hasDoubleJump = false;
