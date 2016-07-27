@@ -18,7 +18,8 @@ public class PlayerMovement : GameplayPausable {
 
 	//TODO move this into a "move vertically" script
 	private bool grounded;
-	public LayerMask groundMask;
+	public LayerMask levelGeometryMask;
+	public LayerMask jumpThruPlatformMask;
 	public float maxGravity = 100f;
 
 	// Jump related stuff
@@ -113,7 +114,7 @@ public class PlayerMovement : GameplayPausable {
 
 	void moveLeftRight() {
 		if (controlsAreEnabled) {
-			grounded = vertCheck(-yAxisWallCollisionDistance) && vy <= 0f;
+			grounded = VertCheck(-yAxisWallCollisionDistance) && vy <= 0f;
 			if (grounded || airControlAllowed || (jumpVx == 0f && vy < 0f && initiatedJump)) {
 				vx = walkSpeed * Input.GetAxis("Horizontal");
 			} else {
@@ -150,14 +151,15 @@ public class PlayerMovement : GameplayPausable {
 
 	public float horizCheckOffset = 0.4f;
 	bool horizCheck(float dv) {
-		return (Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y-(horizCheckOffset)), Vector2.right, dv, groundMask) ||
-			Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y+(horizCheckOffset)), Vector2.right, dv, groundMask));
+		return (Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y-(horizCheckOffset)), Vector2.right, dv, levelGeometryMask) ||
+			Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y+(horizCheckOffset)), Vector2.right, dv, levelGeometryMask));
 	}
 
 	public float vertCheckOffset = 0.1f;
-	bool vertCheck(float dv) {
-		return (Physics2D.Raycast(new Vector2(transform.position.x-(vertCheckOffset),transform.position.y), Vector2.up, dv, groundMask) ||
-			Physics2D.Raycast(new Vector2(transform.position.x+(vertCheckOffset),transform.position.y), Vector2.up, dv, groundMask));
+	bool VertCheck(float dv, bool rising=false) {
+		LayerMask mask = (rising ? jumpThruPlatformMask.value : 0) | levelGeometryMask.value;
+		return (Physics2D.Raycast(new Vector2(transform.position.x-(vertCheckOffset),transform.position.y), Vector2.up, dv, mask) ||
+			Physics2D.Raycast(new Vector2(transform.position.x+(vertCheckOffset),transform.position.y), Vector2.up, dv, mask));
 	}
 
 
@@ -183,7 +185,7 @@ public class PlayerMovement : GameplayPausable {
 	void rise(float amt) {
 		float i = 0f;
 		Vector3 step = new Vector3(0f, 0.001f);
-		while (i < amt && !vertCheck(yAxisWallCollisionDistance)) {
+		while (i < amt && !VertCheck(yAxisWallCollisionDistance)) {
 			transform.Translate(step);
 			i += 0.001f;
 		}
@@ -191,7 +193,7 @@ public class PlayerMovement : GameplayPausable {
 	void fall(float amt) {
 		float i = 0f;
 		Vector3 step = new Vector3(0f, -0.001f);
-		while (i > amt && !vertCheck(-yAxisWallCollisionDistance)) {
+		while (i > amt && !VertCheck(-yAxisWallCollisionDistance, true)) {
 			transform.Translate(step);
 			i -= 0.001f;
 		}
@@ -199,13 +201,14 @@ public class PlayerMovement : GameplayPausable {
 
 	void restOnGround() {
 		Vector3 step = new Vector3(0f, 0.001f);
-		while (vertCheck(-yAxisWallCollisionDistance))
+		while (VertCheck(-yAxisWallCollisionDistance, true))
 			transform.Translate(step);
 		transform.Translate(-step);
 	}
 
 	void moveUpDown() {
-		grounded = vertCheck(-yAxisWallCollisionDistance) && vy <= 0f;
+		grounded = VertCheck(-yAxisWallCollisionDistance, true) && vy <= 0f;
+
 		if (grounded) {
 			restOnGround();
 			vy = 0f;
