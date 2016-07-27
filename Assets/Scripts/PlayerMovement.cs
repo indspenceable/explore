@@ -31,7 +31,7 @@ public class PlayerMovement : GameplayPausable {
 	public AnimationCurve airDodgeMovementCurve;
 	public float airDodgeMovementDistance = 2f;
 	public float airDodgeDuration = 0.25f;
-
+	public float airDodgeInitialDelay = 0.25f;
 
 	private bool disabled = false;
 	private PlayerTakeDamage health;
@@ -45,7 +45,7 @@ public class PlayerMovement : GameplayPausable {
 		float dt = 0f;
 		disabled = true;
 		health.currentlyInIframes = true;
-		yield return new WaitForSeconds(0.25f);
+		yield return new WaitForSeconds(airDodgeInitialDelay);
 
 		Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized * airDodgeMovementDistance;
 		Vector3 startPosition = transform.position;
