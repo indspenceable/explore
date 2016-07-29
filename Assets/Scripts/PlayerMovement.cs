@@ -8,7 +8,11 @@ public class PlayerMovement : GameplayPausable {
 
 	public bool facingLeft = true;
 
-	public float walkSpeed = 2f;
+	public float maxWalkSpeed = 5f;
+	public float acc = 30f;
+	public float airAcc = 15f;
+	public float friction = 5f;
+	public float airFriction = 1f;
 
 	public float vy = 0f;
 	public float jumpStrength = 10f;
@@ -112,13 +116,39 @@ public class PlayerMovement : GameplayPausable {
 	public bool airControlAllowed = true;
 	public float vx = 0f;
 
+	float approach(float initial, float target, float dx) {
+		if (Mathf.Abs(initial - target) < dx) {
+			return target;
+		} else if (initial < target) {
+			return initial + dx;
+		} else {
+			return initial - dx;
+		}
+	}
+
 	void moveLeftRight() {
 		if (controlsAreEnabled) {
-			grounded = VertCheck(-yAxisWallCollisionDistance) && vy <= 0f;
+			float targetVelocity;
+			grounded = VertCheck(-yAxisWallCollisionDistance, true) && vy <= 0f;
 			if (grounded || airControlAllowed || (jumpVx == 0f && vy < 0f && initiatedJump)) {
-				vx = walkSpeed * Input.GetAxis("Horizontal");
+				targetVelocity = maxWalkSpeed * Input.GetAxis("Horizontal");
 			} else {
-				vx = jumpVx;
+				targetVelocity = jumpVx;
+			}
+
+
+			bool between = (
+				// target velocity is between 0 and current velocity
+				(0f <= targetVelocity && targetVelocity <= vx) ||
+				(0f >= targetVelocity && targetVelocity >= vx)
+			);
+
+			if (between) {
+				float frictionToUse = grounded ? friction : airFriction;
+				vx = approach(vx, targetVelocity, frictionToUse*Time.deltaTime);
+			} else {
+				float accelerationToUse = grounded ? acc : airAcc;
+				vx = approach(vx, targetVelocity, accelerationToUse*Time.deltaTime);
 			}
 		}
 
@@ -156,8 +186,8 @@ public class PlayerMovement : GameplayPausable {
 	}
 
 	public float vertCheckOffset = 0.1f;
-	bool VertCheck(float dv, bool rising=false) {
-		LayerMask mask = (rising ? jumpThruPlatformMask.value : 0) | levelGeometryMask.value;
+	bool VertCheck(float dv, bool falling=false) {
+		LayerMask mask = (falling ? jumpThruPlatformMask.value : 0) | levelGeometryMask.value;
 		return (Physics2D.Raycast(new Vector2(transform.position.x-(vertCheckOffset),transform.position.y), Vector2.up, dv, mask) ||
 			Physics2D.Raycast(new Vector2(transform.position.x+(vertCheckOffset),transform.position.y), Vector2.up, dv, mask));
 	}
@@ -171,6 +201,9 @@ public class PlayerMovement : GameplayPausable {
 			transform.Translate(step);
 			i += 0.001f;
 		}
+		if (horizCheck(xAxisWallCollisionDistance) && vx > 0) {
+			vx = 0;
+		}
 	}
 	void moveLeft(float amt) {
 		float i = 0f;
@@ -178,6 +211,9 @@ public class PlayerMovement : GameplayPausable {
 		while (i > amt && !horizCheck(-xAxisWallCollisionDistance)) {
 			transform.Translate(step);
 			i -= 0.001f;
+		}
+		if (horizCheck(-xAxisWallCollisionDistance) && vx < 0) {
+			vx = 0;
 		}
 	}
 
@@ -188,6 +224,9 @@ public class PlayerMovement : GameplayPausable {
 		while (i < amt && !VertCheck(yAxisWallCollisionDistance)) {
 			transform.Translate(step);
 			i += 0.001f;
+		}
+		if (VertCheck(yAxisWallCollisionDistance) && vy > 0) {
+			vy = 0;
 		}
 	}
 	void fall(float amt) {
