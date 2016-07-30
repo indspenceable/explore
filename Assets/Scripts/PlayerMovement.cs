@@ -19,6 +19,7 @@ public class PlayerMovement : GameplayPausable {
 	public float highJumpStrength = 20f;
 	public bool highJumpEnabled = false;
 	public float gravityStrength = 30f;
+	public AudioSource jumpSoundEffect;
 
 	//TODO move this into a "move vertically" script
 	private bool grounded;
@@ -31,7 +32,9 @@ public class PlayerMovement : GameplayPausable {
 	public float floatSpeed = 1f;
 	float jumpVx;
 	bool initiatedJump;
+	bool doubleJumpAvailable = true;
 	bool hasDoubleJump = false;
+	public AudioSource doubleJumpSoundEffect;
 
 	public AnimationCurve airDodgeMovementCurve;
 	public float airDodgeMovementDistance = 2f;
@@ -273,6 +276,8 @@ public class PlayerMovement : GameplayPausable {
 			hasDoubleJump = true;
 			// We can jump, here.
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
+				Debug.Log("SINGLEJUMP");
+				jumpSoundEffect.Play();
 				vy = getJumpStrength();
 				jumpVx = vx;
 				initiatedJump = true;
@@ -291,7 +296,9 @@ public class PlayerMovement : GameplayPausable {
 				vy = -maxGravity;
 
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
-				if (hasDoubleJump) {
+				if (doubleJumpAvailable && hasDoubleJump) {
+					Debug.Log("DOUBLEJUMP");
+					doubleJumpSoundEffect.Play();
 					vy = getJumpStrength()*2/3f;
 					hasDoubleJump = false;
 				}
