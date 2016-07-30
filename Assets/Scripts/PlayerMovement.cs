@@ -245,6 +245,10 @@ public class PlayerMovement : GameplayPausable {
 		transform.Translate(-step);
 	}
 
+	float getJumpStrength() {
+		return highJumpEnabled ? highJumpStrength :jumpStrength;
+	}
+
 	void moveUpDown() {
 		grounded = VertCheck(-yAxisWallCollisionDistance, true) && vy <= 0f;
 
@@ -254,7 +258,7 @@ public class PlayerMovement : GameplayPausable {
 			hasDoubleJump = true;
 			// We can jump, here.
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
-				vy = highJumpEnabled ? highJumpStrength :jumpStrength;
+				vy = getJumpStrength();
 				jumpVx = vx;
 				initiatedJump = true;
 			} else {
@@ -273,7 +277,7 @@ public class PlayerMovement : GameplayPausable {
 
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
 				if (hasDoubleJump) {
-					vy = jumpStrength*2/3f;
+					vy = getJumpStrength()*2/3f;
 					hasDoubleJump = false;
 				}
 			} else if (Input.GetButtonUp("Jump") && vy > 0) {
