@@ -5,7 +5,7 @@ public abstract class GameplayPausable : MonoBehaviour {
 	public static bool paused = false;
 	// Update is called once per frame
 	private bool wasPausedLastFrame = false;
-	void Update () {
+	public virtual void Update () {
 		if (wasPausedLastFrame != paused) {
 			if (paused) {
 				OnPause();
