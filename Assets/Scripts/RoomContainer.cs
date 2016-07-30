@@ -1,18 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class RoomContainer : GameplayPausable {
 	public PlayerMovement player;
 	public Camera myCamera;
 	public float lerpWeight = 5f;
 	public float dist = 1f;
 
+	void Start () {
+		GetComponent<AudioSource>().Play();
+	}
+
 	public override void Update() {
 		base.Update();
-		if (Input.GetKeyDown(KeyCode.T)) {
+		if (Input.GetButtonDown("Pause")) {
 			if (Time.timeScale == 0f) {
+				GetComponent<AudioSource>().UnPause();
 				Time.timeScale = 1f;
 			} else {
+				GetComponent<AudioSource>().Pause();
 				Time.timeScale = 0f;
 			}
 		}
@@ -24,6 +31,5 @@ public class RoomContainer : GameplayPausable {
 		float py = player.transform.position.y;
 		// Can the camera go there?
 		myCamera.transform.position = Vector3.Lerp(myCamera.transform.position, new Vector3(px, py, myCamera.transform.position.z), Time.deltaTime * lerpWeight);
-		
 	}
 }
