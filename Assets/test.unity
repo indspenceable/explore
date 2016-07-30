@@ -614,6 +614,34 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!1 &483721568
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 483721569}
+  m_Layer: 0
+  m_Name: Particle System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &483721569
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 483721568}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.36, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 1942655683}
+  m_RootOrder: 4
 --- !u!1 &521100964
 GameObject:
   m_ObjectHideFlags: 0
@@ -1994,7 +2022,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: -0.375}
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.25}
+  m_Size: {x: 0.375, y: 0.25}
 --- !u!1 &1817297327
 GameObject:
   m_ObjectHideFlags: 0
@@ -2228,7 +2256,7 @@ MonoBehaviour:
   acc: 30
   airAcc: 25
   friction: 25
-  airFriction: 3
+  airFriction: 5
   vy: 0
   jumpStrength: 10
   highJumpStrength: 12
@@ -2341,6 +2369,7 @@ Transform:
   - {fileID: 372923094}
   - {fileID: 1819424913}
   - {fileID: 1689380006}
+  - {fileID: 483721569}
   m_Father: {fileID: 0}
   m_RootOrder: 2
 --- !u!114 &1942655684
