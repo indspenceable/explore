@@ -40,6 +40,10 @@ public class PlayerMovement : GameplayPausable {
 
 	private bool disabled = false;
 	private PlayerTakeDamage health;
+
+	public float tinyMovementStep = 0.001f;
+
+
 	// Use this for initialization
 	void Start () {
 		animator = GetComponent<Animator>();
@@ -129,7 +133,7 @@ public class PlayerMovement : GameplayPausable {
 	void moveLeftRight() {
 		if (controlsAreEnabled) {
 			float targetVelocity;
-			grounded = VertCheck(-yAxisWallCollisionDistance, true) && vy <= 0f;
+			grounded = CheckCollisionVerticalAtDistanc(-yAxisWallCollisionDistance, true) && vy <= 0f;
 			if (grounded || airControlAllowed || (jumpVx == 0f && vy < 0f && initiatedJump)) {
 				targetVelocity = maxWalkSpeed * Input.GetAxis("Horizontal");
 			} else {
@@ -158,61 +162,72 @@ public class PlayerMovement : GameplayPausable {
 		} else if (vx < 0) {
 			moveLeft(vx*Time.deltaTime);
 		}
+		PushOutFromWalls();
+	}
+
+	void PushOutFromWalls() {
+		Vector3 step = new Vector3(tinyMovementStep, 0f);
+		while (CheckCollisionHorizontalAtDistance(xAxisWallCollisionDistance)) {
+			transform.Translate(-step);
+		} 
+		while (CheckCollisionHorizontalAtDistance(-xAxisWallCollisionDistance)) {
+			transform.Translate(step);
+		} 
 	}
 
 	void OnDrawGizmos() {
 		Vector3 origin;
-		origin = new Vector2(transform.position.x,transform.position.y+horizCheckOffset);
+		origin = new Vector2(transform.position.x,transform.position.y+horizontalCollisionDetectionOffsetFromXAxis);
 		Gizmos.DrawLine(origin, origin + Vector3.right*xAxisWallCollisionDistance);
 		Gizmos.DrawLine(origin, origin - Vector3.right*xAxisWallCollisionDistance);
 
-		origin = new Vector2(transform.position.x,transform.position.y-horizCheckOffset);
+		origin = new Vector2(transform.position.x,transform.position.y-horizontalCollisionDetectionOffsetFromXAxis);
 		Gizmos.DrawLine(origin, origin + Vector3.right*xAxisWallCollisionDistance);
 		Gizmos.DrawLine(origin, origin - Vector3.right*xAxisWallCollisionDistance);
 
-		origin = new Vector2(transform.position.x+(vertCheckOffset),transform.position.y);
+		origin = new Vector2(transform.position.x+(verticalCollisionDetectionOffsetFromYAxis),transform.position.y);
 		Gizmos.DrawLine(origin, origin + Vector3.up*yAxisWallCollisionDistance);
 		Gizmos.DrawLine(origin, origin - Vector3.up*yAxisWallCollisionDistance);
 
-		origin = new Vector2(transform.position.x-(vertCheckOffset),transform.position.y);
+		origin = new Vector2(transform.position.x-(verticalCollisionDetectionOffsetFromYAxis),transform.position.y);
 		Gizmos.DrawLine(origin, origin + Vector3.up*yAxisWallCollisionDistance);
 		Gizmos.DrawLine(origin, origin - Vector3.up*yAxisWallCollisionDistance);
 	}
 
-	public float horizCheckOffset = 0.4f;
-	bool horizCheck(float dv) {
-		return (Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y-(horizCheckOffset)), Vector2.right, dv, levelGeometryMask) ||
-			Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y+(horizCheckOffset)), Vector2.right, dv, levelGeometryMask));
+	public float horizontalCollisionDetectionOffsetFromXAxis = 0.4f;
+	bool CheckCollisionHorizontalAtDistance(float dv) {
+		return (Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y-(horizontalCollisionDetectionOffsetFromXAxis)), Vector2.right, dv, levelGeometryMask) ||
+			Physics2D.Raycast(new Vector2(transform.position.x,transform.position.y+(horizontalCollisionDetectionOffsetFromXAxis)), Vector2.right, dv, levelGeometryMask));
 	}
 
-	public float vertCheckOffset = 0.1f;
-	bool VertCheck(float dv, bool falling=false) {
+	public float verticalCollisionDetectionOffsetFromYAxis = 0.1f;
+	bool CheckCollisionVerticalAtDistanc(float dv, bool falling=false) {
 		LayerMask mask = (falling ? jumpThruPlatformMask.value : 0) | levelGeometryMask.value;
-		return (Physics2D.Raycast(new Vector2(transform.position.x-(vertCheckOffset),transform.position.y), Vector2.up, dv, mask) ||
-			Physics2D.Raycast(new Vector2(transform.position.x+(vertCheckOffset),transform.position.y), Vector2.up, dv, mask));
+		return (Physics2D.Raycast(new Vector2(transform.position.x-(verticalCollisionDetectionOffsetFromYAxis), transform.position.y), Vector2.up, dv, mask) ||
+			Physics2D.Raycast(new Vector2(transform.position.x+(verticalCollisionDetectionOffsetFromYAxis), transform.position.y), Vector2.up, dv, mask));
 	}
 
 
 	public float xAxisWallCollisionDistance = 0.3f;
 	void moveRight(float amt) {
 		float i = 0f;
-		Vector3 step = new Vector3(0.001f, 0f);
-		while (i < amt && !horizCheck(xAxisWallCollisionDistance)) {
+		Vector3 step = new Vector3(tinyMovementStep, 0f);
+		while (i < amt && !CheckCollisionHorizontalAtDistance(xAxisWallCollisionDistance)) {
 			transform.Translate(step);
-			i += 0.001f;
+			i += tinyMovementStep;
 		}
-		if (horizCheck(xAxisWallCollisionDistance) && vx > 0) {
+		if (CheckCollisionHorizontalAtDistance(xAxisWallCollisionDistance) && vx > 0) {
 			vx = 0;
 		}
 	}
 	void moveLeft(float amt) {
 		float i = 0f;
-		Vector3 step = new Vector3(-0.001f, 0f);
-		while (i > amt && !horizCheck(-xAxisWallCollisionDistance)) {
+		Vector3 step = new Vector3(-tinyMovementStep, 0f);
+		while (i > amt && !CheckCollisionHorizontalAtDistance(-xAxisWallCollisionDistance)) {
 			transform.Translate(step);
-			i -= 0.001f;
+			i -= tinyMovementStep;
 		}
-		if (horizCheck(-xAxisWallCollisionDistance) && vx < 0) {
+		if (CheckCollisionHorizontalAtDistance(-xAxisWallCollisionDistance) && vx < 0) {
 			vx = 0;
 		}
 	}
@@ -220,27 +235,27 @@ public class PlayerMovement : GameplayPausable {
 	public float yAxisWallCollisionDistance = 0.5f;
 	void rise(float amt) {
 		float i = 0f;
-		Vector3 step = new Vector3(0f, 0.001f);
-		while (i < amt && !VertCheck(yAxisWallCollisionDistance)) {
+		Vector3 step = new Vector3(0f, tinyMovementStep);
+		while (i < amt && !CheckCollisionVerticalAtDistanc(yAxisWallCollisionDistance)) {
 			transform.Translate(step);
-			i += 0.001f;
+			i += tinyMovementStep;
 		}
-		if (VertCheck(yAxisWallCollisionDistance) && vy > 0) {
+		if (CheckCollisionVerticalAtDistanc(yAxisWallCollisionDistance) && vy > 0) {
 			vy = 0;
 		}
 	}
 	void fall(float amt) {
 		float i = 0f;
-		Vector3 step = new Vector3(0f, -0.001f);
-		while (i > amt && !VertCheck(-yAxisWallCollisionDistance, true)) {
+		Vector3 step = new Vector3(0f, -tinyMovementStep);
+		while (i > amt && !CheckCollisionVerticalAtDistanc(-yAxisWallCollisionDistance, true)) {
 			transform.Translate(step);
-			i -= 0.001f;
+			i -= tinyMovementStep;
 		}
 	}
 
 	void restOnGround() {
-		Vector3 step = new Vector3(0f, 0.001f);
-		while (VertCheck(-yAxisWallCollisionDistance, true))
+		Vector3 step = new Vector3(0f, tinyMovementStep);
+		while (CheckCollisionVerticalAtDistanc(-yAxisWallCollisionDistance, true))
 			transform.Translate(step);
 		transform.Translate(-step);
 	}
@@ -250,7 +265,7 @@ public class PlayerMovement : GameplayPausable {
 	}
 
 	void moveUpDown() {
-		grounded = VertCheck(-yAxisWallCollisionDistance, true) && vy <= 0f;
+		grounded = CheckCollisionVerticalAtDistanc(-yAxisWallCollisionDistance, true) && vy <= 0f;
 
 		if (grounded) {
 			restOnGround();
