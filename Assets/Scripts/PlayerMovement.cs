@@ -136,7 +136,7 @@ public class PlayerMovement : GameplayPausable {
 	void moveLeftRight() {
 		if (controlsAreEnabled) {
 			float targetVelocity;
-			grounded = CheckCollisionVerticalAtDistanc(-tinyMovementStep, true) && vy <= 0f;
+			grounded = CheckCollisionVerticalAtDistance(-tinyMovementStep, true) && vy <= 0f;
 			if (grounded || airControlAllowed || (jumpVx == 0f && vy < 0f && initiatedJump)) {
 				targetVelocity = maxWalkSpeed * Input.GetAxis("Horizontal");
 			} else {
@@ -196,7 +196,7 @@ public class PlayerMovement : GameplayPausable {
 
 	public BoxCollider2D UpCollider;
 	public BoxCollider2D DownCollider;
-	bool CheckCollisionVerticalAtDistanc(float dv, bool falling=false) {
+	bool CheckCollisionVerticalAtDistance(float dv, bool falling=false) {
 		LayerMask mask = (falling ? jumpThruPlatformMask.value : 0) | levelGeometryMask.value;
 		if (dv > 0) {
 			return Physics2D.BoxCast((Vector2)UpCollider.transform.position + UpCollider.offset, 
@@ -233,18 +233,18 @@ public class PlayerMovement : GameplayPausable {
 	void rise(float amt) {
 		float i = 0f;
 		Vector3 step = new Vector3(0f, tinyMovementStep);
-		while (i < amt && !CheckCollisionVerticalAtDistanc(tinyMovementStep)) {
+		while (i < amt && !CheckCollisionVerticalAtDistance(tinyMovementStep)) {
 			transform.Translate(step);
 			i += tinyMovementStep;
 		}
-		if (CheckCollisionVerticalAtDistanc(tinyMovementStep) && vy > 0) {
+		if (CheckCollisionVerticalAtDistance(tinyMovementStep) && vy > 0) {
 			vy = 0;
 		}
 	}
 	void fall(float amt) {
 		float i = 0f;
 		Vector3 step = new Vector3(0f, -tinyMovementStep);
-		while (i > amt && !CheckCollisionVerticalAtDistanc(-tinyMovementStep, true)) {
+		while (i > amt && !CheckCollisionVerticalAtDistance(-tinyMovementStep, true)) {
 			transform.Translate(step);
 			i -= tinyMovementStep;
 		}
@@ -252,7 +252,7 @@ public class PlayerMovement : GameplayPausable {
 
 	void restOnGround() {
 		Vector3 step = new Vector3(0f, tinyMovementStep);
-		while (CheckCollisionVerticalAtDistanc(-tinyMovementStep, true))
+		while (CheckCollisionVerticalAtDistance(-tinyMovementStep, true))
 			transform.Translate(step);
 		transform.Translate(-step);
 	}
@@ -262,7 +262,7 @@ public class PlayerMovement : GameplayPausable {
 	}
 
 	void moveUpDown() {
-		grounded = CheckCollisionVerticalAtDistanc(-tinyMovementStep, true) && vy <= 0f;
+		grounded = CheckCollisionVerticalAtDistance(-tinyMovementStep, true) && vy <= 0f;
 		if (grounded && vy < 0f) {
 //			Debug.Log("landing, yo!");
 			if (vy < -5f) {
