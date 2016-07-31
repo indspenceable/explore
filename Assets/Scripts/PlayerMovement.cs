@@ -19,7 +19,7 @@ public class PlayerMovement : GameplayPausable {
 	public float highJumpStrength = 20f;
 	public bool highJumpEnabled = false;
 	public float gravityStrength = 30f;
-	public AudioSource jumpSoundEffect;
+	public AudioClip jumpSoundEffect;
 
 	//TODO move this into a "move vertically" script
 	private bool grounded;
@@ -34,7 +34,7 @@ public class PlayerMovement : GameplayPausable {
 	bool initiatedJump;
 	bool doubleJumpAvailable = true;
 	bool hasDoubleJump = false;
-	public AudioSource doubleJumpSoundEffect;
+	public AudioClip doubleJumpSoundEffect;
 
 	public AnimationCurve airDodgeMovementCurve;
 	public float airDodgeMovementDistance = 2f;
@@ -264,9 +264,9 @@ public class PlayerMovement : GameplayPausable {
 	void moveUpDown() {
 		grounded = CheckCollisionVerticalAtDistanc(-tinyMovementStep, true) && vy <= 0f;
 		if (grounded && vy < 0f) {
-			Debug.Log("landing, yo!");
+//			Debug.Log("landing, yo!");
 			if (vy < -5f) {
-				Debug.Log("Landing hard.");
+//				Debug.Log("Landing hard.");
 			}
 		}
 
@@ -276,8 +276,7 @@ public class PlayerMovement : GameplayPausable {
 			hasDoubleJump = true;
 			// We can jump, here.
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
-				Debug.Log("SINGLEJUMP");
-				jumpSoundEffect.Play();
+				AudioSource.PlayClipAtPoint(jumpSoundEffect, Vector3.zero);
 				vy = getJumpStrength();
 				jumpVx = vx;
 				initiatedJump = true;
@@ -297,8 +296,7 @@ public class PlayerMovement : GameplayPausable {
 
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
 				if (doubleJumpAvailable && hasDoubleJump) {
-					Debug.Log("DOUBLEJUMP");
-					doubleJumpSoundEffect.Play();
+					AudioSource.PlayClipAtPoint(doubleJumpSoundEffect, Vector3.zero);
 					vy = getJumpStrength()*2/3f;
 					hasDoubleJump = false;
 				}
