@@ -327,10 +327,10 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Pause
-    descriptiveName: 
+    descriptiveName: Pause the Game
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 7
+    positiveButton: t
     altNegativeButton: 
     altPositiveButton: joystick button 9
     gravity: 1000

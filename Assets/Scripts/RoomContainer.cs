@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
 public class RoomContainer : GameplayPausable {
@@ -7,6 +8,7 @@ public class RoomContainer : GameplayPausable {
 	public Camera myCamera;
 	public float lerpWeight = 5f;
 	public float dist = 1f;
+	public GameObject pausedTextContainer;
 
 	void Start () {
 		GetComponent<AudioSource>().Play();
@@ -18,9 +20,11 @@ public class RoomContainer : GameplayPausable {
 			if (Time.timeScale == 0f) {
 				GetComponent<AudioSource>().UnPause();
 				Time.timeScale = 1f;
+				pausedTextContainer.SetActive(false);
 			} else {
 				GetComponent<AudioSource>().Pause();
 				Time.timeScale = 0f;
+				pausedTextContainer.SetActive(true);
 			}
 		}
 	}
