@@ -35,6 +35,12 @@ public class LookAtPointEditor : Editor
 		EditorGUILayout.PropertyField(tilePrefab);
 		EditorGUILayout.PropertyField(tileSheet);
 
+		Rect re1 = EditorGUILayout.GetControlRect(GUILayout.Width(128), GUILayout.Height(128));
+		if (currentlySelectedSprite) {
+			DrawTextureGUI(re1, currentlySelectedSprite, re1.size);
+		}
+
+
 		int i = 0;
 		int numberOfRows = (sprites.arraySize+TILE_SHEET_DISPLAY_WIDTH-1) / TILE_SHEET_DISPLAY_WIDTH;
 		for (int y = 0; y < numberOfRows; y+=1) {
@@ -52,7 +58,6 @@ public class LookAtPointEditor : Editor
 				if (GUI.Button(re,"")) {
 					currentlySelectedSprite = sprites.GetArrayElementAtIndex(i).objectReferenceValue as Sprite;
 				}
-
 				DrawTextureGUI(re, s, re.size);
 
 				i += 1;
@@ -148,7 +153,6 @@ public class LookAtPointEditor : Editor
 			}
 				
 			if (et == EventType.MouseDown || et == EventType.MouseDrag) {
-				Debug.Log(mouseButton);
 				if (mouseButton == 0) {
 					GameObject tile = lb.FindOrCreateTileAt(xPos, yPos);
 					tile.GetComponent<SpriteRenderer>().sprite = currentlySelectedSprite;

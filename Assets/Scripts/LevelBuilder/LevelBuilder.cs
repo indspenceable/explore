@@ -25,8 +25,10 @@ public class LevelBuilder : MonoBehaviour {
 		public int y;
 		public GameObject tile;
 	}
+
 	[SerializeField]
-	public List<TileLocation> tiles = new List<TileLocation>();
+	public List<TileLocation> tiles;
+
 	public GameObject TileContainer() {
 		if (_tc == null) {
 			try {
@@ -35,7 +37,7 @@ public class LevelBuilder : MonoBehaviour {
 			}
 		}
 		if (_tc == null) {
-			_tc = new GameObject();
+			_tc = new GameObject("TileContainer");
 			_tc.transform.parent = transform;
 		}
 		return _tc;
@@ -52,6 +54,7 @@ public class LevelBuilder : MonoBehaviour {
 	}
 
 	public GameObject FindTileAt(int x, int y) {
+		EnsureTileLocationListIsSetup();
 		foreach (TileLocation tl in tiles) {
 			if (tl.x == x && tl.y == y) {
 				return tl.tile;
@@ -59,13 +62,24 @@ public class LevelBuilder : MonoBehaviour {
 		}
 		return null;
 	}
-
+		
 	public void RemoveTileAt(int x, int y) {
+		EnsureTileLocationListIsSetup();
 		foreach (TileLocation tl in tiles) {
 			if (tl.x == x && tl.y == y) {
 				GameObject.DestroyImmediate(tl.tile);
 				tiles.Remove(tl);
 				return;
+			}
+		}
+	}
+
+	private void EnsureTileLocationListIsSetup() {
+		if (tiles == null) {
+			tiles = new List<TileLocation>();
+			for (int i = 0; i < TileContainer().transform.childCount; i+=1) {
+				Transform child = TileContainer().transform.GetChild(i);
+				tiles.Add(new TileLocation(Mathf.RoundToInt(child.localPosition.x), Mathf.RoundToInt(child.localPosition.y), child.gameObject));
 			}
 		}
 	}
