@@ -23,7 +23,7 @@ public class PlayerAttacks : GameplayPausable {
 		movement = GetComponent<PlayerMovement>();
 	}
 	// Update is called once per frame
-	void Update () {
+	public override void Update () {
 		if (Input.GetButtonDown("Ranged") && MayInitiateAttack()) {
 			ShootMissile();
 		} else if (Input.GetButtonDown("Melee") && MayInitiateAttack()) {
