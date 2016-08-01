@@ -27,7 +27,7 @@ public class LevelBuilder : MonoBehaviour {
 		public int y;
 		public GameObject tile;
 	}
-
+	[System.Serializable]
 	public class SpritePrefabPairing {
 		public SpritePrefabPairing(Sprite sprite, GameObject prefab) {
 			this.sprite = sprite;
@@ -68,7 +68,6 @@ public class LevelBuilder : MonoBehaviour {
 	[SerializeField]
 	public List<SpritePrefabPairing> spritePrefabPairings;
 
-	[SerializeField]
 	public List<TileLocation> tiles;
 
 	public GameObject TileContainer() {

@@ -107,6 +107,9 @@ public class LookAtPointEditor : Editor
 	bool needRerender = false;
 
 	public void OnSceneGUI() {
+//		if (Selection.activeGameObject != target) {
+//			return;
+//		}
 		if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.T) {
 			editorIsEnabled = !editorIsEnabled;
 			SceneView.RepaintAll();
@@ -172,6 +175,7 @@ public class LookAtPointEditor : Editor
 
 				if (et == EventType.MouseDown || et == EventType.MouseDrag) {
 					if (mouseButton == 0) {
+						lb.RemoveTileAt(xPos,yPos);
 						GameObject tile = lb.FindOrCreateTileAt(xPos, yPos);
 						tile.GetComponent<SpriteRenderer>().sprite = lb.currentlySelectedSprite;
 						EditorUtility.SetDirty(lb);
