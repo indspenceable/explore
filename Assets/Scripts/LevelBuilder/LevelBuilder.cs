@@ -13,7 +13,8 @@ public class LevelBuilder : MonoBehaviour {
 	public Vector2 gridSize = new Vector2(1f, 1f);
 	public Texture2D tileSheet;
 	public Sprite[] sprites;
-	public GameObject tilePrefab;
+	public GameObject defaultTilePrefab;
+	public Sprite currentlySelectedSprite;
 
 	private GameObject _tc;
 	public struct TileLocation {
@@ -26,6 +27,46 @@ public class LevelBuilder : MonoBehaviour {
 		public int y;
 		public GameObject tile;
 	}
+
+	public class SpritePrefabPairing {
+		public SpritePrefabPairing(Sprite sprite, GameObject prefab) {
+			this.sprite = sprite;
+			this.prefab = prefab;
+		}
+		public Sprite sprite;
+		public GameObject prefab;
+	}
+
+	public SpritePrefabPairing LocateByCurrentSprite() {
+		if (spritePrefabPairings == null) {
+			spritePrefabPairings = new List<SpritePrefabPairing>();
+		}
+		foreach (SpritePrefabPairing spp in spritePrefabPairings) {
+			if (spp.sprite == currentlySelectedSprite) {
+				return spp;
+			}
+		}
+		return null;
+	}
+	public GameObject CurrentPrefab() {
+		SpritePrefabPairing spp = LocateByCurrentSprite();
+		if (spp != null) {
+			return spp.prefab;
+		} else {
+			return defaultTilePrefab;
+		}
+	}
+	public void SetCurrentPrefab(GameObject prefab) {
+		SpritePrefabPairing spp = LocateByCurrentSprite();
+		if (spp != null) {
+			spp.prefab = prefab;
+		} else {
+			spritePrefabPairings.Add(new SpritePrefabPairing(currentlySelectedSprite, prefab));
+		}
+	}
+
+	[SerializeField]
+	public List<SpritePrefabPairing> spritePrefabPairings;
 
 	[SerializeField]
 	public List<TileLocation> tiles;
@@ -46,7 +87,7 @@ public class LevelBuilder : MonoBehaviour {
 	public GameObject FindOrCreateTileAt(int x, int y) {
 		GameObject go = FindTileAt(x, y);
 		if (go == null) {
-			go = PrefabUtility.InstantiatePrefab(tilePrefab) as GameObject;
+			go = PrefabUtility.InstantiatePrefab(CurrentPrefab()) as GameObject;
 			go.transform.parent = TileContainer().transform;
 			go.transform.localPosition = new Vector3(x + gridSize.x/2, y + gridSize.y/2);
 			tiles.Add(new TileLocation(x, y, go));

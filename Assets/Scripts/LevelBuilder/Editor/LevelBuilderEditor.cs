@@ -14,9 +14,9 @@ public class LookAtPointEditor : Editor
 	SerializedProperty mapSize;
 	SerializedProperty tileSheet;
 	SerializedProperty sprites;
-	SerializedProperty tilePrefab;
-
-	private Sprite currentlySelectedSprite = null;
+	SerializedProperty defaultTilePrefab;
+	SerializedProperty currentlySelectedSprite;
+	public bool editorIsEnabled = true;
 
 	void OnEnable()
 	{
@@ -24,23 +24,30 @@ public class LookAtPointEditor : Editor
 		mapSize = serializedObject.FindProperty("mapSize");
 		tileSheet = serializedObject.FindProperty("tileSheet");
 		sprites = serializedObject.FindProperty("sprites");
-		tilePrefab = serializedObject.FindProperty("tilePrefab");
+		defaultTilePrefab = serializedObject.FindProperty("defaultTilePrefab");
+		currentlySelectedSprite = serializedObject.FindProperty("currentlySelectedSprite");
 	}
 
 	public override void OnInspectorGUI()
 	{
 		serializedObject.Update();
+		editorIsEnabled = EditorGUILayout.Toggle("Editor enabled", editorIsEnabled);
 		EditorGUILayout.PropertyField(gridSize);
 		EditorGUILayout.PropertyField(mapSize);
-		EditorGUILayout.PropertyField(tilePrefab);
+		EditorGUILayout.PropertyField(defaultTilePrefab);
+		LevelBuilder lb = (LevelBuilder)target;
+		GameObject curPrefab = lb.CurrentPrefab();
+		lb.SetCurrentPrefab(EditorGUILayout.ObjectField("Current Tile Prefab", curPrefab, typeof(GameObject), false) as GameObject);
 		EditorGUILayout.PropertyField(tileSheet);
 
 		Rect re1 = EditorGUILayout.GetControlRect(GUILayout.Width(128), GUILayout.Height(128));
-		if (currentlySelectedSprite) {
-			if (currentlySelectedSprite == null) {
-				currentlySelectedSprite = sprites.GetArrayElementAtIndex(0).objectReferenceValue as Sprite;
+		if (currentlySelectedSprite.objectReferenceValue) {
+			if (currentlySelectedSprite.objectReferenceValue == null) {
+				currentlySelectedSprite.objectReferenceValue = sprites.GetArrayElementAtIndex(0).objectReferenceValue as Sprite;
+				serializedObject.ApplyModifiedProperties();
+
 			}
-			DrawTextureGUI(re1, currentlySelectedSprite, re1.size);
+			DrawTextureGUI(re1, currentlySelectedSprite.objectReferenceValue as Sprite, re1.size);
 		}
 
 		int i = 0;
@@ -59,7 +66,8 @@ public class LookAtPointEditor : Editor
 
 				// Draw a button, then draw the sprite on top of it.
 				if (GUI.Button(re,"")) {
-					currentlySelectedSprite = sprites.GetArrayElementAtIndex(i).objectReferenceValue as Sprite;
+					currentlySelectedSprite.objectReferenceValue = sprites.GetArrayElementAtIndex(i).objectReferenceValue as Sprite;
+					serializedObject.ApplyModifiedProperties();
 				}
 				DrawTextureGUI(re, s, re.size);
 
@@ -99,6 +107,14 @@ public class LookAtPointEditor : Editor
 	bool needRerender = false;
 
 	public void OnSceneGUI() {
+		if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.T) {
+			editorIsEnabled = !editorIsEnabled;
+			SceneView.RepaintAll();
+		}
+		if (!editorIsEnabled) {
+			return;
+		}
+
 		LevelBuilder lb = target as LevelBuilder;
 		Undo.RecordObject((LevelBuilder)lb, "foo");
 		Vector2 _mapSize = lb.mapSize;
@@ -127,14 +143,14 @@ public class LookAtPointEditor : Editor
 		}
 
 		int controlId = GUIUtility.GetControlID(FocusType.Passive);
-		if (currentlySelectedSprite == null) {
-			currentlySelectedSprite = lb.sprites[0];
+		if (lb.currentlySelectedSprite == null) {
+			lb.currentlySelectedSprite = lb.sprites[0];
 			Repaint();
 		}
 
 		EventType et = Event.current.type;
 		int mouseButton = Event.current.button;
-		if ((et == EventType.MouseDown || et == EventType.MouseDrag || et == EventType.MouseMove) && mouseButton != 2)
+		if (et == EventType.MouseDown || et == EventType.MouseDrag || et == EventType.MouseMove)
 		{
 			// For the current location setup up MousePosition correctly.
 			Ray worldRay = HandleUtility.GUIPointToWorldRay (Event.current.mousePosition);
@@ -146,24 +162,28 @@ public class LookAtPointEditor : Editor
 			if (xPos >= 0 && xPos < _mapSize.x && yPos >= 0 && yPos < _mapSize.y) {
 				storedMousePosition = new Vector2(xPos*_gridSize.x, yPos*_gridSize.y);
 
-				// Tell the UI your event is the main one to use, it override the selection in  the scene view
 
-				GUIUtility.hotControl = controlId;
-				// Don't forget to use the event
-				Event.current.Use();
+				if (GUIUtility.hotControl == controlId || et == EventType.MouseDown) {
+					// Tell the UI your event is the main one to use, it override the selection in  the scene view
+					GUIUtility.hotControl = controlId;
+					// Don't forget to use the event
+					Event.current.Use();
+				}
 
 				if (et == EventType.MouseDown || et == EventType.MouseDrag) {
 					if (mouseButton == 0) {
 						GameObject tile = lb.FindOrCreateTileAt(xPos, yPos);
-						tile.GetComponent<SpriteRenderer>().sprite = currentlySelectedSprite;
+						tile.GetComponent<SpriteRenderer>().sprite = lb.currentlySelectedSprite;
 						EditorUtility.SetDirty(lb);
 					} else if (mouseButton == 1) {
 						lb.RemoveTileAt(xPos, yPos);
 					} else if (mouseButton == 2) {
 						GameObject go = lb.FindTileAt(xPos, yPos);
-						currentlySelectedSprite = (go == null) ? lb.sprites[0] : go.GetComponent<SpriteRenderer>().sprite;
+						lb.currentlySelectedSprite = (go == null) ? lb.sprites[0] : go.GetComponent<SpriteRenderer>().sprite;
 						Repaint();
 					}
+				} else {
+					SceneView.RepaintAll();
 				}
 
 			} else {
