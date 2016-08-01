@@ -8,7 +8,7 @@ using System.Collections.Generic;
 [CanEditMultipleObjects]
 public class LookAtPointEditor : Editor 
 {
-	const int TILE_SHEET_DISPLAY_WIDTH = 4;
+//	const int numberOfTilesPerRow = 15;
 
 	SerializedProperty gridSize;
 	SerializedProperty mapSize;
@@ -37,15 +37,18 @@ public class LookAtPointEditor : Editor
 
 		Rect re1 = EditorGUILayout.GetControlRect(GUILayout.Width(128), GUILayout.Height(128));
 		if (currentlySelectedSprite) {
+			if (currentlySelectedSprite == null) {
+				currentlySelectedSprite = sprites.GetArrayElementAtIndex(0).objectReferenceValue as Sprite;
+			}
 			DrawTextureGUI(re1, currentlySelectedSprite, re1.size);
 		}
 
-
 		int i = 0;
-		int numberOfRows = (sprites.arraySize+TILE_SHEET_DISPLAY_WIDTH-1) / TILE_SHEET_DISPLAY_WIDTH;
+		int numberOfTilesPerRow = Screen.width / 38;
+		int numberOfRows = (sprites.arraySize+numberOfTilesPerRow-1) / numberOfTilesPerRow;
 		for (int y = 0; y < numberOfRows; y+=1) {
 			EditorGUILayout.BeginHorizontal();
-			for (int x = 0; x < TILE_SHEET_DISPLAY_WIDTH; x+=1) {
+			for (int x = 0; x < numberOfTilesPerRow; x+=1) {
 				if (i >= sprites.arraySize) {
 					continue;
 				}
@@ -125,6 +128,7 @@ public class LookAtPointEditor : Editor
 		int controlId = GUIUtility.GetControlID(FocusType.Passive);
 		if (currentlySelectedSprite == null) {
 			currentlySelectedSprite = lb.sprites[0];
+			Repaint();
 		}
 
 		EventType et = Event.current.type;
@@ -146,18 +150,25 @@ public class LookAtPointEditor : Editor
 				GUIUtility.hotControl = controlId;
 				// Don't forget to use the event
 				Event.current.Use();
+
+				if (et == EventType.MouseDown || et == EventType.MouseDrag) {
+					if (mouseButton == 0) {
+						GameObject tile = lb.FindOrCreateTileAt(xPos, yPos);
+						tile.GetComponent<SpriteRenderer>().sprite = currentlySelectedSprite;
+					} else if (mouseButton == 1) {
+						lb.RemoveTileAt(xPos, yPos);
+					} else if (mouseButton == 2) {
+						GameObject go = lb.FindTileAt(xPos, yPos);
+						currentlySelectedSprite = (go == null) ? lb.sprites[0] : go.GetComponent<SpriteRenderer>().sprite;
+						Repaint();
+					}
+				}
+
 			} else {
 				storedMousePosition = null;
 				// Don't do the other GUI stuff so it doesn't screw up the rest of the editor.
-				GUIUtility.hotControl = 0;
-			}
-				
-			if (et == EventType.MouseDown || et == EventType.MouseDrag) {
-				if (mouseButton == 0) {
-					GameObject tile = lb.FindOrCreateTileAt(xPos, yPos);
-					tile.GetComponent<SpriteRenderer>().sprite = currentlySelectedSprite;
-				} else if (mouseButton == 1) {
-					lb.RemoveTileAt(xPos, yPos);
+				if ( GUIUtility.hotControl == controlId) {
+					GUIUtility.hotControl = 0;
 				}
 			}
 		}
@@ -189,7 +200,7 @@ public class LookAtPointEditor : Editor
 			);
 
 			// +1, because when we flip the y (the -1 at the end) it flips over the x-axis, so offset.
-			DrawTexture(new Rect(mpv.x, mpv.y+1, 1, 1), currentlySelectedSprite, new Vector2(0.5f, -1));
+//			DrawTexture(new Rect(mpv.x+0.25f, mpv.y+1.25f, 0.5f, 0.5f), currentlySelectedSprite, new Vector2(0.5f, -1));
 			needRerender = true;
 		} else {
 			if (needRerender) {

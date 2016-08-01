@@ -47,7 +47,7 @@ public class LevelBuilder : MonoBehaviour {
 		if (go == null) {
 			go = Instantiate(tilePrefab) as GameObject;
 			go.transform.parent = TileContainer().transform;
-			go.transform.localPosition = new Vector3(x, y);
+			go.transform.localPosition = new Vector3(x + gridSize.x/2, y + gridSize.y/2);
 			tiles.Add(new TileLocation(x, y, go));
 		}
 		return go;
@@ -79,7 +79,7 @@ public class LevelBuilder : MonoBehaviour {
 			tiles = new List<TileLocation>();
 			for (int i = 0; i < TileContainer().transform.childCount; i+=1) {
 				Transform child = TileContainer().transform.GetChild(i);
-				tiles.Add(new TileLocation(Mathf.RoundToInt(child.localPosition.x), Mathf.RoundToInt(child.localPosition.y), child.gameObject));
+				tiles.Add(new TileLocation(Mathf.RoundToInt(child.localPosition.x-gridSize.x/2), Mathf.RoundToInt(child.localPosition.y-gridSize.y/2), child.gameObject));
 			}
 		}
 	}
