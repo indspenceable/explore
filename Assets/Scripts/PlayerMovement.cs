@@ -263,6 +263,11 @@ public class PlayerMovement : GameplayPausable {
 
 	void moveUpDown() {
 		grounded = CheckCollisionVerticalAtDistance(-tinyMovementStep, true) && vy <= 0f;
+		if (CheckCollisionVerticalAtDistance(-0.25f, true) && vy <= 0f) {
+			fall(-0.25f);
+//			Debug.Log(CheckCollisionVerticalAtDistance(-tinyMovementStep, true));
+			grounded = true;
+		}
 		if (grounded && vy < 0f) {
 //			Debug.Log("landing, yo!");
 			if (vy < -5f) {
