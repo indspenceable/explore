@@ -8,6 +8,7 @@ using System.Linq;
 #endif
 
 public class LevelBuilder : MonoBehaviour {
+#if UNITY_EDITOR
 	public Vector2 mapSize = new Vector2(80, 80);
 	public Vector2 gridSize = new Vector2(1f, 1f);
 	public Texture2D tileSheet;
@@ -45,7 +46,7 @@ public class LevelBuilder : MonoBehaviour {
 	public GameObject FindOrCreateTileAt(int x, int y) {
 		GameObject go = FindTileAt(x, y);
 		if (go == null) {
-			go = Instantiate(tilePrefab) as GameObject;
+			go = PrefabUtility.InstantiatePrefab(tilePrefab) as GameObject;
 			go.transform.parent = TileContainer().transform;
 			go.transform.localPosition = new Vector3(x + gridSize.x/2, y + gridSize.y/2);
 			tiles.Add(new TileLocation(x, y, go));
@@ -84,7 +85,7 @@ public class LevelBuilder : MonoBehaviour {
 		}
 	}
 
-#if UNITY_EDITOR
+
 	// in the editor, validate a bunch of things on change. But we rely on editor-specific
 	// tools so don't compile it into the playable game.
 	[ExecuteInEditMode]

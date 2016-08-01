@@ -106,7 +106,7 @@ InputManager:
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: a
+    positiveButton: v
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -330,7 +330,7 @@ InputManager:
     descriptiveName: Pause the Game
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: t
+    positiveButton: escape
     altNegativeButton: 
     altPositiveButton: joystick button 9
     gravity: 1000

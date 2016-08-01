@@ -100,6 +100,7 @@ public class LookAtPointEditor : Editor
 
 	public void OnSceneGUI() {
 		LevelBuilder lb = target as LevelBuilder;
+		Undo.RecordObject((LevelBuilder)lb, "foo");
 		Vector2 _mapSize = lb.mapSize;
 		Vector2 _gridSize = lb.gridSize;
 
@@ -133,7 +134,7 @@ public class LookAtPointEditor : Editor
 
 		EventType et = Event.current.type;
 		int mouseButton = Event.current.button;
-		if (et == EventType.MouseDown || et == EventType.MouseDrag || et == EventType.MouseMove)
+		if ((et == EventType.MouseDown || et == EventType.MouseDrag || et == EventType.MouseMove) && mouseButton != 2)
 		{
 			// For the current location setup up MousePosition correctly.
 			Ray worldRay = HandleUtility.GUIPointToWorldRay (Event.current.mousePosition);
@@ -155,6 +156,7 @@ public class LookAtPointEditor : Editor
 					if (mouseButton == 0) {
 						GameObject tile = lb.FindOrCreateTileAt(xPos, yPos);
 						tile.GetComponent<SpriteRenderer>().sprite = currentlySelectedSprite;
+						EditorUtility.SetDirty(lb);
 					} else if (mouseButton == 1) {
 						lb.RemoveTileAt(xPos, yPos);
 					} else if (mouseButton == 2) {

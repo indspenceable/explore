@@ -32,8 +32,8 @@ public class PlayerMovement : GameplayPausable {
 	public float floatSpeed = 1f;
 	float jumpVx;
 	bool initiatedJump;
-	bool doubleJumpAvailable = true;
-	bool hasDoubleJump = false;
+	public bool doubleJumpEnabled = true;
+	bool doubleJumpAvailable = false;
 	public AudioClip doubleJumpSoundEffect;
 
 	public AnimationCurve airDodgeMovementCurve;
@@ -273,7 +273,7 @@ public class PlayerMovement : GameplayPausable {
 		if (grounded) {
 			restOnGround();
 			vy = 0f;
-			hasDoubleJump = true;
+			doubleJumpAvailable = true;
 			// We can jump, here.
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
 				AudioSource.PlayClipAtPoint(jumpSoundEffect, Vector3.zero);
@@ -295,10 +295,10 @@ public class PlayerMovement : GameplayPausable {
 				vy = -maxGravity;
 
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
-				if (doubleJumpAvailable && hasDoubleJump) {
+				if (doubleJumpEnabled && doubleJumpAvailable) {
 					AudioSource.PlayClipAtPoint(doubleJumpSoundEffect, Vector3.zero);
 					vy = getJumpStrength()*2/3f;
-					hasDoubleJump = false;
+					doubleJumpAvailable = false;
 				}
 			} else if (Input.GetButtonUp("Jump") && vy > 0) {
 				vy /= 2f;
