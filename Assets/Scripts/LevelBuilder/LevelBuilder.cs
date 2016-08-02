@@ -125,6 +125,17 @@ public class LevelBuilder : MonoBehaviour {
 		}
 	}
 
+	public void RebindChildrenToTheirPrefabs() {
+		Sprite css = currentlySelectedSprite;
+		EnsureTileLocationListIsSetup();
+		foreach (TileLocation tl in tiles) {
+			currentlySelectedSprite = tl.tile.GetComponent<SpriteRenderer>().sprite;
+			if (PrefabUtility.GetPrefabParent(tl.tile) != CurrentPrefab()) {
+				Debug.Log("Damn!");
+			}
+		}
+		currentlySelectedSprite = css;
+	}
 
 	// in the editor, validate a bunch of things on change. But we rely on editor-specific
 	// tools so don't compile it into the playable game.
@@ -140,8 +151,7 @@ public class LevelBuilder : MonoBehaviour {
 				tileSheet = null;
 			}
 		}
-	}
-	void SetSprites() {
+		RebindChildrenToTheirPrefabs();
 	}
 #endif
 }
