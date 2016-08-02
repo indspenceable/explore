@@ -83,11 +83,18 @@ public class PlayerMovement : GameplayPausable {
 			StartCoroutine(AirDodge());
 			return;
 		}
+	
 		moveUpDown();
 		moveLeftRight();
 		FlipIfNeeded();
 		// checkForExits();
 		// interact();
+	}
+
+	public void ApplyMagnet(Vector3 targetPosition, float weight) {
+		Vector2 move = (targetPosition - transform.position).normalized;
+		vx += move.x * Time.deltaTime * weight;
+		vy += move.y * Time.deltaTime * weight;
 	}
 
 	private void FlipIfNeeded() {
