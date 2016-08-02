@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 427242}
   - 212: {fileID: 21257448}
   - 61: {fileID: 6123812}
+  - 114: {fileID: 11440960}
   m_Layer: 10
   m_Name: Magnet
   m_TagString: Untagged
@@ -44,6 +45,18 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
+--- !u!114 &11440960
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5623c14ea6c724322a7a594454a67e74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  polarity: 1
 --- !u!212 &21257448
 SpriteRenderer:
   m_ObjectHideFlags: 1

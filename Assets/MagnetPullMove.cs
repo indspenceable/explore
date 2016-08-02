@@ -9,16 +9,31 @@ public class MagnetPullMove : MonoBehaviour {
 	public SpriteRenderer sprite;
 	void OnDrawGizmos() {
 		Gizmos.DrawWireSphere(transform.position, magnetDistance);
+		Collider2D collision = Physics2D.OverlapCircle(transform.position, magnetDistance, magnetMask); 
+		if (collision != null) {
+			Gizmos.color = Color.red;
+			Gizmos.DrawLine(transform.position, transform.position + (collision.transform.position - transform.position).normalized);
+		}
 	}
+
 	void Update () {
 		bool shouldEnable = false;
-		if (Input.GetAxis("Magnet") > 0) {
+		if (Input.GetAxis("MagnetPositive") > 0) {
 			Collider2D collision = Physics2D.OverlapCircle(transform.position, magnetDistance, magnetMask); 
 			if (collision != null) {
-				GetComponent<PlayerMovement>().ApplyMagnet(collision.transform.position, Input.GetAxis("Magnet") * weight);
+				
+				GetComponent<PlayerMovement>().ApplyMagnet(collision.transform.position, collision.GetComponent<Magnet>().polarity*Input.GetAxis("MagnetPositive") * weight);
 				shouldEnable = true;
 			}
-		} 
+		} else if (Input.GetAxis("MagnetNegative") > 0) {
+			Collider2D collision = Physics2D.OverlapCircle(transform.position, magnetDistance, magnetMask); 
+			if (collision != null) {
+
+				GetComponent<PlayerMovement>().ApplyMagnet(collision.transform.position, -1*collision.GetComponent<Magnet>().polarity*Input.GetAxis("MagnetNegative") * weight);
+				shouldEnable = true;
+			}
+		}
+
 		sprite.enabled = shouldEnable;
 	}
 }
