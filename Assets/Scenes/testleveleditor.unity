@@ -4921,6 +4921,7 @@ MonoBehaviour:
   lerpWeight: 5
   dist: 0
   pausedTextContainer: {fileID: 26380014}
+  minDistanceThreshold: 0.5
 --- !u!82 &529372918
 AudioSource:
   m_ObjectHideFlags: 0
