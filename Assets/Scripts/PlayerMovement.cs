@@ -31,7 +31,7 @@ public class PlayerMovement : GameplayPausable {
 	bool floating;
 	public float floatSpeed = 1f;
 	float jumpVx;
-	bool initiatedJump;
+	public bool initiatedJump;
 	public bool doubleJumpEnabled = true;
 	bool doubleJumpAvailable = false;
 	public AudioClip doubleJumpSoundEffect;
@@ -312,8 +312,9 @@ public class PlayerMovement : GameplayPausable {
 					vy = getJumpStrength()*2/3f;
 					doubleJumpAvailable = false;
 				}
-			} else if (Input.GetButtonUp("Jump") && vy > 0) {
+			} else if (Input.GetButtonUp("Jump") && vy > 0 && initiatedJump) {
 				vy /= 2f;
+				initiatedJump = false;
 			}
 
 		}
