@@ -29,6 +29,8 @@ GameObject:
   - 114: {fileID: 11422688}
   - 114: {fileID: 11499646}
   - 114: {fileID: 11494450}
+  - 114: {fileID: 11467210}
+  - 114: {fileID: 11400950}
   m_Layer: 0
   m_Name: hopper
   m_TagString: Untagged
@@ -104,7 +106,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149438}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 62.91, y: 6.54, z: 0}
+  m_LocalPosition: {x: 55, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -223,6 +225,18 @@ BoxCollider2D:
   m_Offset: {x: 0, y: -0.875}
   serializedVersion: 2
   m_Size: {x: 1.25, y: 0.25}
+--- !u!114 &11400950
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19cb35bee8a0c48538ce24bf71e13b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hits: 3
 --- !u!114 &11422688
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -238,6 +252,17 @@ MonoBehaviour:
   waitTime: 2
   jumpStrength: 10
   jumpVelocity: 5
+--- !u!114 &11467210
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2696f6ad0c7b940a18fb57a75ec59a5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11494450
 MonoBehaviour:
   m_ObjectHideFlags: 1
