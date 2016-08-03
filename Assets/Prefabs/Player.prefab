@@ -178,7 +178,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 103860}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 65.7, y: 3.3, z: 0}
+  m_LocalPosition: {x: 64.86, y: 2.78, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -407,7 +407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletVelocity: 12
   meleeOffset: 0.75
-  bulletPrefab: {fileID: 151236, guid: ac85b1d6be22f4b5eab7cba61bed2c60, type: 2}
+  missilePrefab: {fileID: 11461256, guid: ac85b1d6be22f4b5eab7cba61bed2c60, type: 2}
   shootSoundEffect: {fileID: 8300000, guid: 5ce4c1225cdcf45bd81212877aabb6ab, type: 3}
   meleeHitPrefab: {fileID: 116276, guid: 4793699bcde4a45cbbafc20f01730a4b, type: 2}
   meleeSoundEffect: {fileID: 8300000, guid: 35119a950d33e46a29eca1efd4d9f3f1, type: 3}
