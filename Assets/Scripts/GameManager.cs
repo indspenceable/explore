@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour {
 	public PlayerMovement player;
 	public Camera myCamera;
 	public float lerpWeight = 5f;
-	public float dist = 1f;
 	public GameObject pausedTextContainer;
 	public float minDistanceThreshold = 0.02f;
 
@@ -19,7 +18,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Update() {
-		float px = player.transform.position.x + (player.facingLeft ? -dist : dist);
+		float px = player.transform.position.x;
 		float py = player.transform.position.y;
 		// Can the camera go there?
 		myCamera.transform.position = Vector3.Lerp(myCamera.transform.position, new Vector3(px, py, myCamera.transform.position.z), Time.deltaTime * lerpWeight);
