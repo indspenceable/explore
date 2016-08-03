@@ -3,18 +3,16 @@ using System.Collections;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(PlayerTakeDamage))]
-public class PlayerMovement : MonoBehaviour {
+public class PlayerMovement : PlatformPhysicsBase {
 	Animator animator;
 
 	public bool facingLeft = true;
-
 	public float maxWalkSpeed = 5f;
 	public float acc = 30f;
 	public float airAcc = 15f;
 	public float friction = 5f;
 	public float airFriction = 1f;
 
-	public float vy = 0f;
 	public float jumpStrength = 10f;
 	public float highJumpStrength = 20f;
 	public bool highJumpEnabled = false;
@@ -23,8 +21,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	//TODO move this into a "move vertically" script
 	private bool grounded;
-	public LayerMask levelGeometryMask;
-	public LayerMask jumpThruPlatformMask;
 	public float maxGravity = 100f;
 
 	// Jump related stuff
@@ -43,9 +39,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	public bool disabled {get; private set;}
 	private PlayerTakeDamage health;
-
-	public float tinyMovementStep = 0.001f;
-
 
 	// Use this for initialization
 	void Start () {
@@ -72,17 +65,9 @@ public class PlayerMovement : MonoBehaviour {
 
 			float dx = (dtEnd - dtStart).x;
 			float dy = (dtEnd - dtStart).y;
-			if (dy > 0) {
-				rise(dy);
-			} else {
-				fall(dy);
-			}
 
-			if (dx > 0) {
-				moveRight(dx);
-			} else {
-				moveLeft(dx);
-			}
+			RiseOrFall(dy);
+			MoveLeftOrRight(dx);
 			vx = dx;
 			vy = dy;
 
@@ -100,11 +85,12 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 		}
 	
-		moveUpDown();
-		moveLeftRight();
+		PlayerMoveUpDown();
+		RiseOrFall(vy * Time.deltaTime);
+		PlayerMoveLeftRight();
+		MoveLeftOrRight(vx * Time.deltaTime);
+		PushOutFromWalls();
 		FlipIfNeeded();
-		// checkForExits();
-		// interact();
 	}
 
 	public void ApplyMagnet(Vector3 targetPosition, float weight) {
@@ -122,7 +108,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	public bool controlsAreEnabled = true;
 
-	public IEnumerator DisableControlsForTimeframe(float time) {
+	public IEnumerator DisableControlsWhileInjured(float time) {
 		controlsAreEnabled = false;
 		animator.SetBool("injured", true);
 		float dt = 0f;
@@ -140,11 +126,10 @@ public class PlayerMovement : MonoBehaviour {
 	public void KnockBack() {
 		vx = (facingLeft ? knockbackXVel : -knockbackXVel);
 		vy = knockbackYVel;
-		StartCoroutine(DisableControlsForTimeframe(knockbackDisableDuration));
+		StartCoroutine(DisableControlsWhileInjured(knockbackDisableDuration));
 	}
 
 	public bool airControlAllowed = true;
-	public float vx = 0f;
 
 	float approach(float initial, float target, float dx) {
 		if (Mathf.Abs(initial - target) < dx) {
@@ -156,10 +141,10 @@ public class PlayerMovement : MonoBehaviour {
 		}
 	}
 
-	void moveLeftRight() {
+	void PlayerMoveLeftRight() {
 		if (controlsAreEnabled) {
 			float targetVelocity;
-			grounded = CheckCollisionVerticalAtDistance(-tinyMovementStep, true) && vy <= 0f;
+			grounded = CheckCollisionVerticalAtDistance(-tinyMovementStep) && vy <= 0f;
 			if (grounded || airControlAllowed || (jumpVx == 0f && vy < 0f && initiatedJump)) {
 				targetVelocity = maxWalkSpeed * Input.GetAxis("Horizontal");
 			} else {
@@ -185,12 +170,9 @@ public class PlayerMovement : MonoBehaviour {
 		animator.SetBool("horiz", vx!=0f);
 		if (vx > 0) {
 			facingLeft = false;
-			moveRight(vx*Time.deltaTime);
 		} else if (vx < 0) {
 			facingLeft = true;
-			moveLeft(vx*Time.deltaTime);
 		}
-		PushOutFromWalls();
 	}
 
 	void PushOutFromWalls() {
@@ -203,79 +185,9 @@ public class PlayerMovement : MonoBehaviour {
 		} 
 	}
 
-	public BoxCollider2D LeftCollider;
-	public BoxCollider2D RightCollider;
-	bool CheckCollisionHorizontalAtDistance(float dv) {
-		LayerMask mask = levelGeometryMask;
-
-		if (dv > 0) {
-			return Physics2D.BoxCast((Vector2)RightCollider.transform.position + RightCollider.offset, 
-				LeftCollider.size, 0f, Vector2.right, dv, mask);
-		} else {
-			return Physics2D.BoxCast((Vector2)LeftCollider.transform.position + LeftCollider.offset,
-				LeftCollider.size, 0f, Vector2.right, dv, mask);
-		}
-	}
-
-	public BoxCollider2D UpCollider;
-	public BoxCollider2D DownCollider;
-	bool CheckCollisionVerticalAtDistance(float dv, bool falling=false) {
-		LayerMask mask = (falling ? jumpThruPlatformMask.value : 0) | levelGeometryMask.value;
-		if (dv > 0) {
-			return Physics2D.BoxCast((Vector2)UpCollider.transform.position + UpCollider.offset, 
-				UpCollider.size, 0f, Vector2.up, dv, mask);
-		} else {
-			return Physics2D.BoxCast((Vector2)DownCollider.transform.position + DownCollider.offset,
-				DownCollider.size, 0f, Vector2.up, dv, mask);
-		}
-	}
-		
-	void moveRight(float amt) {
-		float i = 0f;
-		Vector3 step = new Vector3(tinyMovementStep, 0f);
-		while (i < amt && !CheckCollisionHorizontalAtDistance(tinyMovementStep)) {
-			transform.Translate(step);
-			i += tinyMovementStep;
-		}
-		if (CheckCollisionHorizontalAtDistance(tinyMovementStep) && vx > 0) {
-			vx = 0;
-		}
-	}
-	void moveLeft(float amt) {
-		float i = 0f;
-		Vector3 step = new Vector3(-tinyMovementStep, 0f);
-		while (i > amt && !CheckCollisionHorizontalAtDistance(-tinyMovementStep)) {
-			transform.Translate(step);
-			i -= tinyMovementStep;
-		}
-		if (CheckCollisionHorizontalAtDistance(-tinyMovementStep) && vx < 0) {
-			vx = 0;
-		}
-	}
-
-	void rise(float amt) {
-		float i = 0f;
-		Vector3 step = new Vector3(0f, tinyMovementStep);
-		while (i < amt && !CheckCollisionVerticalAtDistance(tinyMovementStep)) {
-			transform.Translate(step);
-			i += tinyMovementStep;
-		}
-		if (CheckCollisionVerticalAtDistance(tinyMovementStep) && vy > 0) {
-			vy = 0;
-		}
-	}
-	void fall(float amt) {
-		float i = 0f;
-		Vector3 step = new Vector3(0f, -tinyMovementStep);
-		while (i > amt && !CheckCollisionVerticalAtDistance(-tinyMovementStep, true)) {
-			transform.Translate(step);
-			i -= tinyMovementStep;
-		}
-	}
-
 	void restOnGround() {
 		Vector3 step = new Vector3(0f, tinyMovementStep);
-		while (CheckCollisionVerticalAtDistance(-tinyMovementStep, true))
+		while (CheckCollisionVerticalAtDistance(-tinyMovementStep))
 			transform.Translate(step);
 		transform.Translate(-step);
 	}
@@ -284,17 +196,15 @@ public class PlayerMovement : MonoBehaviour {
 		return highJumpEnabled ? highJumpStrength :jumpStrength;
 	}
 
-	void moveUpDown() {
-		grounded = CheckCollisionVerticalAtDistance(-tinyMovementStep, true) && vy <= 0f;
-		if (CheckCollisionVerticalAtDistance(-0.25f, true) && vy <= 0f) {
-			fall(-0.25f);
-//			Debug.Log(CheckCollisionVerticalAtDistance(-tinyMovementStep, true));
+
+	void PlayerMoveUpDown() {
+		grounded = CheckCollisionVerticalAtDistance(-tinyMovementStep) && vy <= 0f;
+		if (CheckCollisionVerticalAtDistance(-0.25f) && vy <= 0f) {
+			Fall(-0.25f);
 			grounded = true;
 		}
 		if (grounded && vy < 0f) {
-//			Debug.Log("landing, yo!");
 			if (vy < -5f) {
-//				Debug.Log("Landing hard.");
 			}
 		}
 
@@ -337,10 +247,5 @@ public class PlayerMovement : MonoBehaviour {
 
 		animator.SetBool("rising", vy > 0);
 		animator.SetBool("falling", vy < 0);
-		if (vy > 0) {
-			rise(vy*Time.deltaTime);
-		} else if (vy < 0) {
-			fall(vy*Time.deltaTime);
-		}
 	}
 }
