@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerPropeller : MonoBehaviour {
+public class Bubble : MonoBehaviour {
 	public bool changeYVelocity;
 	public float yVelocityFactor;
 	public bool changeXVelocity;

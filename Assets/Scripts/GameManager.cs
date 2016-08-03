@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
-public class RoomContainer : GameplayPausable {
+public class GameManager : GameplayPausable {
 	public PlayerMovement player;
 	public Camera myCamera;
 	public float lerpWeight = 5f;
