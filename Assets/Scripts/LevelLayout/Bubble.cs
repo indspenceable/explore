@@ -20,7 +20,7 @@ public class Bubble : MonoBehaviour {
 	public void OnTriggerStay2D(Collider2D other) {
 		// other should be player
 		PlayerMovement player = other.GetComponent<PlayerMovement>();
-		if (player != null && sr.enabled) {
+		if (player != null && sr.enabled && !player.disabled) {
 			player.transform.position = transform.position;
 			if (changeYVelocity) {
 				player.vy = yVelocityFactor;

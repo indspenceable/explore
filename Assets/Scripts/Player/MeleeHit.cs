@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class MeleeHit : GameplayPausable {
+public class MeleeHit : MonoBehaviour {
 	public LayerMask thignsICanHit;
 	public float lifespan = 0.75f;
 	private float duration = 0f;
 
-	public override void UnpausedUpdate () {
+	public void Update () {
 		duration += Time.deltaTime;
 		if (duration > lifespan) {
 			Destroy(gameObject);

@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(PlayerMovement))]
-public class PlayerAttacks : GameplayPausable {
+public class PlayerAttacks : MonoBehaviour {
 	Animator animator;
 	bool mayInitiateAttack = true;
 	public float bulletVelocity = 5f;
@@ -23,7 +23,7 @@ public class PlayerAttacks : GameplayPausable {
 		movement = GetComponent<PlayerMovement>();
 	}
 	// Update is called once per frame
-	public override void Update () {
+	public void Update () {
 		if (Input.GetButtonDown("Ranged") && MayInitiateAttack()) {
 			ShootMissile();
 		} else if (Input.GetButtonDown("Melee") && MayInitiateAttack()) {
@@ -32,7 +32,7 @@ public class PlayerAttacks : GameplayPausable {
 	}
 
 	private bool MayInitiateAttack() {
-		return mayInitiateAttack && movement.controlsAreEnabled;
+		return mayInitiateAttack && movement.controlsAreEnabled && !GameManager.paused;
 	}
 
 	public void ShootMissile() {

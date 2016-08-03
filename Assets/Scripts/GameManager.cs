@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
-public class GameManager : GameplayPausable {
+public class GameManager : MonoBehaviour {
 	public PlayerMovement player;
 	public Camera myCamera;
 	public float lerpWeight = 5f;
@@ -11,32 +11,14 @@ public class GameManager : GameplayPausable {
 	public GameObject pausedTextContainer;
 	public float minDistanceThreshold = 0.02f;
 
+	public static bool paused = false;
+
 	void Start () {
 		GetComponent<AudioSource>().Play();
 		GoToPlayer();
 	}
 
-	public override void Update() {
-		base.Update();
-		if (Input.GetButtonDown("Pause")) {
-			if (Time.timeScale == 0f) {
-				GetComponent<AudioSource>().UnPause();
-				Time.timeScale = 1f;
-				pausedTextContainer.SetActive(false);
-			} else {
-				GetComponent<AudioSource>().Pause();
-				Time.timeScale = 0f;
-				pausedTextContainer.SetActive(true);
-			}
-		}
-	}
-
-	public void GoToPlayer() {
-		transform.position = new Vector3(player.transform.position.x, player.transform.position.y, myCamera.transform.position.z);
-	}
-
-	// Update is called once per frame
-	public override void UnpausedUpdate () {
+	public void Update() {
 		float px = player.transform.position.x + (player.facingLeft ? -dist : dist);
 		float py = player.transform.position.y;
 		// Can the camera go there?
@@ -44,5 +26,23 @@ public class GameManager : GameplayPausable {
 		if (Mathf.Abs(myCamera.transform.position.x - player.transform.position.x) + Mathf.Abs(myCamera.transform.position.y - player.transform.position.y) < minDistanceThreshold) {
 			GoToPlayer();
 		}
+
+		if (Input.GetButtonDown("Pause")) {
+			if (paused) {
+				GetComponent<AudioSource>().UnPause();
+				Time.timeScale = 1f;
+				pausedTextContainer.SetActive(false);
+				paused = false;
+			} else {
+				GetComponent<AudioSource>().Pause();
+				Time.timeScale = 0f;
+				pausedTextContainer.SetActive(true);
+				paused = true;
+			}
+		}
+	}
+
+	public void GoToPlayer() {
+		transform.position = new Vector3(player.transform.position.x, player.transform.position.y, myCamera.transform.position.z);
 	}
 }

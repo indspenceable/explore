@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(PlayerTakeDamage))]
-public class PlayerMovement : GameplayPausable {
+public class PlayerMovement : MonoBehaviour {
 	Animator animator;
 
 	public bool facingLeft = true;
@@ -41,7 +41,7 @@ public class PlayerMovement : GameplayPausable {
 	public float airDodgeDuration = 0.25f;
 	public float airDodgeInitialDelay = 0.25f;
 
-	private bool disabled = false;
+	public bool disabled {get; private set;}
 	private PlayerTakeDamage health;
 
 	public float tinyMovementStep = 0.001f;
@@ -49,6 +49,7 @@ public class PlayerMovement : GameplayPausable {
 
 	// Use this for initialization
 	void Start () {
+		disabled = false;
 		animator = GetComponent<Animator>();
 		health = GetComponent<PlayerTakeDamage>();
 	}
@@ -91,7 +92,7 @@ public class PlayerMovement : GameplayPausable {
 	}
 
 	// Woo not fixedupdate
-	public override void UnpausedUpdate () {
+	public void Update () {
 		if (disabled)
 			return;
 		if (Input.GetButtonDown("Airdodge")) {
