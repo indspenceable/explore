@@ -9,6 +9,9 @@ public class EnemyHealth : MonoBehaviour {
 			Death();
 		}
 	}
+	public void MissileHit() {
+		MeleeHit();
+	}
 
 	public void Death() {
 		Destroy(gameObject);

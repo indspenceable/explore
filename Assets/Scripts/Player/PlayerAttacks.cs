@@ -9,7 +9,7 @@ public class PlayerAttacks : MonoBehaviour {
 	public float bulletVelocity = 5f;
 	public float meleeOffset = 1f;
 
-	public GameObject bulletPrefab;
+	public MissileHit bulletPrefab;
 	public AudioClip shootSoundEffect;
 	public GameObject meleeHitPrefab;
 	public AudioClip meleeSoundEffect;
@@ -40,7 +40,7 @@ public class PlayerAttacks : MonoBehaviour {
 		animator.SetTrigger("shoot");
 		AudioSource.PlayClipAtPoint(shootSoundEffect, Vector3.zero);
 		float dx = GetComponent<SpriteRenderer>().flipX ? bulletVelocity : -bulletVelocity;
-		Bullet b = (GameObject.Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject).GetComponent<Bullet>();
+		MissileHit b = (GameObject.Instantiate(bulletPrefab, transform.position, Quaternion.identity) as MissileHit);
 		b.direction = new Vector3(dx, 0f);
 	}
 

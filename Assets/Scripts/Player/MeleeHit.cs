@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 public class MeleeHit : MonoBehaviour {
-	public LayerMask thignsICanHit;
 	public float lifespan = 0.75f;
 	private float duration = 0f;
 

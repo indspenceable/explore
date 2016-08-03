@@ -1330,6 +1330,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2696f6ad0c7b940a18fb57a75ec59a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &34834432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 34834424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19cb35bee8a0c48538ce24bf71e13b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hits: 3
 --- !u!1001 &36430981
 Prefab:
   m_ObjectHideFlags: 0
@@ -35081,40 +35093,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 95ddab975235c4e3d9be8c0ce0568554, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &945826715 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 149118, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-  m_PrefabInternal: {fileID: 1075217688}
---- !u!212 &945826717
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 945826715}
-  m_Enabled: 0
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000e000000000000000, type: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_ReflectionProbeUsage: 0
-  m_ProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3a6b7531126924cc6a0f6d0593c77912, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
 --- !u!4 &946281745 stripped
 Transform:
   m_PrefabParentObject: {fileID: 424608, guid: 95ddab975235c4e3d9be8c0ce0568554, type: 2}
@@ -37417,11 +37395,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 95ddab975235c4e3d9be8c0ce0568554, type: 2}
   m_IsPrefabParent: 0
---- !u!61 &1025632902 stripped
-BoxCollider2D:
-  m_PrefabParentObject: {fileID: 6167866, guid: 0159565ef56f140948d1b1f7a872ff11,
-    type: 2}
-  m_PrefabInternal: {fileID: 1075217688}
 --- !u!4 &1026353469 stripped
 Transform:
   m_PrefabParentObject: {fileID: 446386, guid: 2a6cd81bc6bdf46beb02131b1d4756a0, type: 2}
@@ -39007,58 +38980,11 @@ Prefab:
       propertyPath: playerHealthText
       value: 
       objectReference: {fileID: 1130844047}
-    - target: {fileID: 6167866, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: m_Size.y
-      value: 0.375
-      objectReference: {fileID: 0}
-    - target: {fileID: 6179748, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: m_Size.y
-      value: 0.375
-      objectReference: {fileID: 0}
-    - target: {fileID: 11481778, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: doubleJumpEnabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11416218, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: iframesDurations
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 11481778, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: maxGravity
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 149118, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: m_Name
-      value: MagnetSprite
-      objectReference: {fileID: 0}
-    - target: {fileID: 444262, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 423138, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 433556, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 488426, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 443650, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 443650, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 149118, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 11487986, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 11461256, guid: ac85b1d6be22f4b5eab7cba61bed2c60,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
   m_IsPrefabParent: 0
@@ -58175,11 +58101,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 95ddab975235c4e3d9be8c0ce0568554, type: 2}
   m_IsPrefabParent: 0
---- !u!61 &1515492488 stripped
-BoxCollider2D:
-  m_PrefabParentObject: {fileID: 6178510, guid: 0159565ef56f140948d1b1f7a872ff11,
-    type: 2}
-  m_PrefabInternal: {fileID: 1075217688}
 --- !u!1001 &1516941905
 Prefab:
   m_ObjectHideFlags: 0
@@ -61823,11 +61744,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 424608, guid: 95ddab975235c4e3d9be8c0ce0568554, type: 2}
   m_PrefabInternal: {fileID: 1601768647}
---- !u!61 &1602591642 stripped
-BoxCollider2D:
-  m_PrefabParentObject: {fileID: 6179748, guid: 0159565ef56f140948d1b1f7a872ff11,
-    type: 2}
-  m_PrefabInternal: {fileID: 1075217688}
 --- !u!4 &1604486399 stripped
 Transform:
   m_PrefabParentObject: {fileID: 424608, guid: 95ddab975235c4e3d9be8c0ce0568554, type: 2}
@@ -74852,64 +74768,6 @@ Transform:
 Transform:
   m_PrefabParentObject: {fileID: 424608, guid: 95ddab975235c4e3d9be8c0ce0568554, type: 2}
   m_PrefabInternal: {fileID: 669780644}
---- !u!1 &1922591569 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 103860, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-  m_PrefabInternal: {fileID: 1075217688}
---- !u!114 &1922591570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1922591569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56e3fd162aaee453d98630c5a812aa4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  magnetMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  magnetDistance: 2
-  weight: 30
-  sprite: {fileID: 945826717}
---- !u!114 &1922591571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1922591569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b385d3e955f1476dbb6425f52d5809f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LeftCollider: {fileID: 1602591642}
-  RightCollider: {fileID: 1025632902}
-  vx: 0
-  levelGeometryMask:
-    serializedVersion: 2
-    m_Bits: 256
---- !u!114 &1922591572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1922591569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc59b956e06f34f3ebca03f570936a3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UpCollider: {fileID: 1998230817}
-  DownCollider: {fileID: 1515492488}
-  levelGeometryMask:
-    serializedVersion: 2
-    m_Bits: 256
-  jumpThruPlatformMask:
-    serializedVersion: 2
-    m_Bits: 512
-  vy: 0
 --- !u!4 &1923198683 stripped
 Transform:
   m_PrefabParentObject: {fileID: 424608, guid: 95ddab975235c4e3d9be8c0ce0568554, type: 2}
@@ -78283,11 +78141,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 424608, guid: 95ddab975235c4e3d9be8c0ce0568554, type: 2}
   m_PrefabInternal: {fileID: 1997756457}
---- !u!61 &1998230817 stripped
-BoxCollider2D:
-  m_PrefabParentObject: {fileID: 6190104, guid: 0159565ef56f140948d1b1f7a872ff11,
-    type: 2}
-  m_PrefabInternal: {fileID: 1075217688}
 --- !u!1001 &1998352684
 Prefab:
   m_ObjectHideFlags: 0
