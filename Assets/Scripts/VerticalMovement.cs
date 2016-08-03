@@ -52,7 +52,6 @@ public class VerticalMovement : MonoBehaviour {
 		}
 	}
 
-
 	void RestOnGround() {
 		Vector3 step = new Vector3(0f, VerticalMovement.tinyMovementStep);
 		while (CheckCollisionVerticalAtDistance(-tinyMovementStep))
