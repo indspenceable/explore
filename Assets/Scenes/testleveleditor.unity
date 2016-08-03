@@ -26604,8 +26604,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 718507819}
   - 212: {fileID: 718507818}
-  - 65: {fileID: 718507817}
   - 114: {fileID: 718507820}
+  - 114: {fileID: 718507821}
+  - 61: {fileID: 718507817}
   m_Layer: 0
   m_Name: crawler
   m_TagString: Untagged
@@ -26613,18 +26614,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!65 &718507817
-BoxCollider:
+--- !u!61 &718507817
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 718507816}
+  m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: -0.25}
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.5, z: 0.2}
-  m_Center: {x: 0, y: -0.25, z: 0}
+  m_Size: {x: 1, y: 0.5}
 --- !u!212 &718507818
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -26714,6 +26717,17 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 0
   facingRight: 1
+--- !u!114 &718507821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 718507816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2696f6ad0c7b940a18fb57a75ec59a5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &718579026 stripped
 Transform:
   m_PrefabParentObject: {fileID: 424608, guid: 95ddab975235c4e3d9be8c0ce0568554, type: 2}
