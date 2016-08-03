@@ -74,8 +74,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8faede57f0d445199e98b5992d8d380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifespan: 0.25
+  lifespan: 5.25
   direction: {x: 0, y: 0, z: 0}
+  levelGeometryLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!212 &21224652
 SpriteRenderer:
   m_ObjectHideFlags: 1

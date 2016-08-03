@@ -42471,11 +42471,6 @@ Prefab:
       propertyPath: playerHealthText
       value: 
       objectReference: {fileID: 1130844047}
-    - target: {fileID: 11487986, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
-      propertyPath: bulletPrefab
-      value: 
-      objectReference: {fileID: 11461256, guid: ac85b1d6be22f4b5eab7cba61bed2c60,
-        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0159565ef56f140948d1b1f7a872ff11, type: 2}
   m_IsPrefabParent: 0
