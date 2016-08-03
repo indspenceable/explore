@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-
 [CustomEditor(typeof(LevelBuilder))]
 [CanEditMultipleObjects]
 public class LookAtPointEditor : Editor 
@@ -12,7 +11,7 @@ public class LookAtPointEditor : Editor
 
 	SerializedProperty gridSize;
 	SerializedProperty mapSize;
-	SerializedProperty tileSheet;
+	SerializedProperty importTileSheet;
 	SerializedProperty sprites;
 	SerializedProperty defaultTilePrefab;
 	SerializedProperty currentlySelectedSprite;
@@ -22,7 +21,7 @@ public class LookAtPointEditor : Editor
 	{
 		gridSize = serializedObject.FindProperty("gridSize");
 		mapSize = serializedObject.FindProperty("mapSize");
-		tileSheet = serializedObject.FindProperty("tileSheet");
+		importTileSheet = serializedObject.FindProperty("importTileSheet");
 		sprites = serializedObject.FindProperty("sprites");
 		defaultTilePrefab = serializedObject.FindProperty("defaultTilePrefab");
 		currentlySelectedSprite = serializedObject.FindProperty("currentlySelectedSprite");
@@ -38,7 +37,17 @@ public class LookAtPointEditor : Editor
 		LevelBuilder lb = (LevelBuilder)target;
 		GameObject curPrefab = lb.CurrentPrefab();
 		lb.SetCurrentPrefab(EditorGUILayout.ObjectField("Current Tile Prefab", curPrefab, typeof(GameObject), false) as GameObject);
-		EditorGUILayout.PropertyField(tileSheet);
+		EditorGUILayout.PropertyField(importTileSheet);
+
+		int currentIndex = lb.knownTileSheets.IndexOf(lb.currentlySelectedTileSheetAssetLocation);
+		int selectedIndex = EditorGUILayout.Popup(
+			currentIndex, 
+			lb.knownTileSheets.ToArray()
+		);
+		if (currentIndex != selectedIndex) {
+			lb.SetCurrentTileSheet(lb.knownTileSheets[selectedIndex]);
+		}
+
 
 		Rect re1 = EditorGUILayout.GetControlRect(GUILayout.Width(128), GUILayout.Height(128));
 		if (currentlySelectedSprite.objectReferenceValue) {

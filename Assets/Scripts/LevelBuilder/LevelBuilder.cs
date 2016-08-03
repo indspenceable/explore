@@ -11,7 +11,9 @@ public class LevelBuilder : MonoBehaviour {
 #if UNITY_EDITOR
 	public Vector2 mapSize = new Vector2(80, 80);
 	public Vector2 gridSize = new Vector2(1f, 1f);
-	public Texture2D tileSheet;
+	public Texture2D importTileSheet;
+	public List<string> knownTileSheets;
+	public string currentlySelectedTileSheetAssetLocation;
 	public Sprite[] sprites;
 	public GameObject defaultTilePrefab;
 	public Sprite currentlySelectedSprite;
@@ -143,16 +145,24 @@ public class LevelBuilder : MonoBehaviour {
 	[ExecuteInEditMode]
 	void OnValidate(){
 		mapSize = new Vector2((int) mapSize.x, (int) mapSize.y);
-		if (tileSheet) {
-			string spriteSheet = AssetDatabase.GetAssetPath( tileSheet );
-			sprites = AssetDatabase.LoadAllAssetsAtPath( spriteSheet )
-				.OfType<Sprite>().ToArray();
-			if (sprites.Length == 0) {
-				Debug.LogError("Unable to set to non-multiSprite value.");
-				tileSheet = null;
-			}
+		if (importTileSheet) {
+			SetCurrentTileSheet(AssetDatabase.GetAssetPath( importTileSheet ));
+			importTileSheet = null;
 		}
 		RebindChildrenToTheirPrefabs();
+	}
+
+	public void SetCurrentTileSheet(string target) {
+		currentlySelectedTileSheetAssetLocation = target;
+		knownTileSheets.Add(currentlySelectedTileSheetAssetLocation);
+		knownTileSheets = knownTileSheets.Distinct().ToList();
+
+		sprites = AssetDatabase.LoadAllAssetsAtPath( currentlySelectedTileSheetAssetLocation )
+			.OfType<Sprite>().ToArray();
+		if (sprites.Length == 0) {
+			Debug.LogError("Unable to set to non-multiSprite value.");
+			importTileSheet = null;
+		}
 	}
 #endif
 }
