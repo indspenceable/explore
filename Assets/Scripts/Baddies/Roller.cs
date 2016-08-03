@@ -53,20 +53,20 @@ public class Roller : MonoBehaviour {
 	}
 
 	private IEnumerator Bounce() {
-		vert.vy = 5f;
+		vert.vy = Mathf.Abs(horiz.vx);
 		while (Mathf.Abs(horiz.vx) > 0.1f) {
 			// Bounce vertically
 			vert.vy -= gravity * Time.deltaTime;
-			float startingVy = vert.vy;
 			vert.RiseOrFall(Time.deltaTime * vert.vy);
-			if (vert.vy == 0f) {
-				vert.vy = startingVy/2f;
-			}
 
 			float startingVx = horiz.vx;
 			horiz.MoveLeftOrRight(Time.deltaTime * horiz.vx);
 			if (horiz.vx == 0f) {
 				horiz.vx = -startingVx;
+				direction *= -1;
+				if (vert.CheckGrounded()) {
+					vert.vy = Mathf.Abs(horiz.vx);
+				}
 			}
 			if (vert.CheckGrounded()) {
 				horiz.vx *= 0.99f;
