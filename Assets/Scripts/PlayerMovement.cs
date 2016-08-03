@@ -62,17 +62,32 @@ public class PlayerMovement : GameplayPausable {
 		Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized * airDodgeMovementDistance;
 		Vector3 startPosition = transform.position;
 		Vector3 endPosition = transform.position + direction;
-		while (true){
-			transform.position = Vector3.Lerp(startPosition, endPosition, airDodgeMovementCurve.Evaluate(dt/airDodgeDuration));
+
+		while (dt <= airDodgeDuration){
+			Vector3 dtStart = Vector3.Lerp(startPosition, endPosition, airDodgeMovementCurve.Evaluate(dt/airDodgeDuration));
 			yield return null;
 			dt += Time.deltaTime;
-			if (dt >= airDodgeDuration)
-				break;
+			Vector3 dtEnd = Vector3.Lerp(startPosition, endPosition, airDodgeMovementCurve.Evaluate(dt/airDodgeDuration));
+
+			float dx = (dtEnd - dtStart).x;
+			float dy = (dtEnd - dtStart).y;
+			if (dy > 0) {
+				rise(dy);
+			} else {
+				fall(dy);
+			}
+
+			if (dx > 0) {
+				moveRight(dx);
+			} else {
+				moveLeft(dx);
+			}
+			vx = dx;
+			vy = dy;
+
 		}
 		health.currentlyInIframes = false;
 		disabled = false;
-		vx = 0f;
-		vy = 0f;
 	}
 
 	// Woo not fixedupdate
