@@ -3,7 +3,9 @@ using System.Collections;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(PlayerTakeDamage))]
-public class PlayerMovement : PlatformPhysicsBase {
+[RequireComponent(typeof(VerticalMovement))]
+[RequireComponent(typeof(HorizontalMovement))]
+public class PlayerMovement : MonoBehaviour {
 	Animator animator;
 
 	public bool facingLeft = true;
@@ -40,11 +42,15 @@ public class PlayerMovement : PlatformPhysicsBase {
 	public bool disabled {get; private set;}
 	private PlayerTakeDamage health;
 
+	public VerticalMovement vert {get; private set;}
+	public HorizontalMovement horiz {get; private set;}
 	// Use this for initialization
 	void Start () {
 		disabled = false;
 		animator = GetComponent<Animator>();
 		health = GetComponent<PlayerTakeDamage>();
+		vert = GetComponent<VerticalMovement>();
+		horiz = GetComponent<HorizontalMovement>();
 	}
 
 	IEnumerator AirDodge() {
@@ -66,10 +72,10 @@ public class PlayerMovement : PlatformPhysicsBase {
 			float dx = (dtEnd - dtStart).x;
 			float dy = (dtEnd - dtStart).y;
 
-			RiseOrFall(dy);
-			MoveLeftOrRight(dx);
-			vx = dx;
-			vy = dy;
+			vert.RiseOrFall(dy);
+			vert.vy = dy;
+			horiz.MoveLeftOrRight(dx);
+			horiz.vx = dx;
 
 		}
 		health.currentlyInIframes = false;
@@ -86,22 +92,22 @@ public class PlayerMovement : PlatformPhysicsBase {
 		}
 	
 		PlayerMoveUpDown();
-		RiseOrFall(vy * Time.deltaTime);
+		vert.RiseOrFall(vert.vy * Time.deltaTime);
 		PlayerMoveLeftRight();
-		MoveLeftOrRight(vx * Time.deltaTime);
+		horiz.MoveLeftOrRight(horiz.vx * Time.deltaTime);
 		PushOutFromWalls();
 		FlipIfNeeded();
 	}
 
 	public void ApplyMagnet(Vector3 targetPosition, float weight) {
 		Vector2 move = (targetPosition - transform.position).normalized;
-		vx += move.x * Time.deltaTime * weight;
-		vy += move.y * Time.deltaTime * weight;
+		horiz.vx += move.x * Time.deltaTime * weight;
+		vert.vy += move.y * Time.deltaTime * weight;
 	}
 
 	private void FlipIfNeeded() {
-		if (Mathf.Abs(vx) > 0 && controlsAreEnabled) {
-			facingLeft = (vx < 0);
+		if (Mathf.Abs(horiz.vx) > 0 && controlsAreEnabled) {
+			facingLeft = (horiz.vx < 0);
 		}
 		GetComponent<SpriteRenderer>().flipX = !facingLeft;
 	}
@@ -124,8 +130,8 @@ public class PlayerMovement : PlatformPhysicsBase {
 	public float knockbackYVel = 5f;
 	public float knockbackDisableDuration = 0.25f;
 	public void KnockBack() {
-		vx = (facingLeft ? knockbackXVel : -knockbackXVel);
-		vy = knockbackYVel;
+		horiz.vx = (facingLeft ? knockbackXVel : -knockbackXVel);
+		vert.vy = knockbackYVel;
 		StartCoroutine(DisableControlsWhileInjured(knockbackDisableDuration));
 	}
 
@@ -144,52 +150,44 @@ public class PlayerMovement : PlatformPhysicsBase {
 	void PlayerMoveLeftRight() {
 		if (controlsAreEnabled) {
 			float targetVelocity;
-			grounded = CheckCollisionVerticalAtDistance(-tinyMovementStep) && vy <= 0f;
-			if (grounded || airControlAllowed || (jumpVx == 0f && vy < 0f && initiatedJump)) {
+			grounded = vert.CheckCollisionVerticalAtDistance(-VerticalMovement.tinyMovementStep) && vert.vy <= 0f;
+			if (grounded || airControlAllowed || (jumpVx == 0f && vert.vy < 0f && initiatedJump)) {
 				targetVelocity = maxWalkSpeed * Input.GetAxis("Horizontal");
 			} else {
 				targetVelocity = jumpVx;
 			}
 
-
 			bool between = (
 				// target velocity is between 0 and current velocity
-				(0f <= targetVelocity && targetVelocity <= vx) ||
-				(0f >= targetVelocity && targetVelocity >= vx)
+				(0f <= targetVelocity && targetVelocity <= horiz.vx) ||
+				(0f >= targetVelocity && targetVelocity >= horiz.vx)
 			);
 
 			if (between) {
 				float frictionToUse = grounded ? friction : airFriction;
-				vx = approach(vx, targetVelocity, frictionToUse*Time.deltaTime);
+				horiz.vx = approach(horiz.vx, targetVelocity, frictionToUse*Time.deltaTime);
 			} else {
 				float accelerationToUse = grounded ? acc : airAcc;
-				vx = approach(vx, targetVelocity, accelerationToUse*Time.deltaTime);
+				horiz.vx = approach(horiz.vx, targetVelocity, accelerationToUse*Time.deltaTime);
 			}
 		}
 
-		animator.SetBool("horiz", vx!=0f);
-		if (vx > 0) {
+		animator.SetBool("horiz", horiz.vx!=0f);
+		if (horiz.vx > 0) {
 			facingLeft = false;
-		} else if (vx < 0) {
+		} else if (horiz.vx < 0) {
 			facingLeft = true;
 		}
 	}
 
 	void PushOutFromWalls() {
-		Vector3 step = new Vector3(tinyMovementStep, 0f);
-		while (CheckCollisionHorizontalAtDistance(tinyMovementStep)) {
+		Vector3 step = new Vector3(HorizontalMovement.tinyMovementStep, 0f);
+		while (horiz.CheckCollisionHorizontalAtDistance(HorizontalMovement.tinyMovementStep)) {
 			transform.Translate(-step);
 		} 
-		while (CheckCollisionHorizontalAtDistance(-tinyMovementStep)) {
+		while (horiz.CheckCollisionHorizontalAtDistance(-HorizontalMovement.tinyMovementStep)) {
 			transform.Translate(step);
 		} 
-	}
-
-	void restOnGround() {
-		Vector3 step = new Vector3(0f, tinyMovementStep);
-		while (CheckCollisionVerticalAtDistance(-tinyMovementStep))
-			transform.Translate(step);
-		transform.Translate(-step);
 	}
 
 	float getJumpStrength() {
@@ -198,25 +196,20 @@ public class PlayerMovement : PlatformPhysicsBase {
 
 
 	void PlayerMoveUpDown() {
-		grounded = CheckCollisionVerticalAtDistance(-tinyMovementStep) && vy <= 0f;
-		if (CheckCollisionVerticalAtDistance(-0.25f) && vy <= 0f) {
-			Fall(-0.25f);
-			grounded = true;
-		}
-		if (grounded && vy < 0f) {
-			if (vy < -5f) {
+		grounded = vert.CheckGrounded();
+		if (grounded && vert.vy < 0f) {
+			if (vert.vy < -5f) {
 			}
 		}
 
 		if (grounded) {
-			restOnGround();
-			vy = 0f;
+			vert.vy = 0f;
 			doubleJumpAvailable = true;
 			// We can jump, here.
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
 				AudioSource.PlayClipAtPoint(jumpSoundEffect, Vector3.zero);
-				vy = getJumpStrength();
-				jumpVx = vx;
+				vert.vy = getJumpStrength();
+				jumpVx = horiz.vx;
 				initiatedJump = true;
 			} else {
 				jumpVx = 0f;
@@ -225,27 +218,27 @@ public class PlayerMovement : PlatformPhysicsBase {
 			floating = false;
 		} else {
 			if (floating) {
-				vy = -floatSpeed * Time.deltaTime;
+				vert.vy = -floatSpeed * Time.deltaTime;
 			} else {
-				vy -= gravityStrength*Time.deltaTime;
+				vert.vy -= gravityStrength*Time.deltaTime;
 			}
-			if (vy < -maxGravity)
-				vy = -maxGravity;
+			if (vert.vy < -maxGravity)
+				vert.vy = -maxGravity;
 
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
 				if (doubleJumpEnabled && doubleJumpAvailable) {
 					AudioSource.PlayClipAtPoint(doubleJumpSoundEffect, Vector3.zero);
-					vy = getJumpStrength()*2/3f;
+					vert.vy = getJumpStrength()*2/3f;
 					doubleJumpAvailable = false;
 				}
-			} else if (Input.GetButtonUp("Jump") && vy > 0 && initiatedJump) {
-				vy /= 2f;
+			} else if (Input.GetButtonUp("Jump") && vert.vy > 0 && initiatedJump) {
+				vert.vy /= 2f;
 				initiatedJump = false;
 			}
 
 		}
 
-		animator.SetBool("rising", vy > 0);
-		animator.SetBool("falling", vy < 0);
+		animator.SetBool("rising", vert.vy > 0);
+		animator.SetBool("falling", vert.vy < 0);
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(VerticalMovement))]
 public class Crawler : MonoBehaviour {
 	public Transform rightGround;
 	public Transform rightWall;
@@ -13,9 +14,12 @@ public class Crawler : MonoBehaviour {
 	public AnimationCurve crawlVelocity;
 	public bool facingRight = true;
 
+	public float gravity = 30f;
+	private VerticalMovement vert;
 
 	// Use this for initialization
 	void Start () {
+		vert = GetComponent<VerticalMovement>();
 		StartCoroutine(Walk());
 	}
 
@@ -31,6 +35,14 @@ public class Crawler : MonoBehaviour {
 		return facingRight ? 1 : -1;
 	}
 
+	private IEnumerator Fall() {
+		while (!vert.CheckGrounded()) {
+			vert.vy -= gravity * Time.deltaTime;
+			vert.Fall(Time.deltaTime * vert.vy);
+			yield return null;
+		}
+	}
+
 	private IEnumerator Walk() {
 		float dt = 0f;
 		while (dt < crawlPeriod) {
@@ -38,6 +50,12 @@ public class Crawler : MonoBehaviour {
 			dt += Time.deltaTime;
 			float pct = dt/crawlPeriod;
 			transform.Translate(Vector3.right * crawlVelocity.Evaluate(pct) * Time.deltaTime * crawlVelocityScale * scaleByDirection(), Space.World);
+			if (!vert.CheckGrounded()) {
+				// Start another coroutine
+				yield return StartCoroutine(Fall());
+				break;
+			}
+
 			if (!checkCurrentDirection()) {
 				facingRight = !facingRight;
 				GetComponent<SpriteRenderer>().flipX = !facingRight;

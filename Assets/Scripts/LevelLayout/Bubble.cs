@@ -23,11 +23,11 @@ public class Bubble : MonoBehaviour {
 		if (player != null && sr.enabled && !player.disabled) {
 			player.transform.position = transform.position;
 			if (changeYVelocity) {
-				player.vy = yVelocityFactor;
+				player.vert.vy = yVelocityFactor;
 				player.initiatedJump = false;
 			}
 			if (changeXVelocity) {
-				player.vx = xVelocityFactor;
+				player.horiz.vx = xVelocityFactor;
 			}
 			AudioSource.PlayClipAtPoint(popClip, Vector3.zero);
 			StartCoroutine(DeactivateUntilRespawn(timeToRespawn));
