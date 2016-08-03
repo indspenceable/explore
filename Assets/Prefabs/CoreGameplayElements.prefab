@@ -281,7 +281,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 147038}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 69.5, y: 36.2, z: 0}
+  m_LocalPosition: {x: 14.17, y: 3.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -377,7 +377,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 139572}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.27, y: 4.99, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -775,7 +775,7 @@ MonoBehaviour:
   airFriction: 5
   jumpStrength: 12
   highJumpStrength: 14
-  highJumpEnabled: 0
+  highJumpEnabled: 1
   gravityStrength: 30
   jumpSoundEffect: {fileID: 8300000, guid: 74be8f18e47d94f60b63d025e68dc56c, type: 3}
   maxGravity: 10

@@ -53,6 +53,7 @@ public class LevelBuilder : MonoBehaviour {
 		if (spp != null) {
 			return spp.prefab;
 		} else {
+			Debug.Log("Default prefab");
 			return defaultTilePrefab;
 		}
 	}
