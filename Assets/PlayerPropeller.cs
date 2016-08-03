@@ -10,6 +10,9 @@ public class PlayerPropeller : MonoBehaviour {
 	public float timeToRespawn = 3f;
 	private SpriteRenderer sr;
 
+	public AudioClip popClip;
+	public AudioClip respawnClip;
+
 	public void Start() {
 		sr = GetComponent<SpriteRenderer>();
 	}
@@ -26,6 +29,7 @@ public class PlayerPropeller : MonoBehaviour {
 			if (changeXVelocity) {
 				player.vx = xVelocityFactor;
 			}
+			AudioSource.PlayClipAtPoint(popClip, Vector3.zero);
 			StartCoroutine(DeactivateUntilRespawn(timeToRespawn));
 		}
 	}
@@ -37,7 +41,7 @@ public class PlayerPropeller : MonoBehaviour {
 			yield return null;
 			dt += Time.deltaTime;
 		}
-		Debug.Log("Should be re-enableing.");
+//		AudioSource.PlayClipAtPoint(respawnClip, Vector3.zero);
 		sr.enabled = true;
 	}
 }

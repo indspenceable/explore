@@ -11484,6 +11484,8 @@ MonoBehaviour:
   changeXVelocity: 0
   xVelocityFactor: 0
   timeToRespawn: 3
+  popClip: {fileID: 8300000, guid: c16258005a2e3437f88b2ca6acea0415, type: 3}
+  respawnClip: {fileID: 8300000, guid: f292db2d2f89549f2bbb89443419f8cc, type: 3}
 --- !u!212 &297526184
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -18345,6 +18347,8 @@ MonoBehaviour:
   changeXVelocity: 0
   xVelocityFactor: 0
   timeToRespawn: 0.1
+  popClip: {fileID: 8300000, guid: c16258005a2e3437f88b2ca6acea0415, type: 3}
+  respawnClip: {fileID: 8300000, guid: f292db2d2f89549f2bbb89443419f8cc, type: 3}
 --- !u!212 &503064398
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -26607,6 +26611,7 @@ GameObject:
   - 114: {fileID: 718507820}
   - 114: {fileID: 718507821}
   - 61: {fileID: 718507817}
+  - 114: {fileID: 718507822}
   m_Layer: 0
   m_Name: crawler
   m_TagString: Untagged
@@ -26694,7 +26699,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 768
   crawlPeriod: 1
-  crawlVelocityScale: 1
+  crawlVelocityScale: 2
   crawlVelocity:
     serializedVersion: 2
     m_Curve:
@@ -26703,11 +26708,21 @@ MonoBehaviour:
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+    - time: 0.25
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     - time: 0.5
       value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 1
+      tangentMode: 0
+    - time: 0.75
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     - time: 1
       value: 0.0010976945
       inSlope: 0
@@ -26726,6 +26741,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2696f6ad0c7b940a18fb57a75ec59a5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &718507822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 718507816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19cb35bee8a0c48538ce24bf71e13b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &718579026 stripped
@@ -49035,6 +49061,8 @@ MonoBehaviour:
   changeXVelocity: 1
   xVelocityFactor: 16
   timeToRespawn: 0.1
+  popClip: {fileID: 8300000, guid: c16258005a2e3437f88b2ca6acea0415, type: 3}
+  respawnClip: {fileID: 8300000, guid: f292db2d2f89549f2bbb89443419f8cc, type: 3}
 --- !u!212 &1296282389
 SpriteRenderer:
   m_ObjectHideFlags: 0
