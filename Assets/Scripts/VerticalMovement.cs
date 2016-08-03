@@ -28,6 +28,9 @@ public class VerticalMovement : MonoBehaviour {
 			transform.Translate(step);
 			i -= tinyMovementStep;
 		}
+		if (CheckCollisionVerticalAtDistance(-tinyMovementStep) && vy < 0) {
+			vy = 0;
+		}
 	}
 
 	public bool CheckCollisionVerticalAtDistance(float dv) {
