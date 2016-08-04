@@ -155,7 +155,7 @@ GameObject:
   - 114: {fileID: 11425050}
   - 114: {fileID: 11412832}
   - 114: {fileID: 11413818}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 147038}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.17, y: 3.05, z: 0}
+  m_LocalPosition: {x: 52.72, y: 72.68, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -565,7 +565,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 83ccab3514db24b8eab57f41c347e4c1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 647037c7bb4184a02a27462cd9d66212, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

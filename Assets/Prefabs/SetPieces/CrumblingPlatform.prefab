@@ -58,7 +58,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToCrumble: 0.5
   timeToRespawn: 3
-  crumbleClip: {fileID: 0}
+  crumbleClip: {fileID: 8300000, guid: 902d505188d9e41ef8480d495373fef9, type: 3}
   respawnClip: {fileID: 0}
 --- !u!212 &21276358
 SpriteRenderer:

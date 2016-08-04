@@ -10,6 +10,8 @@ public class CrumblingPlatform : MonoBehaviour {
 	public AudioClip crumbleClip;
 	public AudioClip respawnClip;
 
+	private bool crumbling = false;
+
 	public void Start() {
 		sr = GetComponent<SpriteRenderer>();
 		collider2D_ = GetComponent<BoxCollider2D>();
@@ -20,6 +22,10 @@ public class CrumblingPlatform : MonoBehaviour {
 	}
 
 	public IEnumerator WaitCrumbleAndRespawn(float dtCrumble, float dtRespawn) {
+		if (crumbling) {
+			yield break;
+		}
+		crumbling = true;
 		yield return new WaitForSeconds(dtCrumble);
 		if (crumbleClip != null) {
 			AudioSource.PlayClipAtPoint(crumbleClip, Vector3.zero);
@@ -32,5 +38,6 @@ public class CrumblingPlatform : MonoBehaviour {
 		}
 		sr.enabled = true;
 		collider2D_.enabled = true;
+		crumbling = false;
 	}
 }

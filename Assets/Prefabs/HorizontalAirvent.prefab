@@ -12,7 +12,7 @@ GameObject:
   - 61: {fileID: 6102872}
   - 114: {fileID: 11487880}
   m_Layer: 0
-  m_Name: VerticalAirVent 1
+  m_Name: HorizontalAirvent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
