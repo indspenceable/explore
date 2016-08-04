@@ -9,10 +9,10 @@ GameObject:
   m_Component:
   - 4: {fileID: 477010}
   - 212: {fileID: 21276358}
-  - 114: {fileID: 11453992}
   - 61: {fileID: 6150368}
-  m_Layer: 0
-  m_Name: bubble
+  - 114: {fileID: 11480520}
+  m_Layer: 8
+  m_Name: CrumblingPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 176228}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 68.5, y: 4.5, z: 0}
+  m_LocalPosition: {x: 21.5, y: 66.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -45,7 +45,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
---- !u!114 &11453992
+--- !u!114 &11480520
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -53,15 +53,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 176228}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a517e5c2ee7242b9b9b32fdabe1fbf5, type: 3}
+  m_Script: {fileID: 11500000, guid: 512362f89d8c54befb06f016bb4473db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeYVelocity: 1
-  yVelocityFactor: 16
-  changeXVelocity: 0
-  xVelocityFactor: 0
+  timeToCrumble: 0.5
   timeToRespawn: 3
-  popClip: {fileID: 8300000, guid: c16258005a2e3437f88b2ca6acea0415, type: 3}
+  crumbleClip: {fileID: 0}
   respawnClip: {fileID: 0}
 --- !u!212 &21276358
 SpriteRenderer:
@@ -89,7 +86,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 55d1995056aae451e8e1984739da8e42, type: 3}
+  m_Sprite: {fileID: 21300030, guid: f6c99d6cc138a441f934b11047953b92, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

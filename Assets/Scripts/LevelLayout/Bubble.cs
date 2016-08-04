@@ -29,19 +29,19 @@ public class Bubble : MonoBehaviour {
 			if (changeXVelocity) {
 				player.horiz.vx = xVelocityFactor;
 			}
-			AudioSource.PlayClipAtPoint(popClip, Vector3.zero);
+			if (popClip != null) {
+				AudioSource.PlayClipAtPoint(popClip, Vector3.zero);
+			}
 			StartCoroutine(DeactivateUntilRespawn(timeToRespawn));
 		}
 	}
 
 	public IEnumerator DeactivateUntilRespawn(float time) {
 		sr.enabled = false;
-		float dt = 0f;
-		while (dt < time) {
-			yield return null;
-			dt += Time.deltaTime;
+		yield return new WaitForSeconds(time);
+		if (respawnClip != null) {
+			AudioSource.PlayClipAtPoint(respawnClip, Vector3.zero);
 		}
-//		AudioSource.PlayClipAtPoint(respawnClip, Vector3.zero);
 		sr.enabled = true;
 	}
 }

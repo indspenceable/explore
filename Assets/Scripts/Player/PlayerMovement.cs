@@ -196,15 +196,12 @@ public class PlayerMovement : MonoBehaviour {
 
 
 	void PlayerMoveUpDown() {
-		grounded = vert.CheckGrounded();
-		if (grounded && vert.vy < 0f) {
-			if (vert.vy < -5f) {
-			}
-		}
-
-		if (grounded) {
+		if (vert.CheckGrounded()) {
 			vert.vy = 0f;
 			doubleJumpAvailable = true;
+			RaycastHit2D plat = vert.CheckCollisionVerticalAtDistance(-VerticalMovement.tinyMovementStep);
+			plat.collider.gameObject.SendMessage("PlayerResting", SendMessageOptions.DontRequireReceiver);
+
 			// We can jump, here.
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
 				AudioSource.PlayClipAtPoint(jumpSoundEffect, Vector3.zero);
