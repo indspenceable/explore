@@ -10,6 +10,9 @@ public class CrumblingPlatform : MonoBehaviour {
 	public AudioClip crumbleClip;
 	public AudioClip respawnClip;
 
+	public GameObject startCrumbleParticles;
+	public GameObject crumbleParticles;
+
 	private bool crumbling = false;
 
 	public void Start() {
@@ -26,9 +29,15 @@ public class CrumblingPlatform : MonoBehaviour {
 			yield break;
 		}
 		crumbling = true;
+		if (startCrumbleParticles != null) {
+			Instantiate(startCrumbleParticles, transform.position, Quaternion.identity);
+		}
 		yield return new WaitForSeconds(dtCrumble);
 		if (crumbleClip != null) {
 			AudioSource.PlayClipAtPoint(crumbleClip, Vector3.zero);
+		}
+		if (crumbleParticles != null) {
+			Instantiate(crumbleParticles, transform.position, Quaternion.identity);
 		}
 		sr.enabled = false;
 		collider2D_.enabled = false;

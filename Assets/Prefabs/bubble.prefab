@@ -62,7 +62,9 @@ MonoBehaviour:
   xVelocityFactor: 0
   timeToRespawn: 3
   popClip: {fileID: 8300000, guid: c16258005a2e3437f88b2ca6acea0415, type: 3}
+  popParticles: {fileID: 123798, guid: fb5ef6c8851b9400d8744018f6d53135, type: 2}
   respawnClip: {fileID: 0}
+  respawnParticles: {fileID: 0}
 --- !u!212 &21276358
 SpriteRenderer:
   m_ObjectHideFlags: 1

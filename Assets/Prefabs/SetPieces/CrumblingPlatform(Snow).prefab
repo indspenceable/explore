@@ -12,7 +12,7 @@ GameObject:
   - 61: {fileID: 6150368}
   - 114: {fileID: 11480520}
   m_Layer: 8
-  m_Name: CrumblingPlatform
+  m_Name: CrumblingPlatform(Snow)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,6 +60,8 @@ MonoBehaviour:
   timeToRespawn: 3
   crumbleClip: {fileID: 8300000, guid: 902d505188d9e41ef8480d495373fef9, type: 3}
   respawnClip: {fileID: 0}
+  startCrumbleParticles: {fileID: 0}
+  crumbleParticles: {fileID: 123798, guid: 704fb35bc49c24ddf81b4bd35763da56, type: 2}
 --- !u!212 &21276358
 SpriteRenderer:
   m_ObjectHideFlags: 1

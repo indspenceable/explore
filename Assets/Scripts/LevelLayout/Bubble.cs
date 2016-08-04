@@ -11,7 +11,9 @@ public class Bubble : MonoBehaviour {
 	private SpriteRenderer sr;
 
 	public AudioClip popClip;
+	public GameObject popParticles;
 	public AudioClip respawnClip;
+	public GameObject respawnParticles;
 
 	public void Start() {
 		sr = GetComponent<SpriteRenderer>();
@@ -29,18 +31,25 @@ public class Bubble : MonoBehaviour {
 			if (changeXVelocity) {
 				player.horiz.vx = xVelocityFactor;
 			}
-			if (popClip != null) {
-				AudioSource.PlayClipAtPoint(popClip, Vector3.zero);
-			}
+
 			StartCoroutine(DeactivateUntilRespawn(timeToRespawn));
 		}
 	}
 
 	public IEnumerator DeactivateUntilRespawn(float time) {
 		sr.enabled = false;
+		if (popClip != null) {
+			AudioSource.PlayClipAtPoint(popClip, Vector3.zero);
+		}
+		if (popParticles != null) {
+			Instantiate(popParticles, transform.position, Quaternion.identity);
+		}
 		yield return new WaitForSeconds(time);
 		if (respawnClip != null) {
 			AudioSource.PlayClipAtPoint(respawnClip, Vector3.zero);
+		}
+		if (respawnParticles != null) {
+			Instantiate(respawnParticles, transform.position, Quaternion.identity);
 		}
 		sr.enabled = true;
 	}
