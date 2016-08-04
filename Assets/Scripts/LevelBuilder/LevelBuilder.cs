@@ -164,5 +164,13 @@ public class LevelBuilder : MonoBehaviour {
 			importTileSheet = null;
 		}
 	}
+
+	public void RemoveCurrentSpritesheet() {
+		knownTileSheets.Remove(currentlySelectedTileSheetAssetLocation);
+		SetCurrentTileSheet(knownTileSheets[0]);
+	}
+
+	public void ReInstantiateTiles() {
+	}
 #endif
 }

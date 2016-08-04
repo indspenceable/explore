@@ -44,9 +44,7 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Points:
     m_Paths:
-    - - {x: 0.4420843, y: 0.47558498}
-      - {x: -0.5, y: 0.05467701}
-      - {x: -0.5, y: -0.5}
+    - - {x: -0.5, y: -0.5}
       - {x: 0.5, y: -0.5}
       - {x: 0.5, y: 0.5}
 --- !u!212 &21225696
@@ -60,7 +58,7 @@ SpriteRenderer:
   m_ReceiveShadows: 0
   m_Materials:
   - {fileID: 2100000, guid: 6c42a6665fead46eaad74162a425d9b1, type: 2}
-  m_SubsetIndices: 
+  m_SubsetIndices:
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
   m_ReflectionProbeUsage: 0

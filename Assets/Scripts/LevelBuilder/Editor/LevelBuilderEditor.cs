@@ -48,6 +48,14 @@ public class LookAtPointEditor : Editor
 			lb.SetCurrentTileSheet(lb.knownTileSheets[selectedIndex]);
 		}
 
+		EditorGUILayout.BeginHorizontal();
+		if (GUILayout.Button("Remove Current Spritesheet")) {
+			lb.RemoveCurrentSpritesheet();
+		}
+		if (GUILayout.Button("Re-instantiate tiles")) {
+			lb.ReInstantiateTiles();
+		}
+		EditorGUILayout.EndHorizontal();
 
 		Rect re1 = EditorGUILayout.GetControlRect(GUILayout.Width(128), GUILayout.Height(128));
 		if (currentlySelectedSprite.objectReferenceValue) {
