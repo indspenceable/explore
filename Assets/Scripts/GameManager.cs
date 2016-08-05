@@ -12,7 +12,13 @@ public class GameManager : MonoBehaviour {
 
 	public static bool paused = false;
 
+	public static GameManager instance;
+
 	void Start () {
+		if (instance != null) {
+			Debug.LogError("Can't have multiple Game Managers.");
+		}
+		instance = this;
 		GetComponent<AudioSource>().Play();
 		GoToPlayer();
 	}
@@ -31,11 +37,13 @@ public class GameManager : MonoBehaviour {
 				GetComponent<AudioSource>().UnPause();
 				Time.timeScale = 1f;
 				pausedTextContainer.SetActive(false);
+				player.enabled = true;
 				paused = false;
 			} else {
 				GetComponent<AudioSource>().Pause();
 				Time.timeScale = 0f;
 				pausedTextContainer.SetActive(true);
+				player.enabled = false;
 				paused = true;
 			}
 		}
