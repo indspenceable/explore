@@ -117,7 +117,10 @@ public class PlayerMovement : MonoBehaviour {
 		BoxCollider2D _collider = GetComponent<BoxCollider2D>();
 		RaycastHit2D interactable = Physics2D.BoxCast((Vector2)transform.position + _collider.offset, Vector3.Scale(transform.lossyScale, _collider.size), 0, Vector2.right, 0, interactableMask);
 		if (interactable) {
-			interactable.collider.gameObject.SendMessage("Interact");
+			IInteractable[] l = interactable.collider.gameObject.GetComponents<IInteractable>();
+			if (l.Length > 0) {
+				l[0].Interact();
+			}
 		}
 	}
 
@@ -216,7 +219,10 @@ public class PlayerMovement : MonoBehaviour {
 			vert.vy = 0f;
 			doubleJumpAvailable = true;
 			RaycastHit2D plat = vert.CheckCollisionVerticalAtDistance(-VerticalMovement.tinyMovementStep);
-			plat.collider.gameObject.SendMessage("PlayerResting", SendMessageOptions.DontRequireReceiver);
+			IPlatform platform = plat.collider.gameObject.GetComponent<IPlatform>();
+			if (platform != null) {
+				platform.NotifyPlayerIsOnTop();
+			}
 
 			// We can jump, here.
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {

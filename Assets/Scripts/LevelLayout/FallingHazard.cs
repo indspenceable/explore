@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FallingHazard : MonoBehaviour {
+public class FallingHazard : MonoBehaviour, ICanHitPlayer {
 	public float width = 2;
 	public float maxDistance = 5f;
 	public LayerMask playerMask;
@@ -41,10 +41,13 @@ public class FallingHazard : MonoBehaviour {
 		}
 
 		// TODO shatter!
-		ScoredHit();
+		Shatter();
 	}
 
-	public void ScoredHit() {
+	public void ScoreHit() {
+		Shatter();
+	}
+	public void Shatter() {
 		Destroy(gameObject);
 	}
 }

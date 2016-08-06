@@ -13,6 +13,9 @@ public class MeleeHit : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter2D(Collider2D other) {
-		other.SendMessage("MeleeHit", SendMessageOptions.DontRequireReceiver);
+		IPlayerHittable hittable = other.gameObject.GetComponent<IPlayerHittable>();
+		if (hittable != null) {
+			hittable.MeleeHit(1);
+		}
 	}
 }

@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Readable : MonoBehaviour {
+public class Readable : MonoBehaviour, IInteractable {
 	[TextArea()]
 	public string myText;
 	public void Interact() {
-		Debug.Log("Hi?");
 		StartCoroutine(GameManager.instance.Read(myText));
 	}
 }

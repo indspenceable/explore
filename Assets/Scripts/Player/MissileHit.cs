@@ -22,6 +22,9 @@ public class MissileHit : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter2D(Collider2D other) {
-		other.SendMessage("MissileHit", SendMessageOptions.DontRequireReceiver);
+		IPlayerHittable hittable = other.gameObject.GetComponent<IPlayerHittable>();
+		if (hittable != null) {
+			hittable.MissileHit(1);
+		}
 	}
 }

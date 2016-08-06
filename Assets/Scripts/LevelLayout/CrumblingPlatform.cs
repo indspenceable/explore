@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CrumblingPlatform : MonoBehaviour {
+public class CrumblingPlatform : MonoBehaviour, IPlatform {
 	public float timeToCrumble = 0.5f;
 	public float timeToRespawn = 3f;
 	private SpriteRenderer sr;
@@ -20,7 +20,7 @@ public class CrumblingPlatform : MonoBehaviour {
 		collider2D_ = GetComponent<BoxCollider2D>();
 	}
 
-	public void PlayerResting() {
+	public void NotifyPlayerIsOnTop() {
 		StartCoroutine(WaitCrumbleAndRespawn(timeToCrumble, timeToRespawn));
 	}
 
