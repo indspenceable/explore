@@ -10,7 +10,7 @@ public class AirVent : MonoBehaviour {
 	public void OnTriggerStay2D(Collider2D other) {
 		// other should be player
 		PlayerMovement player = other.GetComponent<PlayerMovement>();
-		if (player != null && !player.disabled) {
+		if (player != null && !player.currentlyPerformingAirDodge) {
 			if (changeYVelocity) {
 				player.vert.vy += (player.gravityStrength + yVelocityFactor) * Time.deltaTime;
 				player.initiatedJump = false;

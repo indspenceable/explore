@@ -39,14 +39,17 @@ public class PlayerMovement : MonoBehaviour {
 	public float airDodgeDuration = 0.25f;
 	public float airDodgeInitialDelay = 0.25f;
 
-	public bool disabled {get; private set;}
+	public bool currentlyPerformingAirDodge {get; private set;}
 	private PlayerTakeDamage health;
 
 	public VerticalMovement vert {get; private set;}
 	public HorizontalMovement horiz {get; private set;}
+
+	public LayerMask interactableMask;
+
 	// Use this for initialization
 	void Start () {
-		disabled = false;
+		currentlyPerformingAirDodge = false;
 		animator = GetComponent<Animator>();
 		health = GetComponent<PlayerTakeDamage>();
 		vert = GetComponent<VerticalMovement>();
@@ -55,7 +58,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	IEnumerator AirDodge() {
 		float dt = 0f;
-		disabled = true;
+		currentlyPerformingAirDodge = true;
 		health.currentlyInIframes = true;
 		yield return new WaitForSeconds(airDodgeInitialDelay);
 
@@ -79,16 +82,21 @@ public class PlayerMovement : MonoBehaviour {
 
 		}
 		health.currentlyInIframes = false;
-		disabled = false;
+		currentlyPerformingAirDodge = false;
 	}
 
 	// Woo not fixedupdate
 	public void Update () {
-		if (disabled)
+		if (currentlyPerformingAirDodge)
 			return;
+	
 		if (Input.GetButtonDown("Airdodge")) {
 			StartCoroutine(AirDodge());
 			return;
+		}
+
+		if (Input.GetButtonDown("Interact")) {
+			InteractIfAble();
 		}
 	
 		PlayerMoveUpDown();
@@ -103,6 +111,14 @@ public class PlayerMovement : MonoBehaviour {
 		Vector2 move = (targetPosition - transform.position).normalized;
 		horiz.vx += move.x * Time.deltaTime * weight;
 		vert.vy += move.y * Time.deltaTime * weight;
+	}
+
+	public void InteractIfAble() {
+		BoxCollider2D _collider = GetComponent<BoxCollider2D>();
+		RaycastHit2D interactable = Physics2D.BoxCast((Vector2)transform.position + _collider.offset, Vector3.Scale(transform.lossyScale, _collider.size), 0, Vector2.right, 0, interactableMask);
+		if (interactable) {
+			interactable.collider.gameObject.SendMessage("Interact");
+		}
 	}
 
 	private void FlipIfNeeded() {

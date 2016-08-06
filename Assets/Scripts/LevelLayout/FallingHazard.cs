@@ -19,7 +19,7 @@ public class FallingHazard : MonoBehaviour {
 
 	private bool CheckForPlayer() {
 		LayerMask mask = playerMask.value | levelMask.value;
-		RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(width, 0.25f), 0, new Vector2(0, -1), maxDistance, playerMask);
+		RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(width, 0.25f), 0, new Vector2(0, -1), maxDistance, mask);
 		if (hit) {
 			if (hit.collider.GetComponent<PlayerMovement>() != null) {
 				return true;
