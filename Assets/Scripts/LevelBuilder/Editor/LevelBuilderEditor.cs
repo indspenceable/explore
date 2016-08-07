@@ -39,10 +39,14 @@ public class LookAtPointEditor : Editor
 		lb.SetCurrentPrefab(EditorGUILayout.ObjectField("Current Tile Prefab", curPrefab, typeof(GameObject), false) as GameObject);
 		EditorGUILayout.PropertyField(importTileSheet);
 
-		int currentIndex = lb.knownTileSheets.IndexOf(lb.currentlySelectedTileSheetAssetLocation);
+		var tileSheetOptions = lb.knownTileSheets;
+		if (tileSheetOptions == null) {
+			tileSheetOptions = new List<string>();
+		}
+		int currentIndex = tileSheetOptions.IndexOf(lb.currentlySelectedTileSheetAssetLocation);
 		int selectedIndex = EditorGUILayout.Popup(
 			currentIndex, 
-			lb.knownTileSheets.ToArray()
+			tileSheetOptions.ToArray()
 		);
 		if (currentIndex != selectedIndex) {
 			lb.SetCurrentTileSheet(lb.knownTileSheets[selectedIndex]);
@@ -69,6 +73,7 @@ public class LookAtPointEditor : Editor
 
 		int i = 0;
 		int numberOfTilesPerRow = Screen.width / 38;
+		numberOfTilesPerRow=3;
 		int numberOfRows = (sprites.arraySize+numberOfTilesPerRow-1) / numberOfTilesPerRow;
 		for (int y = 0; y < numberOfRows; y+=1) {
 			EditorGUILayout.BeginHorizontal();

@@ -47,6 +47,9 @@ TagManager:
   - name: Level
     uniqueID: 3977865197
     locked: 0
+  - name: Monsters
+    uniqueID: 3452427327
+    locked: 0
   - name: Player
     uniqueID: 3187616737
     locked: 0
