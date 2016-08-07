@@ -27,49 +27,82 @@ public class LookAtPointEditor : Editor
 		currentlySelectedSprite = serializedObject.FindProperty("currentlySelectedSprite");
 	}
 
+	static void SelectTileSheetDropdown(LevelBuilder lb)
+	{
+		var tileSheetOptions = lb.knownTileSheets;
+		if (tileSheetOptions == null) {
+			tileSheetOptions = new List<string> ();
+		}
+		int currentIndex = tileSheetOptions.IndexOf (lb.currentlySelectedTileSheetAssetLocation);
+		int selectedIndex = EditorGUILayout.Popup (currentIndex, tileSheetOptions.ToArray ());
+		if (currentIndex != selectedIndex) {
+			lb.SetCurrentTileSheet (lb.knownTileSheets [selectedIndex]);
+		}
+	}
+
+	static void SelectCurrentTilePrefab(LevelBuilder lb)
+	{
+		lb.SetCurrentPrefab (EditorGUILayout.ObjectField ("Current Tile Prefab", lb.CurrentPrefab(), typeof(GameObject), false) as GameObject);
+	}
+
+	void EnableOrDisableEditor()
+	{
+		editorIsEnabled = EditorGUILayout.Toggle ("Editor enabled", editorIsEnabled);
+	}
+
+	static void BulkEditButtons(LevelBuilder lb)
+	{
+		EditorGUILayout.BeginHorizontal ();
+		if (GUILayout.Button ("Remove Current Spritesheet")) {
+			lb.RemoveCurrentSpritesheet ();
+		}
+		if (GUILayout.Button ("Re-instantiate tiles")) {
+			lb.ReInstantiateTiles ();
+		}
+		EditorGUILayout.EndHorizontal ();
+	}
+
+	void DisplayCurrentTileSpriteLarge()
+	{
+		Rect rect = EditorGUILayout.GetControlRect (GUILayout.Width (128), GUILayout.Height (128));
+		if (currentlySelectedSprite.objectReferenceValue) {
+			if (currentlySelectedSprite.objectReferenceValue == null) {
+				currentlySelectedSprite.objectReferenceValue = sprites.GetArrayElementAtIndex (0).objectReferenceValue as Sprite;
+				serializedObject.ApplyModifiedProperties ();
+			}
+			DrawTextureGUI (rect, currentlySelectedSprite.objectReferenceValue as Sprite, rect.size);
+		}
+	}
+
+	void RenderTileButton(int i)
+	{
+		// Get the current sprite we're rendering
+		Sprite s = sprites.GetArrayElementAtIndex (i).objectReferenceValue as Sprite;
+		// Get the position it's button should be at, using autolayout
+		Rect re = EditorGUILayout.GetControlRect (GUILayout.Width (32), GUILayout.Height (32));
+		// Draw a button, then draw the sprite on top of it.
+		if (GUI.Button (re, "")) {
+			currentlySelectedSprite.objectReferenceValue = sprites.GetArrayElementAtIndex (i).objectReferenceValue as Sprite;
+			serializedObject.ApplyModifiedProperties ();
+		}
+		DrawTextureGUI (re, s, re.size);
+	}
+
 	public override void OnInspectorGUI()
 	{
 		serializedObject.Update();
-		editorIsEnabled = EditorGUILayout.Toggle("Editor enabled", editorIsEnabled);
+		LevelBuilder lb = (LevelBuilder)target;
+
+		EnableOrDisableEditor ();
 		EditorGUILayout.PropertyField(gridSize);
 		EditorGUILayout.PropertyField(mapSize);
 		EditorGUILayout.PropertyField(defaultTilePrefab);
-		LevelBuilder lb = (LevelBuilder)target;
-		GameObject curPrefab = lb.CurrentPrefab();
-		lb.SetCurrentPrefab(EditorGUILayout.ObjectField("Current Tile Prefab", curPrefab, typeof(GameObject), false) as GameObject);
+		SelectCurrentTilePrefab (lb);
 		EditorGUILayout.PropertyField(importTileSheet);
+		SelectTileSheetDropdown(lb);
+		BulkEditButtons (lb);
 
-		var tileSheetOptions = lb.knownTileSheets;
-		if (tileSheetOptions == null) {
-			tileSheetOptions = new List<string>();
-		}
-		int currentIndex = tileSheetOptions.IndexOf(lb.currentlySelectedTileSheetAssetLocation);
-		int selectedIndex = EditorGUILayout.Popup(
-			currentIndex, 
-			tileSheetOptions.ToArray()
-		);
-		if (currentIndex != selectedIndex) {
-			lb.SetCurrentTileSheet(lb.knownTileSheets[selectedIndex]);
-		}
-
-		EditorGUILayout.BeginHorizontal();
-		if (GUILayout.Button("Remove Current Spritesheet")) {
-			lb.RemoveCurrentSpritesheet();
-		}
-		if (GUILayout.Button("Re-instantiate tiles")) {
-			lb.ReInstantiateTiles();
-		}
-		EditorGUILayout.EndHorizontal();
-
-		Rect re1 = EditorGUILayout.GetControlRect(GUILayout.Width(128), GUILayout.Height(128));
-		if (currentlySelectedSprite.objectReferenceValue) {
-			if (currentlySelectedSprite.objectReferenceValue == null) {
-				currentlySelectedSprite.objectReferenceValue = sprites.GetArrayElementAtIndex(0).objectReferenceValue as Sprite;
-				serializedObject.ApplyModifiedProperties();
-
-			}
-			DrawTextureGUI(re1, currentlySelectedSprite.objectReferenceValue as Sprite, re1.size);
-		}
+		DisplayCurrentTileSpriteLarge ();
 
 		int i = 0;
 		int numberOfTilesPerRow = Screen.width / 38;
@@ -81,18 +114,7 @@ public class LookAtPointEditor : Editor
 				if (i >= sprites.arraySize) {
 					continue;
 				}
-				// Get the current sprite we're rendering
-				Sprite s = sprites.GetArrayElementAtIndex(i).objectReferenceValue as Sprite;
-				// Get the position it's button should be at, using autolayout
-				Rect re = EditorGUILayout.GetControlRect(GUILayout.Width(32), GUILayout.Height(32));
-
-				// Draw a button, then draw the sprite on top of it.
-				if (GUI.Button(re,"")) {
-					currentlySelectedSprite.objectReferenceValue = sprites.GetArrayElementAtIndex(i).objectReferenceValue as Sprite;
-					serializedObject.ApplyModifiedProperties();
-				}
-				DrawTextureGUI(re, s, re.size);
-
+				RenderTileButton (i);
 				i += 1;
 			}
 			EditorGUILayout.EndHorizontal();
@@ -129,9 +151,6 @@ public class LookAtPointEditor : Editor
 	bool needRerender = false;
 
 	public void OnSceneGUI() {
-//		if (Selection.activeGameObject != target) {
-//			return;
-//		}
 		if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.T) {
 			editorIsEnabled = !editorIsEnabled;
 			SceneView.RepaintAll();
@@ -141,7 +160,6 @@ public class LookAtPointEditor : Editor
 		}
 
 		LevelBuilder lb = target as LevelBuilder;
-		Undo.RecordObject((LevelBuilder)lb, "foo");
 		Vector2 _mapSize = lb.mapSize;
 		Vector2 _gridSize = lb.gridSize;
 
