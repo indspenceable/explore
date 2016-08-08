@@ -150,11 +150,23 @@ public class LookAtPointEditor : Editor
 
 	bool needRerender = false;
 
-	public void OnSceneGUI() {
-		if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.T) {
-			editorIsEnabled = !editorIsEnabled;
-			SceneView.RepaintAll();
+	static void DrawGrid(LevelBuilder lb, Vector2 _mapSize, Vector2 _gridSize)
+	{
+		// Draw the grid
+		Handles.color = Color.green;
+		for (int x = 0; x <= _mapSize.x; x += 1) {
+			float xp = lb.transform.position.x + (x * _gridSize.x);
+			float yp = lb.transform.position.y;
+			Handles.DrawDottedLine (new Vector3 (xp, yp), new Vector3 (xp, yp + (_gridSize.y * _mapSize.y)), 4f);
 		}
+		for (int y = 0; y <= _mapSize.y; y += 1) {
+			float xp = lb.transform.position.x;
+			float yp = lb.transform.position.y + (y * _gridSize.y);
+			Handles.DrawDottedLine (new Vector3 (xp + (_gridSize.x * _mapSize.x), yp), new Vector3 (xp, yp), 4f);
+		}
+	}
+
+	public void OnSceneGUI() {
 		if (!editorIsEnabled) {
 			return;
 		}
@@ -163,27 +175,7 @@ public class LookAtPointEditor : Editor
 		Vector2 _mapSize = lb.mapSize;
 		Vector2 _gridSize = lb.gridSize;
 
-		// Draw the grid
-		Handles.color = Color.green;
-
-		for (int x = 0; x <= _mapSize.x; x+=1) {
-			float xp = lb.transform.position.x + (x * _gridSize.x);
-			float yp = lb.transform.position.y;
-			Handles.DrawDottedLine(
-				new Vector3(xp, yp),
-				new Vector3(xp, yp + (_gridSize.y * _mapSize.y)),
-				4f
-			);
-		}
-		for (int y = 0; y <= _mapSize.y; y+= 1) {
-			float xp = lb.transform.position.x;
-			float yp = lb.transform.position.y + (y * _gridSize.y);
-			Handles.DrawDottedLine(
-				new Vector3(xp+ (_gridSize.x * _mapSize.x), yp),
-				new Vector3(xp, yp),
-				4f
-			);
-		}
+		DrawGrid (lb, _mapSize, _gridSize);
 
 		int controlId = GUIUtility.GetControlID(FocusType.Passive);
 		if (lb.currentlySelectedSprite == null) {

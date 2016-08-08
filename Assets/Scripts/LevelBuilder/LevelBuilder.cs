@@ -111,7 +111,7 @@ public class LevelBuilder : MonoBehaviour {
 		EnsureTileLocationListIsSetup();
 		foreach (TileLocation tl in tiles) {
 			if (tl.x == x && tl.y == y) {
-				GameObject.DestroyImmediate(tl.tile);
+				Undo.DestroyObjectImmediate(tl.tile);
 				tiles.Remove(tl);
 				return;
 			}

@@ -42011,7 +42011,7 @@ MonoBehaviour:
   - {fileID: 21300194, guid: 7a5bbb5a3ac43457cbb69059fe7e236c, type: 3}
   - {fileID: 21300196, guid: 7a5bbb5a3ac43457cbb69059fe7e236c, type: 3}
   defaultTilePrefab: {fileID: 123480, guid: 95ddab975235c4e3d9be8c0ce0568554, type: 2}
-  currentlySelectedSprite: {fileID: 21300042, guid: 7a5bbb5a3ac43457cbb69059fe7e236c,
+  currentlySelectedSprite: {fileID: 21300034, guid: 7a5bbb5a3ac43457cbb69059fe7e236c,
     type: 3}
   spritePrefabPairings:
   - sprite: {fileID: 0}
