@@ -53,6 +53,9 @@ public class LookAtPointEditor : Editor
 	static void BulkEditButtons(LevelBuilder lb)
 	{
 		EditorGUILayout.BeginHorizontal ();
+		if (GUILayout.Button ("Rebuild Tile List")) {
+			lb.RebindTileList();
+		}
 		if (GUILayout.Button ("Remove Current Spritesheet")) {
 			lb.RemoveCurrentSpritesheet ();
 		}

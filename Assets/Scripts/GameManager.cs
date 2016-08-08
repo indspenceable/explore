@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void GoToPlayer() {
-		transform.position = new Vector3(player.transform.position.x, player.transform.position.y, myCamera.transform.position.z);
+		myCamera.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, myCamera.transform.position.z);
 	}
 
 	public IEnumerator Read(string text) {

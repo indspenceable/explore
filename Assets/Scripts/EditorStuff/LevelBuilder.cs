@@ -9,7 +9,7 @@ using System.Linq;
 
 public class LevelBuilder : MonoBehaviour {
 #if UNITY_EDITOR
-	public static Vector2 SCREEN_SIZE = new Vector2(14, 10);
+	public static Vector2 SCREEN_SIZE = new Vector2(15, 12);
 	public Vector2 mapSize = new Vector2(6, 8);
 	public Vector2 gridSize = new Vector2(1f, 1f);
 	public Texture2D importTileSheet;
@@ -172,6 +172,11 @@ public class LevelBuilder : MonoBehaviour {
 	}
 
 	public void ReInstantiateTiles() {
+	}
+
+	public void RebindTileList() {
+		tiles = null;
+		EnsureTileLocationListIsSetup();
 	}
 #endif
 }
