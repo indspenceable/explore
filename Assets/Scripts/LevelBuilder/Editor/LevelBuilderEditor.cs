@@ -172,7 +172,7 @@ public class LookAtPointEditor : Editor
 		}
 
 		LevelBuilder lb = target as LevelBuilder;
-		Vector2 _mapSize = lb.mapSize;
+		Vector2 _mapSize = Vector2.Scale(lb.mapSize, LevelBuilder.SCREEN_SIZE);
 		Vector2 _gridSize = lb.gridSize;
 
 		DrawGrid (lb, _mapSize, _gridSize);
