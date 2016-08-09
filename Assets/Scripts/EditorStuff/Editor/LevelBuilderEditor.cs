@@ -15,7 +15,6 @@ public class LookAtPointEditor : Editor
 	SerializedProperty sprites;
 	SerializedProperty defaultTilePrefab;
 	SerializedProperty currentlySelectedSprite;
-	public bool editorIsEnabled = true;
 
 	void OnEnable()
 	{
@@ -43,11 +42,6 @@ public class LookAtPointEditor : Editor
 	static void SelectCurrentTilePrefab(LevelBuilder lb)
 	{
 		lb.SetCurrentPrefab (EditorGUILayout.ObjectField ("Current Tile Prefab", lb.CurrentPrefab(), typeof(GameObject), false) as GameObject);
-	}
-
-	void EnableOrDisableEditor()
-	{
-		editorIsEnabled = EditorGUILayout.Toggle ("Editor enabled", editorIsEnabled);
 	}
 
 	static void BulkEditButtons(LevelBuilder lb)
@@ -91,12 +85,32 @@ public class LookAtPointEditor : Editor
 		DrawTextureGUI (re, s, re.size);
 	}
 
+	void RenderAllTileButtons()
+	{
+		int i = 0;
+		int numberOfTilesPerRow = Screen.width / 38;
+//		numberOfTilesPerRow = 3;
+		int numberOfRows = (sprites.arraySize + numberOfTilesPerRow - 1) / numberOfTilesPerRow;
+		for (int y = 0; y < numberOfRows; y += 1) {
+			EditorGUILayout.BeginHorizontal ();
+			for (int x = 0; x < numberOfTilesPerRow; x += 1) {
+				if (i >= sprites.arraySize) {
+					continue;
+				}
+				RenderTileButton (i);
+				i += 1;
+			}
+			EditorGUILayout.EndHorizontal ();
+		}
+	}
+		
+
 	public override void OnInspectorGUI()
 	{
 		serializedObject.Update();
 		LevelBuilder lb = (LevelBuilder)target;
 
-		EnableOrDisableEditor ();
+//		EnableOrDisableEditor ();
 		EditorGUILayout.PropertyField(gridSize);
 		EditorGUILayout.PropertyField(mapSize);
 		EditorGUILayout.PropertyField(defaultTilePrefab);
@@ -104,26 +118,8 @@ public class LookAtPointEditor : Editor
 		EditorGUILayout.PropertyField(importTileSheet);
 		SelectTileSheetDropdown(lb);
 		BulkEditButtons (lb);
-
 		DisplayCurrentTileSpriteLarge ();
-
-		int i = 0;
-		int numberOfTilesPerRow = Screen.width / 38;
-		numberOfTilesPerRow=3;
-		int numberOfRows = (sprites.arraySize+numberOfTilesPerRow-1) / numberOfTilesPerRow;
-		for (int y = 0; y < numberOfRows; y+=1) {
-			EditorGUILayout.BeginHorizontal();
-			for (int x = 0; x < numberOfTilesPerRow; x+=1) {
-				if (i >= sprites.arraySize) {
-					continue;
-				}
-				RenderTileButton (i);
-				i += 1;
-			}
-			EditorGUILayout.EndHorizontal();
-		}
-
-
+		RenderAllTileButtons ();
 		serializedObject.ApplyModifiedProperties();
 	}
 
@@ -169,105 +165,88 @@ public class LookAtPointEditor : Editor
 		}
 	}
 
-	public void OnSceneGUI() {
-		if (!editorIsEnabled) {
-			return;
-		}
+	void DrawCurrentMousePositionOutline(LevelBuilder lb)
+	{
+		Vector2 mpv = storedMousePosition.Value;
+		// Draw better outline
+		Handles.color = Color.red;
+		Handles.DrawDottedLine (new Vector3 (lb.transform.position.x + mpv.x, lb.transform.position.y + mpv.y), new Vector3 (lb.transform.position.x + mpv.x + 1, lb.transform.position.y + mpv.y), 4);
+		Handles.DrawDottedLine (new Vector3 (lb.transform.position.x + mpv.x, lb.transform.position.y + mpv.y), new Vector3 (lb.transform.position.x + mpv.x, lb.transform.position.y + mpv.y + 1), 4);
+		Handles.DrawDottedLine (new Vector3 (lb.transform.position.x + mpv.x, lb.transform.position.y + mpv.y + 1), new Vector3 (lb.transform.position.x + mpv.x + 1, lb.transform.position.y + mpv.y + 1), 4);
+		Handles.DrawDottedLine (new Vector3 (lb.transform.position.x + mpv.x + 1, lb.transform.position.y + mpv.y), new Vector3 (lb.transform.position.x + mpv.x + 1, lb.transform.position.y + mpv.y + 1), 4);
+		// +1, because when we flip the y (the -1 at the end) it flips over the x-axis, so offset.
+		//			DrawTexture(new Rect(mpv.x+0.25f, mpv.y+1.25f, 0.5f, 0.5f), currentlySelectedSprite, new Vector2(0.5f, -1));
+		needRerender = true;
+	}
 
-		LevelBuilder lb = target as LevelBuilder;
-		Vector2 _mapSize = Vector2.Scale(lb.mapSize, LevelBuilder.SCREEN_SIZE);
-		Vector2 _gridSize = lb.gridSize;
-
-		DrawGrid (lb, _mapSize, _gridSize);
-
+	void HandleSceneMouseEvents(LevelBuilder lb, Vector2 mapSize, Vector2 gridSize)
+	{
 		int controlId = GUIUtility.GetControlID(FocusType.Passive);
-		if (lb.currentlySelectedSprite == null) {
-			lb.currentlySelectedSprite = lb.sprites[0];
-			Repaint();
-		}
-
 		EventType et = Event.current.type;
 		int mouseButton = Event.current.button;
-		if (et == EventType.MouseDown || et == EventType.MouseDrag || et == EventType.MouseMove)
-		{
+		if (et == EventType.MouseDown || et == EventType.MouseDrag || et == EventType.MouseMove) {
 			// For the current location setup up MousePosition correctly.
 			Ray worldRay = HandleUtility.GUIPointToWorldRay (Event.current.mousePosition);
-			Vector3 pos = worldRay.GetPoint(0) - lb.transform.position;
-
-			int xPos = Mathf.FloorToInt(pos.x) / (int) _gridSize.x;
-			int yPos = Mathf.FloorToInt(pos.y) / (int) _gridSize.y;
-
-			if (xPos >= 0 && xPos < _mapSize.x && yPos >= 0 && yPos < _mapSize.y) {
-				storedMousePosition = new Vector2(xPos*_gridSize.x, yPos*_gridSize.y);
-
-
+			Vector3 pos = worldRay.GetPoint (0) - lb.transform.position;
+			int xPos = Mathf.FloorToInt (pos.x) / (int)gridSize.x;
+			int yPos = Mathf.FloorToInt (pos.y) / (int)gridSize.y;
+			if (xPos >= 0 && xPos < mapSize.x && yPos >= 0 && yPos < mapSize.y) {
+				storedMousePosition = new Vector2 (xPos * gridSize.x, yPos * gridSize.y);
 				if (GUIUtility.hotControl == controlId || et == EventType.MouseDown) {
 					// Tell the UI your event is the main one to use, it override the selection in  the scene view
 					GUIUtility.hotControl = controlId;
 					// Don't forget to use the event
-					Event.current.Use();
+					Event.current.Use ();
 				}
-
 				if (et == EventType.MouseDown || et == EventType.MouseDrag) {
 					if (mouseButton == 0) {
-						lb.RemoveTileAt(xPos,yPos);
-						GameObject tile = lb.FindOrCreateTileAt(xPos, yPos);
-						tile.GetComponent<SpriteRenderer>().sprite = lb.currentlySelectedSprite;
-						EditorUtility.SetDirty(lb);
-					} else if (mouseButton == 1) {
-						lb.RemoveTileAt(xPos, yPos);
-					} else if (mouseButton == 2) {
-						GameObject go = lb.FindTileAt(xPos, yPos);
-						lb.currentlySelectedSprite = (go == null) ? lb.sprites[0] : go.GetComponent<SpriteRenderer>().sprite;
-						Repaint();
+						lb.RemoveTileAt (xPos, yPos);
+						GameObject tile = lb.FindOrCreateTileAt (xPos, yPos);
+						tile.GetComponent<SpriteRenderer> ().sprite = lb.currentlySelectedSprite;
+						EditorUtility.SetDirty (lb);
 					}
-				} else {
-					SceneView.RepaintAll();
+					else
+						if (mouseButton == 1) {
+							lb.RemoveTileAt (xPos, yPos);
+						}
+						else
+							if (mouseButton == 2) {
+								GameObject go = lb.FindTileAt (xPos, yPos);
+								lb.currentlySelectedSprite = (go == null) ? lb.sprites [0] : go.GetComponent<SpriteRenderer> ().sprite;
+								Repaint ();
+							}
 				}
-
-			} else {
+				else {
+					SceneView.RepaintAll ();
+				}
+			}
+			else {
 				storedMousePosition = null;
 				// Don't do the other GUI stuff so it doesn't screw up the rest of the editor.
-				if ( GUIUtility.hotControl == controlId) {
+				if (GUIUtility.hotControl == controlId) {
 					GUIUtility.hotControl = 0;
 				}
 			}
 		}
-//		Handles.DrawWireDisc(mousePosition + lb.transform.position, Vector3.forward, 0.25f);
+	}
+
+	public void OnSceneGUI() {
+		LevelBuilder lb = target as LevelBuilder;
+		Vector2 mapSize = Vector2.Scale(lb.mapSize, LevelBuilder.SCREEN_SIZE);
+		Vector2 gridSize = lb.gridSize;
+
+		DrawGrid (lb, mapSize, gridSize);
+		if (lb.currentlySelectedSprite == null) {
+			lb.currentlySelectedSprite = lb.sprites[0];
+			Repaint();
+		}
+		HandleSceneMouseEvents (lb, mapSize, gridSize);
 		if (storedMousePosition.HasValue) {
-			Vector2 mpv = storedMousePosition.Value;
-
-			// Draw better outline
-			Handles.color = Color.red;
-			Handles.DrawDottedLine(
-				new Vector3(lb.transform.position.x+mpv.x, lb.transform.position.y+mpv.y),
-				new Vector3(lb.transform.position.x+mpv.x+1, lb.transform.position.y+mpv.y),
-				4
-			);
-			Handles.DrawDottedLine(
-				new Vector3(lb.transform.position.x+mpv.x, lb.transform.position.y+mpv.y),
-				new Vector3(lb.transform.position.x+mpv.x, lb.transform.position.y+mpv.y+1),
-				4
-			);
-			Handles.DrawDottedLine(
-				new Vector3(lb.transform.position.x+mpv.x, lb.transform.position.y+mpv.y+1),
-				new Vector3(lb.transform.position.x+mpv.x+1, lb.transform.position.y+mpv.y+1),
-				4
-			);
-			Handles.DrawDottedLine(
-				new Vector3(lb.transform.position.x+mpv.x+1, lb.transform.position.y+mpv.y),
-				new Vector3(lb.transform.position.x+mpv.x+1, lb.transform.position.y+mpv.y+1),
-				4
-			);
-
-			// +1, because when we flip the y (the -1 at the end) it flips over the x-axis, so offset.
-//			DrawTexture(new Rect(mpv.x+0.25f, mpv.y+1.25f, 0.5f, 0.5f), currentlySelectedSprite, new Vector2(0.5f, -1));
-			needRerender = true;
-		} else {
-			if (needRerender) {
-				HandleUtility.Repaint();
-				needRerender = false;
-			}
+			DrawCurrentMousePositionOutline (lb);
+		}
+		if (needRerender) {
+			HandleUtility.Repaint();
+			needRerender = false;
 		}
 	}
 }

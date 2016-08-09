@@ -1,15 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEditor;
 
-public class GameManagerEditor : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+public class GameManagerEditor : EditorWindow {
+//	[MenuItem("Window/Open funkyfresh Editor")]
+//	public static void OpenFunkyfreshWindow() {
+//		Editor
+//	}
 }
