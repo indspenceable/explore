@@ -98,7 +98,10 @@ public class Level : MonoBehaviour {
 				go = PrefabUtility.InstantiatePrefab(CurrentPrefab()) as GameObject;
 			} else {
 				go = new GameObject("Sprite Tile");
-				go.AddComponent<SpriteRenderer>().sortingLayerName = SORTING_LAYERS[currentEditLayer];
+				go.AddComponent<SpriteRenderer>();
+				go.GetComponent<SpriteRenderer>().sortingLayerName = SORTING_LAYERS[currentEditLayer];
+				go.GetComponent<SpriteRenderer>().material = shared.pixelPerfectSprite;
+				go.isStatic = true;
 			}
 
 			go.transform.parent = TileContainer(currentEditLayer).transform;

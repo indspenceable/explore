@@ -144,22 +144,25 @@ class MapConfig : EditorWindow {
 		}
 	}
 
-	const int editorUIRoomSize = 15;
-	const int editorUIRoomBuffer = 3;
+	const int editorUIRoomSize = 20;
+	const int editorUIRoomPadding = 6;
+	const int editorUIRoomMargin = 10;
+
+
 
 	void DrawFullRoomRect(Rect r, Level l, int x, int y) {
 		GUIStyle style = colors[Color.black];
 		GUI.Label(new Rect(
-			r.x + x*editorUIRoomSize + editorUIRoomBuffer, 
-			r.y + y*editorUIRoomSize + editorUIRoomBuffer, 
-			l.mapSize.x*editorUIRoomSize - 3*editorUIRoomBuffer, 
-			l.mapSize.y*editorUIRoomSize - 3*editorUIRoomBuffer
+			r.x + x*editorUIRoomSize + editorUIRoomPadding, 
+			r.y + y*editorUIRoomSize + editorUIRoomPadding, 
+			l.mapSize.x*editorUIRoomSize - 2*editorUIRoomPadding - editorUIRoomMargin, 
+			l.mapSize.y*editorUIRoomSize - 2*editorUIRoomPadding - editorUIRoomMargin
 		), GUIContent.none, style);
 	}
 
 	void DrawSingleScreenRectButton(Rect r, Level l, int x, int y) {
 		GUIStyle style = currentLevel == l ? colors[Color.green] : colors[Color.blue];
-		if (GUI.Button(new Rect(r.x + x*editorUIRoomSize, r.y + y*editorUIRoomSize, editorUIRoomSize - editorUIRoomBuffer, editorUIRoomSize - editorUIRoomBuffer), GUIContent.none, style)) {
+		if (GUI.Button(new Rect(r.x + x*editorUIRoomSize, r.y + y*editorUIRoomSize, editorUIRoomSize - editorUIRoomMargin, editorUIRoomSize - editorUIRoomMargin), GUIContent.none, style)) {
 			DisableAllLevelsExceptFor(l);
 		}
 	}

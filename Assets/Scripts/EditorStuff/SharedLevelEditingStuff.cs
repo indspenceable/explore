@@ -10,6 +10,7 @@ public class SharedLevelEditingStuff {
 	#if UNITY_EDITOR
 	public GameObject defaultTilePrefab;
 	public List<string> knownTileSheets;
+	public Material pixelPerfectSprite;
 
 	[System.Serializable]
 	public class SpritePrefabPairing {
