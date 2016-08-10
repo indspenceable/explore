@@ -9,6 +9,10 @@ using System.Linq;
 
 public class LevelBuilder : MonoBehaviour {
 #if UNITY_EDITOR
+
+	public static readonly string[] LAYER_OPTIONS = new string[]{ "Background", "Active", "Foreground" };
+	public static readonly string[] SORTING_LAYERS= new string[]{ "Background Tiles", "Active Level", "Foreground Tiles" };
+
 	public static Vector2 SCREEN_SIZE = new Vector2(15, 12);
 	public Vector2 mapSize = new Vector2(6, 8);
 	public Vector2 gridSize = new Vector2(1f, 1f);
@@ -19,16 +23,21 @@ public class LevelBuilder : MonoBehaviour {
 	public GameObject defaultTilePrefab;
 	public Sprite currentlySelectedSprite;
 
-	private GameObject _tc;
+	public int currentEditLayer = 0;
+
+	private GameObject[] _tcs;
+
 	public struct TileLocation {
-		public TileLocation(int _x, int _y, GameObject _tile) {
+		public TileLocation(int _x, int _y, GameObject _tile, int _editLayerId) {
 			x = _x;
 			y = _y;
 			tile = _tile;
+			editLayerId = _editLayerId;
 		}
 		public int x;
 		public int y;
 		public GameObject tile;
+		public int editLayerId;
 	}
 	[System.Serializable]
 	public class SpritePrefabPairing {
@@ -56,7 +65,6 @@ public class LevelBuilder : MonoBehaviour {
 		if (spp != null) {
 			return spp.prefab;
 		} else {
-			Debug.Log("Default prefab");
 			return defaultTilePrefab;
 		}
 	}
@@ -74,26 +82,35 @@ public class LevelBuilder : MonoBehaviour {
 
 	public List<TileLocation> tiles;
 
-	public GameObject TileContainer() {
-		if (_tc == null) {
+	public GameObject TileContainer(int tcid) {
+		if (_tcs == null || _tcs.Length != LAYER_OPTIONS.Length) {
+			_tcs = new GameObject[4];
+		}
+		if (_tcs[tcid] == null) {
 			try {
-				_tc = transform.FindChild("TileContainer").gameObject;
+				_tcs[tcid] = transform.FindChild("TileContainer_" + tcid).gameObject;
 			} catch {
 			}
 		}
-		if (_tc == null) {
-			_tc = new GameObject("TileContainer");
-			_tc.transform.parent = transform;
+		if (_tcs[tcid] == null) {
+			_tcs[tcid] = new GameObject("TileContainer_" + tcid);
+			_tcs[tcid].transform.parent = transform;
 		}
-		return _tc;
+		return _tcs[tcid];
 	}
 	public GameObject FindOrCreateTileAt(int x, int y) {
 		GameObject go = FindTileAt(x, y);
 		if (go == null) {
-			go = PrefabUtility.InstantiatePrefab(CurrentPrefab()) as GameObject;
-			go.transform.parent = TileContainer().transform;
+			if (currentEditLayer == 1) {
+				go = PrefabUtility.InstantiatePrefab(CurrentPrefab()) as GameObject;
+			} else {
+				go = new GameObject("Sprite Tile");
+			}
+			go.AddComponent<SpriteRenderer>().sortingLayerName = SORTING_LAYERS[currentEditLayer];
+
+			go.transform.parent = TileContainer(currentEditLayer).transform;
 			go.transform.localPosition = new Vector3(x + gridSize.x/2, y + gridSize.y/2);
-			tiles.Add(new TileLocation(x, y, go));
+			tiles.Add(new TileLocation(x, y, go, currentEditLayer));
 		}
 		return go;
 	}
@@ -101,7 +118,7 @@ public class LevelBuilder : MonoBehaviour {
 	public GameObject FindTileAt(int x, int y) {
 		EnsureTileLocationListIsSetup();
 		foreach (TileLocation tl in tiles) {
-			if (tl.x == x && tl.y == y) {
+			if (tl.x == x && tl.y == y && tl.editLayerId == currentEditLayer) {
 				return tl.tile;
 			}
 		}
@@ -111,7 +128,7 @@ public class LevelBuilder : MonoBehaviour {
 	public void RemoveTileAt(int x, int y) {
 		EnsureTileLocationListIsSetup();
 		foreach (TileLocation tl in tiles) {
-			if (tl.x == x && tl.y == y) {
+			if (tl.x == x && tl.y == y && tl.editLayerId == currentEditLayer) {
 				Undo.DestroyObjectImmediate(tl.tile);
 				tiles.Remove(tl);
 				return;
@@ -122,9 +139,11 @@ public class LevelBuilder : MonoBehaviour {
 	private void EnsureTileLocationListIsSetup() {
 		if (tiles == null) {
 			tiles = new List<TileLocation>();
-			for (int i = 0; i < TileContainer().transform.childCount; i+=1) {
-				Transform child = TileContainer().transform.GetChild(i);
-				tiles.Add(new TileLocation(Mathf.RoundToInt(child.localPosition.x-gridSize.x/2), Mathf.RoundToInt(child.localPosition.y-gridSize.y/2), child.gameObject));
+			for (int l = 0; l < LAYER_OPTIONS.Length; l +=1) {
+				for (int i = 0; i < TileContainer(l).transform.childCount; i+=1) {
+					Transform child = TileContainer(l).transform.GetChild(i);
+					tiles.Add(new TileLocation(Mathf.RoundToInt(child.localPosition.x-gridSize.x/2), Mathf.RoundToInt(child.localPosition.y-gridSize.y/2), child.gameObject, l));
+				}
 			}
 		}
 	}
@@ -134,9 +153,6 @@ public class LevelBuilder : MonoBehaviour {
 		EnsureTileLocationListIsSetup();
 		foreach (TileLocation tl in tiles) {
 			currentlySelectedSprite = tl.tile.GetComponent<SpriteRenderer>().sprite;
-			if (PrefabUtility.GetPrefabParent(tl.tile) != CurrentPrefab()) {
-				Debug.Log("Damn!");
-			}
 		}
 		currentlySelectedSprite = css;
 	}
@@ -176,6 +192,7 @@ public class LevelBuilder : MonoBehaviour {
 
 	public void RebindTileList() {
 		tiles = null;
+		_tcs = null;
 		EnsureTileLocationListIsSetup();
 	}
 #endif

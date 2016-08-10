@@ -13,8 +13,6 @@ public class GameManager : MonoBehaviour {
 
 	public static bool paused = false;
 
-
-
 	// SINGLETON
 	public static GameManager instance;
 	void Start () {

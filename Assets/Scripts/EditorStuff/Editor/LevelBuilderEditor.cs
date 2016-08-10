@@ -7,9 +7,6 @@ using System.Collections.Generic;
 [CanEditMultipleObjects]
 public class LookAtPointEditor : Editor 
 {
-//	const int numberOfTilesPerRow = 15;
-
-	SerializedProperty gridSize;
 	SerializedProperty mapSize;
 	SerializedProperty importTileSheet;
 	SerializedProperty sprites;
@@ -18,13 +15,38 @@ public class LookAtPointEditor : Editor
 
 	void OnEnable()
 	{
-		gridSize = serializedObject.FindProperty("gridSize");
 		mapSize = serializedObject.FindProperty("mapSize");
 		importTileSheet = serializedObject.FindProperty("importTileSheet");
 		sprites = serializedObject.FindProperty("sprites");
 		defaultTilePrefab = serializedObject.FindProperty("defaultTilePrefab");
 		currentlySelectedSprite = serializedObject.FindProperty("currentlySelectedSprite");
 	}
+
+	public override void OnInspectorGUI()
+	{
+		serializedObject.Update();
+		LevelBuilder lb = (LevelBuilder)target;
+		EditorGUILayout.PropertyField(mapSize);
+		CurrentEditLayerDropdown(lb);
+		BulkEditButtons (lb);
+
+		if (lb.currentEditLayer == 1) {
+			EditorGUILayout.PropertyField(defaultTilePrefab);
+			SelectCurrentTilePrefab (lb);
+			EditorGUILayout.PropertyField(importTileSheet);
+		}
+		SelectTileSheetDropdown(lb);
+
+		DisplayCurrentTileSpriteLarge ();
+		RenderAllTileButtons ();
+		serializedObject.ApplyModifiedProperties();
+	}
+
+	public void CurrentEditLayerDropdown(LevelBuilder lb) {
+		lb.currentEditLayer = EditorGUILayout.Popup("Select Current Edit Layer", lb.currentEditLayer, LevelBuilder.LAYER_OPTIONS); 
+	}
+
+
 
 	static void SelectTileSheetDropdown(LevelBuilder lb)
 	{
@@ -105,23 +127,6 @@ public class LookAtPointEditor : Editor
 	}
 		
 
-	public override void OnInspectorGUI()
-	{
-		serializedObject.Update();
-		LevelBuilder lb = (LevelBuilder)target;
-
-//		EnableOrDisableEditor ();
-		EditorGUILayout.PropertyField(gridSize);
-		EditorGUILayout.PropertyField(mapSize);
-		EditorGUILayout.PropertyField(defaultTilePrefab);
-		SelectCurrentTilePrefab (lb);
-		EditorGUILayout.PropertyField(importTileSheet);
-		SelectTileSheetDropdown(lb);
-		BulkEditButtons (lb);
-		DisplayCurrentTileSpriteLarge ();
-		RenderAllTileButtons ();
-		serializedObject.ApplyModifiedProperties();
-	}
 
 	public static void DrawTexture(Rect position, Sprite sprite, Vector2 size)
 	{

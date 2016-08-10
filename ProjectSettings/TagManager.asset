@@ -41,10 +41,13 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
+  - name: Background Image
     uniqueID: 2258817163
     locked: 0
-  - name: Level
+  - name: Background Tiles
+    uniqueID: 2048664371
+    locked: 0
+  - name: Active Level
     uniqueID: 3977865197
     locked: 0
   - name: Monsters
@@ -55,4 +58,7 @@ TagManager:
     locked: 0
   - name: Effects
     uniqueID: 2277383761
+    locked: 0
+  - name: Foreground Tiles
+    uniqueID: 1078211279
     locked: 0
