@@ -10,6 +10,8 @@ class MapConfig : EditorWindow {
 		EditorWindow.GetWindow(typeof(MapConfig));
 	}
 
+	[MenuItem("Edit/Reset Playerprefs")] public static void DeletePlayerPrefs() { PlayerPrefs.DeleteAll(); }
+
 	Dictionary<Color, GUIStyle> colors = new Dictionary<Color, GUIStyle>();
 
 	GameManager gm;
