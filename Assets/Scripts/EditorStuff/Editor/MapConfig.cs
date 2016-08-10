@@ -32,7 +32,6 @@ class MapConfig : EditorWindow {
 	bool inPlayModeLastFrame = false;
 
 	void OnGUI () {
-		Debug.Log("hey howdy there.");
 		// We should have a game manager.
 //		return;
 		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -44,9 +43,6 @@ class MapConfig : EditorWindow {
 			Debug.Log("No Level Container. Creating one.");
 			levelContainer = new GameObject("Levels");
 		}
-		Debug.Log("hi");
-		Debug.Log(gm);
-		Debug.Log(gm.levels.Count);
 
 		if (EditorApplication.isPlaying != inPlayModeLastFrame) {
 			colors = new Dictionary<Color, GUIStyle>();
@@ -57,6 +53,7 @@ class MapConfig : EditorWindow {
 		AddColor(Color.green);
 		AddColor(Color.red);
 		AddColor(Color.black);
+		AddColor(Color.gray);
 
 
 		EditorGUILayout.BeginHorizontal();
@@ -78,7 +75,6 @@ class MapConfig : EditorWindow {
 
 		MoveViewportOptions ();
 		MoveCurrentLevelPositionOptions ();
-		Debug.Log("woop woop....");
 		DisplayMap(EditorGUILayout.GetControlRect());
 	}
 
