@@ -138,13 +138,68 @@ class MapConfig : EditorWindow {
 				}
 			}
 		}
+		DrawDoors(r);
+	}
+
+	void DrawDoors(Rect r) {
+		int minX = 999;
+		int maxX = -999;
+		int minY = 999;
+		int maxY = -999;
+
+		// Calculate the outer bounds of the map
+		foreach(Level l in gm.levels) {
+			if (l.mapPosition.x < minX) {
+				minX = (int)l.mapPosition.x;
+			}
+			if (l.mapPosition.y < minY) {
+				minY = (int)l.mapPosition.y;
+			}
+			if (l.mapPosition.x + l.mapSize.x > maxX) {
+				maxX = (int)(l.mapPosition+l.mapSize).x;
+			}
+			if (l.mapPosition.y + l.mapSize.y > maxY) {
+				maxY = (int)(l.mapPosition+l.mapSize).y;
+			}
+		}
+		for (int x = minX; x < maxX; x += 1)  {
+			for (int y = minY; y < maxY; y+=1) {
+				Level l = findLevelWithCoord(x, y);
+				Level o = findLevelWithCoord(x+1, y);
+				if (l != null && o != null && l != o) {
+					DrawDoorToRight(r, x, y);
+				}
+			}
+		}
+	}
+
+	Level findLevelWithCoord(int x, int y) {
+		foreach (Level l in gm.levels) {
+			if ((l.mapPosition.x <= x && (l.mapPosition + l.mapSize).x > x) &&
+				(l.mapPosition.y <= y && (l.mapPosition + l.mapSize).y > y)) {
+				return l;
+			}
+		}
+		return null;
 	}
 
 	const int editorUIRoomSize = 20;
 	const int editorUIRoomPadding = 6;
 	const int editorUIRoomMargin = 10;
 
-
+	void DrawDoorToRight(Rect r, int x, int y) {
+		bool doorHere = gm.DoorAt(x,y);
+		GUIStyle style = doorHere ? colors[Color.red] : colors[Color.black];
+		if (GUI.Button(new Rect(
+			r.x + (x+1)*editorUIRoomSize - editorUIRoomMargin,
+			r.y + y*editorUIRoomSize,
+			editorUIRoomMargin,
+			editorUIRoomSize - editorUIRoomMargin
+		), GUIContent.none, style)) {
+			Debug.Log("Yo");
+			gm.SetDoor(x, y, !doorHere);
+		}
+	}
 
 	void DrawFullRoomRect(Rect r, Level l, int x, int y) {
 		GUIStyle style = colors[Color.black];

@@ -19,6 +19,38 @@ public class GameManager : MonoBehaviour {
 	[SerializeField]
 	public List<Level> levels;
 
+
+	[System.Serializable]
+	public class Door {
+		public int x;
+		public int y;
+	}
+	[SerializeField]
+	public List<Door> HorizontalDoors = new List<Door>();
+	private Door FindDoor(int x, int y) {
+		foreach (var door in HorizontalDoors) {
+			if (door.x == x && door.y == y) {
+				return door;
+			}
+		}
+		return null; 
+	}
+	public bool DoorAt(int x, int y) {
+		return (FindDoor(x,y) != null);
+	}
+	public void SetDoor(int x, int y, bool shouldThereBe) {
+		Door d = FindDoor(x, y);
+		if (d == null && shouldThereBe) {
+			d = new Door();
+			d.x = x;
+			d.y = y;
+			HorizontalDoors.Add(d);
+		} else if (d != null && !shouldThereBe) {
+			HorizontalDoors.Remove(d);
+		}
+	}
+
+
 	// SINGLETON
 	public static GameManager instance;
 	void Start () {
@@ -42,11 +74,6 @@ public class GameManager : MonoBehaviour {
 	public void Update() {
 		// find the target camera position. This involves keeping the camera within the bounds of the level.
 		Vector2 targetP = findTargets();
-		/*Debug.DrawLine(targetP, targetP + new Vector2(1,1));
-		Debug.DrawLine(targetP, targetP + new Vector2(1,-1));
-		Debug.DrawLine(targetP, targetP + new Vector2(-1,1));
-		Debug.DrawLine(targetP, targetP + new Vector2(-1,-1));
-		*/
 
 		// Can the camera go there?
 		myCamera.transform.position = Vector3.Lerp(myCamera.transform.position, new Vector3(targetP.x, targetP.y, myCamera.transform.position.z), Time.deltaTime * lerpWeight);
