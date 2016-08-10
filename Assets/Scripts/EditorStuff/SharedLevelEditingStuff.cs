@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 [System.Serializable]
 public class SharedLevelEditingStuff {
+	#if UNITY_EDITOR
 	public GameObject defaultTilePrefab;
 	public List<string> knownTileSheets;
 
@@ -20,4 +23,5 @@ public class SharedLevelEditingStuff {
 
 	[SerializeField]
 	public List<SpritePrefabPairing> spritePrefabPairings;
+	#endif
 }

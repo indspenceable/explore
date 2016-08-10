@@ -242,7 +242,7 @@ public class LookAtPointEditor : Editor
 
 	public void OnSceneGUI() {
 		Level lb = target as Level;
-		Vector2 mapSize = Vector2.Scale(lb.mapSize, Level.SCREEN_SIZE);
+		Vector2 mapSize = Vector2.Scale(lb.mapSize, GameManager.SCREEN_SIZE);
 		Vector2 gridSize = lb.gridSize;
 
 		DrawGrid (lb, mapSize, gridSize);

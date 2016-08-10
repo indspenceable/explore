@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
 	public Level currentLevel;
 
 	public static bool paused = false;
+	public static readonly Vector2 SCREEN_SIZE = new Vector2(16, 12);
 
 	[SerializeField]
 	public List<Level> levels;
@@ -21,24 +22,37 @@ public class GameManager : MonoBehaviour {
 	// SINGLETON
 	public static GameManager instance;
 	void Start () {
-		if (instance != null) {
-			Debug.LogError("Can't have multiple Game Managers.");
-		}
 		instance = this;
 		GetComponent<AudioSource>().Play();
-		GoToPlayer();
+		GoToTarget(findTargets());
 	}
 
 	bool oldEnabled;
 	float oldTimeScale;
 
+	Vector2 findTargets() {
+		float halfWidth = SCREEN_SIZE.x / 2;
+		float halfHeight = SCREEN_SIZE.y / 2;
+		Vector2 scaledMap = Vector2.Scale(currentLevel.mapSize, SCREEN_SIZE);
+		Debug.Log(currentLevel.mapSize);
+		Debug.Log(currentLevel);
+		float px = Mathf.Clamp(player.transform.position.x, halfWidth, scaledMap.x-halfWidth);
+		float py = Mathf.Clamp(player.transform.position.y, halfHeight, scaledMap.y-halfHeight);
+		return new Vector2(px, py);
+	}
+
 	public void Update() {
-		float px = player.transform.position.x;
-		float py = player.transform.position.y;
+		// find the target camera position. This involves keeping the camera within the bounds of the level.
+		Vector2 targetP = findTargets();
+		Debug.DrawLine(targetP, targetP + new Vector2(1,1));
+		Debug.DrawLine(targetP, targetP + new Vector2(1,-1));
+		Debug.DrawLine(targetP, targetP + new Vector2(-1,1));
+		Debug.DrawLine(targetP, targetP + new Vector2(-1,-1));
+
 		// Can the camera go there?
-		myCamera.transform.position = Vector3.Lerp(myCamera.transform.position, new Vector3(px, py, myCamera.transform.position.z), Time.deltaTime * lerpWeight);
-		if (Mathf.Abs(myCamera.transform.position.x - player.transform.position.x) + Mathf.Abs(myCamera.transform.position.y - player.transform.position.y) < minDistanceThreshold) {
-			GoToPlayer();
+		myCamera.transform.position = Vector3.Lerp(myCamera.transform.position, new Vector3(targetP.x, targetP.y, myCamera.transform.position.z), Time.deltaTime * lerpWeight);
+		if (Mathf.Abs(myCamera.transform.position.x - targetP.x) + Mathf.Abs(myCamera.transform.position.y - targetP.y) < minDistanceThreshold) {
+			GoToTarget(targetP);
 		}
 
 		if (Input.GetButtonDown("Pause")) {
@@ -60,8 +74,8 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void GoToPlayer() {
-		myCamera.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, myCamera.transform.position.z);
+	public void GoToTarget(Vector2 p) {
+		myCamera.transform.position = new Vector3(p.x, p.y, myCamera.transform.position.z);
 	}
 
 	public IEnumerator Read(string text) {

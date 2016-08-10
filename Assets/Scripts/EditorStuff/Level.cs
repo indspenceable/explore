@@ -8,7 +8,7 @@ using System.Linq;
 #endif
 
 public class Level : MonoBehaviour {
-	public Vector2 mapSize = new Vector2(6, 8);
+	public Vector2 mapSize = new Vector2(1, 1);
 	public Vector2 mapPosition = new Vector2(0,0);
 
 #if UNITY_EDITOR
@@ -16,7 +16,6 @@ public class Level : MonoBehaviour {
 	public static readonly string[] LAYER_OPTIONS = new string[]{ "Background", "Active", "Foreground" };
 	public static readonly string[] SORTING_LAYERS= new string[]{ "Background Tiles", "Active Level", "Foreground Tiles" };
 
-	public static Vector2 SCREEN_SIZE = new Vector2(15, 12);
 	// TODO - we never switch the gridsize from 1,1 cause it breaks things. Just bake this number in?
 	public Vector2 gridSize = new Vector2(1f, 1f);
 	public Texture2D importTileSheet;
