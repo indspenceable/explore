@@ -179,8 +179,7 @@ public class LookAtPointEditor : Editor
 		Handles.DrawDottedLine (new Vector3 (lb.transform.position.x + mpv.x, lb.transform.position.y + mpv.y), new Vector3 (lb.transform.position.x + mpv.x, lb.transform.position.y + mpv.y + 1), 4);
 		Handles.DrawDottedLine (new Vector3 (lb.transform.position.x + mpv.x, lb.transform.position.y + mpv.y + 1), new Vector3 (lb.transform.position.x + mpv.x + 1, lb.transform.position.y + mpv.y + 1), 4);
 		Handles.DrawDottedLine (new Vector3 (lb.transform.position.x + mpv.x + 1, lb.transform.position.y + mpv.y), new Vector3 (lb.transform.position.x + mpv.x + 1, lb.transform.position.y + mpv.y + 1), 4);
-		// +1, because when we flip the y (the -1 at the end) it flips over the x-axis, so offset.
-		//			DrawTexture(new Rect(mpv.x+0.25f, mpv.y+1.25f, 0.5f, 0.5f), currentlySelectedSprite, new Vector2(0.5f, -1));
+
 		needRerender = true;
 	}
 
