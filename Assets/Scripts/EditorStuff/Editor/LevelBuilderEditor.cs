@@ -247,6 +247,9 @@ public class LookAtPointEditor : Editor
 
 		DrawGrid (lb, mapSize, gridSize);
 		if (lb.currentlySelectedSprite == null) {
+			if (lb.sprites == null) {
+				lb.SetCurrentTileSheet(lb.shared.knownTileSheets[0]);
+			}
 			lb.currentlySelectedSprite = lb.sprites[0];
 			Repaint();
 		}

@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour {
 	public float minDistanceThreshold = 0.02f;
 	public GameObject pausedTextContainer;
 	public TextContainer dialogues;
-	public GameObject newLevelPrefab;
 
 	public static bool paused = false;
 

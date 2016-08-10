@@ -31,9 +31,26 @@ class MapConfig : EditorWindow {
 		AddColor(Color.blue);
 		AddColor(Color.green);
 		AddColor(Color.red);
+		AddColor(Color.black);
 
-		MoveViewport ();
-		MoveCurrentLevelPosition ();
+
+		EditorGUILayout.BeginHorizontal();
+		if (GUILayout.Button("Add new Level")) {
+			GameObject levelGO = new GameObject();
+			levelGO.transform.parent = levelContainer.transform;
+			DisableAllLevelsExceptFor(levelGO.AddComponent<Level>());
+		}
+		if (GUILayout.Button("Re-scan for current level")) {
+			foreach(Level l in gm.levels) {
+				if (l.gameObject.activeSelf && currentLevel != l) {
+					DisableAllLevelsExceptFor(l);
+				}
+			}
+		}
+		EditorGUILayout.EndHorizontal();
+
+		MoveViewportOptions ();
+		MoveCurrentLevelPositionOptions ();
 		DisplayMap(EditorGUILayout.GetControlRect());
 	}
 
@@ -50,7 +67,7 @@ class MapConfig : EditorWindow {
 
 	}
 
-	static void MoveViewport()
+	void MoveViewportOptions()
 	{
 		GUILayout.Label ("Move Viewport");
 		EditorGUILayout.BeginHorizontal ();
@@ -69,7 +86,7 @@ class MapConfig : EditorWindow {
 		EditorGUILayout.EndHorizontal ();
 	}
 
-	void MoveCurrentLevelPosition()
+	void MoveCurrentLevelPositionOptions()
 	{
 		GUILayout.Label ("Move Current Level");
 		EditorGUILayout.BeginHorizontal ();
@@ -90,16 +107,22 @@ class MapConfig : EditorWindow {
 
 	void DisplayMap(Rect r) {
 		foreach(Level l in gm.levels) {
+			DrawFullRoomRect(r, l, (int)l.mapPosition.x, (int)l.mapPosition.y);
 			for (int dx = 0; dx < l.mapSize.x; dx+=1) {
 				for (int dy = 0; dy < l.mapSize.y; dy+=1) {
-					DrawMapRect(r, l, (int)l.mapPosition.x + dx, (int)l.mapPosition.y + dy);
+					DrawSingleScreenRectButton(r, l, (int)l.mapPosition.x + dx, (int)l.mapPosition.y + dy);
 				}
 			}
 		}
 	}
 
-	void DrawMapRect(Rect r, Level l, int x, int y) {
-		GUIStyle style = currentLevel == l ? colors[Color.blue] : colors[Color.green];
+	void DrawFullRoomRect(Rect r, Level l, int x, int y) {
+		GUIStyle style = colors[Color.black];
+		GUI.Label(new Rect(r.x + x*25 + 5, r.y + y*25 + 5, l.mapSize.x*25 - 15, l.mapSize.y*25 - 15), GUIContent.none, style);
+	}
+
+	void DrawSingleScreenRectButton(Rect r, Level l, int x, int y) {
+		GUIStyle style = currentLevel == l ? colors[Color.green] : colors[Color.blue];
 		if (GUI.Button(new Rect(r.x + x*25, r.y + y*25, 20, 20), GUIContent.none, style)) {
 			DisableAllLevelsExceptFor(l);
 		}
