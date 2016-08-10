@@ -14,7 +14,14 @@ class MapConfig : EditorWindow {
 
 	GameManager gm;
 	GameObject levelContainer;
-	Level currentLevel;
+	Level currentLevel {
+		get {
+			return gm.currentLevel;
+		}
+		set {
+			gm.currentLevel = value;
+		}
+	}
 
 	void OnGUI () {
 		// We should have a game manager.
@@ -38,7 +45,9 @@ class MapConfig : EditorWindow {
 		if (GUILayout.Button("Add new Level")) {
 			GameObject levelGO = new GameObject();
 			levelGO.transform.parent = levelContainer.transform;
-			DisableAllLevelsExceptFor(levelGO.AddComponent<Level>());
+			Level l = levelGO.AddComponent<Level>();
+			gm.levels.Add(l);
+			DisableAllLevelsExceptFor(l);
 		}
 		if (GUILayout.Button("Re-scan for current level")) {
 			foreach(Level l in gm.levels) {
@@ -116,14 +125,22 @@ class MapConfig : EditorWindow {
 		}
 	}
 
+	const int editorUIRoomSize = 15;
+	const int editorUIRoomBuffer = 3;
+
 	void DrawFullRoomRect(Rect r, Level l, int x, int y) {
 		GUIStyle style = colors[Color.black];
-		GUI.Label(new Rect(r.x + x*25 + 5, r.y + y*25 + 5, l.mapSize.x*25 - 15, l.mapSize.y*25 - 15), GUIContent.none, style);
+		GUI.Label(new Rect(
+			r.x + x*editorUIRoomSize + editorUIRoomBuffer, 
+			r.y + y*editorUIRoomSize + editorUIRoomBuffer, 
+			l.mapSize.x*editorUIRoomSize - 3*editorUIRoomBuffer, 
+			l.mapSize.y*editorUIRoomSize - 3*editorUIRoomBuffer
+		), GUIContent.none, style);
 	}
 
 	void DrawSingleScreenRectButton(Rect r, Level l, int x, int y) {
 		GUIStyle style = currentLevel == l ? colors[Color.green] : colors[Color.blue];
-		if (GUI.Button(new Rect(r.x + x*25, r.y + y*25, 20, 20), GUIContent.none, style)) {
+		if (GUI.Button(new Rect(r.x + x*editorUIRoomSize, r.y + y*editorUIRoomSize, editorUIRoomSize - editorUIRoomBuffer, editorUIRoomSize - editorUIRoomBuffer), GUIContent.none, style)) {
 			DisableAllLevelsExceptFor(l);
 		}
 	}
