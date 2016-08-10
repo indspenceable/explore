@@ -90,7 +90,6 @@ class MapConfig : EditorWindow {
 
 	void DisplayMap(Rect r) {
 		foreach(Level l in gm.levels) {
-			Debug.Log("Drawing a level...");
 			for (int dx = 0; dx < l.mapSize.x; dx+=1) {
 				for (int dy = 0; dy < l.mapSize.y; dy+=1) {
 					DrawMapRect(r, l, (int)l.mapPosition.x + dx, (int)l.mapPosition.y + dy);
@@ -111,5 +110,7 @@ class MapConfig : EditorWindow {
 			l.gameObject.SetActive(l == _l);
 		}
 		currentLevel = _l;
+		Selection.activeGameObject = _l.gameObject;
 	}
+
 }

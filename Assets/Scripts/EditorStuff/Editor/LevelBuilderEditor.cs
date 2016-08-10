@@ -8,17 +8,19 @@ using System.Collections.Generic;
 public class LookAtPointEditor : Editor 
 {
 	SerializedProperty mapSize;
+	SerializedProperty mapPosition;
 	SerializedProperty importTileSheet;
 	SerializedProperty sprites;
-	SerializedProperty defaultTilePrefab;
+//	SerializedProperty defaultTilePrefab;
 	SerializedProperty currentlySelectedSprite;
 
 	void OnEnable()
 	{
 		mapSize = serializedObject.FindProperty("mapSize");
+		mapPosition = serializedObject.FindProperty("mapPosition");
 		importTileSheet = serializedObject.FindProperty("importTileSheet");
 		sprites = serializedObject.FindProperty("sprites");
-		defaultTilePrefab = serializedObject.FindProperty("defaultTilePrefab");
+//		defaultTilePrefab = serializedObject.FindProperty("defaultTilePrefab");
 		currentlySelectedSprite = serializedObject.FindProperty("currentlySelectedSprite");
 	}
 
@@ -26,12 +28,16 @@ public class LookAtPointEditor : Editor
 	{
 		serializedObject.Update();
 		Level lb = (Level)target;
+
 		EditorGUILayout.PropertyField(mapSize);
+		EditorGUILayout.PropertyField(mapPosition);
 		CurrentEditLayerDropdown(lb);
 		BulkEditButtons (lb);
 
 		if (lb.currentEditLayer == 1) {
-			EditorGUILayout.PropertyField(defaultTilePrefab);
+//			EditorGUILayout.PropertyField(defaultTilePrefab);
+			lb.shared.defaultTilePrefab =  (EditorGUILayout.ObjectField ("Default Tile Prefab", lb.shared.defaultTilePrefab, typeof(GameObject), false) as GameObject);
+
 			SelectCurrentTilePrefab (lb);
 			EditorGUILayout.PropertyField(importTileSheet);
 		}
@@ -50,14 +56,14 @@ public class LookAtPointEditor : Editor
 
 	static void SelectTileSheetDropdown(Level lb)
 	{
-		var tileSheetOptions = lb.knownTileSheets;
+		var tileSheetOptions = lb.shared.knownTileSheets;
 		if (tileSheetOptions == null) {
 			tileSheetOptions = new List<string> ();
 		}
 		int currentIndex = tileSheetOptions.IndexOf (lb.currentlySelectedTileSheetAssetLocation);
 		int selectedIndex = EditorGUILayout.Popup (currentIndex, tileSheetOptions.ToArray ());
 		if (currentIndex != selectedIndex) {
-			lb.SetCurrentTileSheet (lb.knownTileSheets [selectedIndex]);
+			lb.SetCurrentTileSheet (lb.shared.knownTileSheets [selectedIndex]);
 		}
 	}
 

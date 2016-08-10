@@ -17,17 +17,49 @@ public class Level : MonoBehaviour {
 	public static readonly string[] SORTING_LAYERS= new string[]{ "Background Tiles", "Active Level", "Foreground Tiles" };
 
 	public static Vector2 SCREEN_SIZE = new Vector2(15, 12);
+	// TODO - we never switch the gridsize from 1,1 cause it breaks things. Just bake this number in?
 	public Vector2 gridSize = new Vector2(1f, 1f);
 	public Texture2D importTileSheet;
-	public List<string> knownTileSheets;
 	public string currentlySelectedTileSheetAssetLocation;
 	public Sprite[] sprites;
-	public GameObject defaultTilePrefab;
 	public Sprite currentlySelectedSprite;
-
 	public int currentEditLayer = 0;
-
 	private GameObject[] _tcs;
+
+	public SharedLevelEditingStuff shared {
+		get {
+			return GameObject.Find("GameManager").GetComponent<GameManager>().shared;
+		}
+	}
+
+	public SharedLevelEditingStuff.SpritePrefabPairing LocateByCurrentSprite() {
+		if (shared.spritePrefabPairings == null) {
+			shared.spritePrefabPairings = new List<SharedLevelEditingStuff.SpritePrefabPairing>();
+		}
+		foreach (SharedLevelEditingStuff.SpritePrefabPairing spp in shared.spritePrefabPairings) {
+			if (spp.sprite == currentlySelectedSprite) {
+				return spp;
+			}
+		}
+		return null;
+	}
+	public void SetCurrentPrefab(GameObject prefab) {
+		SharedLevelEditingStuff.SpritePrefabPairing spp = LocateByCurrentSprite();
+		if (spp != null) {
+			spp.prefab = prefab;
+		} else {
+			shared.spritePrefabPairings.Add(new SharedLevelEditingStuff.SpritePrefabPairing(currentlySelectedSprite, prefab));
+		}
+	}
+
+	public GameObject CurrentPrefab() {
+		SharedLevelEditingStuff.SpritePrefabPairing spp = LocateByCurrentSprite();
+		if (spp != null) {
+			return spp.prefab;
+		} else {
+			return shared.defaultTilePrefab;
+		}
+	}
 
 	public struct TileLocation {
 		public TileLocation(int _x, int _y, GameObject _tile, int _editLayerId) {
@@ -41,46 +73,6 @@ public class Level : MonoBehaviour {
 		public GameObject tile;
 		public int editLayerId;
 	}
-	[System.Serializable]
-	public class SpritePrefabPairing {
-		public SpritePrefabPairing(Sprite sprite, GameObject prefab) {
-			this.sprite = sprite;
-			this.prefab = prefab;
-		}
-		public Sprite sprite;
-		public GameObject prefab;
-	}
-
-	public SpritePrefabPairing LocateByCurrentSprite() {
-		if (spritePrefabPairings == null) {
-			spritePrefabPairings = new List<SpritePrefabPairing>();
-		}
-		foreach (SpritePrefabPairing spp in spritePrefabPairings) {
-			if (spp.sprite == currentlySelectedSprite) {
-				return spp;
-			}
-		}
-		return null;
-	}
-	public GameObject CurrentPrefab() {
-		SpritePrefabPairing spp = LocateByCurrentSprite();
-		if (spp != null) {
-			return spp.prefab;
-		} else {
-			return defaultTilePrefab;
-		}
-	}
-	public void SetCurrentPrefab(GameObject prefab) {
-		SpritePrefabPairing spp = LocateByCurrentSprite();
-		if (spp != null) {
-			spp.prefab = prefab;
-		} else {
-			spritePrefabPairings.Add(new SpritePrefabPairing(currentlySelectedSprite, prefab));
-		}
-	}
-
-	[SerializeField]
-	public List<SpritePrefabPairing> spritePrefabPairings;
 
 	public List<TileLocation> tiles;
 
@@ -174,8 +166,8 @@ public class Level : MonoBehaviour {
 
 	public void SetCurrentTileSheet(string target) {
 		currentlySelectedTileSheetAssetLocation = target;
-		knownTileSheets.Add(currentlySelectedTileSheetAssetLocation);
-		knownTileSheets = knownTileSheets.Distinct().ToList();
+		shared.knownTileSheets.Add(currentlySelectedTileSheetAssetLocation);
+		shared.knownTileSheets = shared.knownTileSheets.Distinct().ToList();
 
 		sprites = AssetDatabase.LoadAllAssetsAtPath( currentlySelectedTileSheetAssetLocation )
 			.OfType<Sprite>().ToArray();
@@ -186,8 +178,8 @@ public class Level : MonoBehaviour {
 	}
 
 	public void RemoveCurrentSpritesheet() {
-		knownTileSheets.Remove(currentlySelectedTileSheetAssetLocation);
-		SetCurrentTileSheet(knownTileSheets[0]);
+		shared.knownTileSheets.Remove(currentlySelectedTileSheetAssetLocation);
+		SetCurrentTileSheet(shared.knownTileSheets[0]);
 	}
 
 	public void ReInstantiateTiles() {

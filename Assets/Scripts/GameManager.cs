@@ -81,4 +81,9 @@ public class GameManager : MonoBehaviour {
 		Time.timeScale = oldTimeScale;
 		player.enabled = oldEnabled;
 	}
+
+
+	#if UNITY_EDITOR
+	public SharedLevelEditingStuff shared = new SharedLevelEditingStuff();
+	#endif
 }
