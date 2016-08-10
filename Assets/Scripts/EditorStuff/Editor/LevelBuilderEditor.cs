@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-[CustomEditor(typeof(LevelBuilder))]
+[CustomEditor(typeof(Level))]
 [CanEditMultipleObjects]
 public class LookAtPointEditor : Editor 
 {
@@ -25,7 +25,7 @@ public class LookAtPointEditor : Editor
 	public override void OnInspectorGUI()
 	{
 		serializedObject.Update();
-		LevelBuilder lb = (LevelBuilder)target;
+		Level lb = (Level)target;
 		EditorGUILayout.PropertyField(mapSize);
 		CurrentEditLayerDropdown(lb);
 		BulkEditButtons (lb);
@@ -42,13 +42,13 @@ public class LookAtPointEditor : Editor
 		serializedObject.ApplyModifiedProperties();
 	}
 
-	public void CurrentEditLayerDropdown(LevelBuilder lb) {
-		lb.currentEditLayer = EditorGUILayout.Popup("Select Current Edit Layer", lb.currentEditLayer, LevelBuilder.LAYER_OPTIONS); 
+	public void CurrentEditLayerDropdown(Level lb) {
+		lb.currentEditLayer = EditorGUILayout.Popup("Select Current Edit Layer", lb.currentEditLayer, Level.LAYER_OPTIONS); 
 	}
 
 
 
-	static void SelectTileSheetDropdown(LevelBuilder lb)
+	static void SelectTileSheetDropdown(Level lb)
 	{
 		var tileSheetOptions = lb.knownTileSheets;
 		if (tileSheetOptions == null) {
@@ -61,12 +61,12 @@ public class LookAtPointEditor : Editor
 		}
 	}
 
-	static void SelectCurrentTilePrefab(LevelBuilder lb)
+	static void SelectCurrentTilePrefab(Level lb)
 	{
 		lb.SetCurrentPrefab (EditorGUILayout.ObjectField ("Current Tile Prefab", lb.CurrentPrefab(), typeof(GameObject), false) as GameObject);
 	}
 
-	static void BulkEditButtons(LevelBuilder lb)
+	static void BulkEditButtons(Level lb)
 	{
 		EditorGUILayout.BeginHorizontal ();
 		if (GUILayout.Button ("Rebuild Tile List")) {
@@ -154,7 +154,7 @@ public class LookAtPointEditor : Editor
 
 	bool needRerender = false;
 
-	static void DrawGrid(LevelBuilder lb, Vector2 _mapSize, Vector2 _gridSize)
+	static void DrawGrid(Level lb, Vector2 _mapSize, Vector2 _gridSize)
 	{
 		// Draw the grid
 		Handles.color = Color.green;
@@ -170,7 +170,7 @@ public class LookAtPointEditor : Editor
 		}
 	}
 
-	void DrawCurrentMousePositionOutline(LevelBuilder lb)
+	void DrawCurrentMousePositionOutline(Level lb)
 	{
 		Vector2 mpv = storedMousePosition.Value;
 		// Draw better outline
@@ -183,7 +183,7 @@ public class LookAtPointEditor : Editor
 		needRerender = true;
 	}
 
-	void HandleSceneMouseEvents(LevelBuilder lb, Vector2 mapSize, Vector2 gridSize)
+	void HandleSceneMouseEvents(Level lb, Vector2 mapSize, Vector2 gridSize)
 	{
 		int controlId = GUIUtility.GetControlID(FocusType.Passive);
 		EventType et = Event.current.type;
@@ -235,8 +235,8 @@ public class LookAtPointEditor : Editor
 	}
 
 	public void OnSceneGUI() {
-		LevelBuilder lb = target as LevelBuilder;
-		Vector2 mapSize = Vector2.Scale(lb.mapSize, LevelBuilder.SCREEN_SIZE);
+		Level lb = target as Level;
+		Vector2 mapSize = Vector2.Scale(lb.mapSize, Level.SCREEN_SIZE);
 		Vector2 gridSize = lb.gridSize;
 
 		DrawGrid (lb, mapSize, gridSize);

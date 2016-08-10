@@ -7,14 +7,16 @@ using UnityEditor;
 using System.Linq;
 #endif
 
-public class LevelBuilder : MonoBehaviour {
+public class Level : MonoBehaviour {
+	public Vector2 mapSize = new Vector2(6, 8);
+	public Vector2 mapPosition = new Vector2(0,0);
+
 #if UNITY_EDITOR
 
 	public static readonly string[] LAYER_OPTIONS = new string[]{ "Background", "Active", "Foreground" };
 	public static readonly string[] SORTING_LAYERS= new string[]{ "Background Tiles", "Active Level", "Foreground Tiles" };
 
 	public static Vector2 SCREEN_SIZE = new Vector2(15, 12);
-	public Vector2 mapSize = new Vector2(6, 8);
 	public Vector2 gridSize = new Vector2(1f, 1f);
 	public Texture2D importTileSheet;
 	public List<string> knownTileSheets;
@@ -105,8 +107,8 @@ public class LevelBuilder : MonoBehaviour {
 				go = PrefabUtility.InstantiatePrefab(CurrentPrefab()) as GameObject;
 			} else {
 				go = new GameObject("Sprite Tile");
+				go.AddComponent<SpriteRenderer>().sortingLayerName = SORTING_LAYERS[currentEditLayer];
 			}
-			go.AddComponent<SpriteRenderer>().sortingLayerName = SORTING_LAYERS[currentEditLayer];
 
 			go.transform.parent = TileContainer(currentEditLayer).transform;
 			go.transform.localPosition = new Vector3(x + gridSize.x/2, y + gridSize.y/2);
@@ -162,6 +164,7 @@ public class LevelBuilder : MonoBehaviour {
 	[ExecuteInEditMode]
 	void OnValidate(){
 		mapSize = new Vector2((int) mapSize.x, (int) mapSize.y);
+		mapPosition = new Vector2((int) mapPosition.x, (int) mapPosition.y);
 		if (importTileSheet) {
 			SetCurrentTileSheet(AssetDatabase.GetAssetPath( importTileSheet ));
 			importTileSheet = null;

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
@@ -10,8 +11,12 @@ public class GameManager : MonoBehaviour {
 	public float minDistanceThreshold = 0.02f;
 	public GameObject pausedTextContainer;
 	public TextContainer dialogues;
+	public GameObject newLevelPrefab;
 
 	public static bool paused = false;
+
+	[SerializeField]
+	public List<Level> levels;
 
 	// SINGLETON
 	public static GameManager instance;
