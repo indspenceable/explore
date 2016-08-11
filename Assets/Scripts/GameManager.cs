@@ -72,10 +72,24 @@ public class GameManager : MonoBehaviour {
 		GoToTarget(FindTarget());
 	}
 
+	public Image fadeOutOverlay;
+	public IEnumerator Fade(Color begin, Color end, float time) {
+		float dt = 0f;
+		fadeOutOverlay.color = begin;
+		while (dt < time) {
+			yield return null;
+			dt += Time.unscaledDeltaTime;
+			Color c = Color.Lerp(begin, end, dt/time);
+			fadeOutOverlay.color = c;
+		}
+	}
+
 	public IEnumerator DoDoorCollision(int px, int py, Vector3 playerOffset, DoorCollider d) {
 		player.enabled = false;
 		var oldLayer = d.gameObject.layer;
 		d.gameObject.layer = LayerMask.NameToLayer("Default");
+		fadeOutOverlay.gameObject.SetActive(true);
+		yield return Fade(new Color(0,0,0, 0), Color.black, 0.5f);
 
 		Level targetLevel = FindLevelWithCoord(px, py);
 		targetLevel.transform.position = Vector3.Scale(targetLevel.mapPosition - currentLevel.mapPosition, GameManager.SCREEN_SIZE);
@@ -87,9 +101,9 @@ public class GameManager : MonoBehaviour {
 		myCamera.transform.position -= currentLevel.transform.position;
 		currentLevel.transform.position = Vector3.zero;
 		GoToTarget(FindTarget());
-		if (instance != this) {
-			yield return null;
-		}
+
+		yield return Fade(Color.black, new Color(0,0,0, 0), 0.5f);
+		fadeOutOverlay.gameObject.SetActive(false);
 
 		player.enabled = true;
 		d.gameObject.layer = oldLayer;
