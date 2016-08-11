@@ -34,15 +34,16 @@ class MapConfig : EditorWindow {
 	void OnGUI () {
 		// We should have a game manager.
 //		return;
-		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 		levelContainer = GameObject.Find("Levels");
-		if (gm == null) {
-			Debug.LogError("No Game Manager in Screen! Aborting.");
+		if (GameObject.Find("GameManager") == null) {
+//			Debug.LogError("No Game Manager in Screen! Aborting.");
+			EditorGUILayout.LabelField("No Game Manager.");
 			return;
 		} else if (levelContainer == null) {
 			Debug.Log("No Level Container. Creating one.");
 			levelContainer = new GameObject("Levels");
 		}
+		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 
 		if (EditorApplication.isPlaying != inPlayModeLastFrame) {
 			colors = new Dictionary<Color, GUIStyle>();

@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour {
 		var oldLayer = d.gameObject.layer;
 		d.gameObject.layer = LayerMask.NameToLayer("Default");
 		fadeOutOverlay.gameObject.SetActive(true);
-		yield return Fade(new Color(0,0,0, 0), Color.black, 0.5f);
+		yield return Fade(new Color(0,0,0, 0), Color.black, 0.2f);
 
 		Level targetLevel = FindLevelWithCoord(px, py);
 		targetLevel.transform.position = Vector3.Scale(targetLevel.mapPosition - currentLevel.mapPosition, GameManager.SCREEN_SIZE);
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour {
 		currentLevel.transform.position = Vector3.zero;
 		GoToTarget(FindTarget());
 
-		yield return Fade(Color.black, new Color(0,0,0, 0), 0.5f);
+		yield return Fade(Color.black, new Color(0,0,0, 0), 0.2f);
 		fadeOutOverlay.gameObject.SetActive(false);
 
 		player.enabled = true;
