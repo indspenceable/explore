@@ -25,6 +25,10 @@ public class GameManager : MonoBehaviour {
 		public int x;
 		public int y;
 	}
+	public enum Direction {
+		RIGHT,
+		LEFT,
+	}
 	[SerializeField]
 	public List<Door> HorizontalDoors = new List<Door>();
 	private Door FindDoor(int x, int y) {
@@ -50,19 +54,73 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public Level FindLevelWithCoord(int x, int y) {
+		foreach (Level l in levels) {
+			if ((l.mapPosition.x <= x && (l.mapPosition + l.mapSize).x > x) &&
+				(l.mapPosition.y <= y && (l.mapPosition + l.mapSize).y > y)) {
+				return l;
+			}
+		}
+		return null;
+	}
 
 	// SINGLETON
 	public static GameManager instance;
 	void Start () {
 		instance = this;
 		GetComponent<AudioSource>().Play();
-		GoToTarget(findTargets());
+		GoToTarget(FindTarget());
 	}
+
+	public IEnumerator DoDoorCollision(int px, int py, Vector3 playerOffset, DoorCollider d) {
+		player.enabled = false;
+		var oldLayer = d.gameObject.layer;
+		d.gameObject.layer = LayerMask.NameToLayer("Default");
+
+		Level targetLevel = FindLevelWithCoord(px, py);
+		targetLevel.transform.position = Vector3.Scale(targetLevel.mapPosition - currentLevel.mapPosition, GameManager.SCREEN_SIZE);
+		targetLevel.gameObject.SetActive(true);
+		currentLevel.gameObject.SetActive(false);
+		currentLevel = targetLevel;
+		player.transform.position -= currentLevel.transform.position;
+		player.transform.position += playerOffset;
+		myCamera.transform.position -= currentLevel.transform.position;
+		currentLevel.transform.position = Vector3.zero;
+		GoToTarget(FindTarget());
+		if (instance != this) {
+			yield return null;
+		}
+
+		player.enabled = true;
+		d.gameObject.layer = oldLayer;
+	}
+
+	public IEnumerator DoorCollision(DoorCollider door) {
+		if (door.direction == Direction.RIGHT) {
+			int py = Mathf.FloorToInt(player.transform.position.y / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
+			int px = (int)currentLevel.mapPosition.x + (int)currentLevel.mapSize.x-1;
+
+			if (DoorAt(px, py)) {
+				// Door going right
+				yield return DoDoorCollision(px+1, py, Vector3.right, door);
+			}
+		}
+		//
+		if (door.direction == Direction.LEFT) {
+			int py = Mathf.FloorToInt(player.transform.position.y / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
+			int px = (int)currentLevel.mapPosition.x-1;
+			if (DoorAt(px, py)) {
+				// Door going right
+				yield return DoDoorCollision(px, py, -Vector3.right, door);
+			}
+		}
+	}
+
 
 	bool oldEnabled;
 	float oldTimeScale;
 
-	Vector2 findTargets() {
+	Vector2 FindTarget() {
 		float halfWidth = SCREEN_SIZE.x / 2;
 		float halfHeight = SCREEN_SIZE.y / 2;
 		Vector2 scaledMap = Vector2.Scale(currentLevel.mapSize, SCREEN_SIZE);
@@ -73,7 +131,7 @@ public class GameManager : MonoBehaviour {
 
 	public void Update() {
 		// find the target camera position. This involves keeping the camera within the bounds of the level.
-		Vector2 targetP = findTargets();
+		Vector2 targetP = FindTarget();
 
 		// Can the camera go there?
 		myCamera.transform.position = Vector3.Lerp(myCamera.transform.position, new Vector3(targetP.x, targetP.y, myCamera.transform.position.z), Time.deltaTime * lerpWeight);

@@ -118,10 +118,10 @@ class MapConfig : EditorWindow {
 			currentLevel.mapPosition += new Vector2(-1,0);
 		}
 		if (GUILayout.Button ("v")) {
-			currentLevel.mapPosition += new Vector2(0,1);
+			currentLevel.mapPosition += new Vector2(0,-1);
 		}
 		if (GUILayout.Button ("^")) {
-			currentLevel.mapPosition += new Vector2(0,-1);
+			currentLevel.mapPosition += new Vector2(0,1);
 		}
 		if (GUILayout.Button (">")) {
 			currentLevel.mapPosition += new Vector2(1,0);
@@ -131,6 +131,9 @@ class MapConfig : EditorWindow {
 
 	void DisplayMap(Rect r) {
 		foreach(Level l in gm.levels) {
+			if (l == null) {
+				continue;
+			}
 			DrawFullRoomRect(r, l, (int)l.mapPosition.x, (int)l.mapPosition.y);
 			for (int dx = 0; dx < l.mapSize.x; dx+=1) {
 				for (int dy = 0; dy < l.mapSize.y; dy+=1) {
@@ -164,23 +167,13 @@ class MapConfig : EditorWindow {
 		}
 		for (int x = minX; x < maxX; x += 1)  {
 			for (int y = minY; y < maxY; y+=1) {
-				Level l = findLevelWithCoord(x, y);
-				Level o = findLevelWithCoord(x+1, y);
+				Level l = gm.FindLevelWithCoord(x, y);
+				Level o = gm.FindLevelWithCoord(x+1, y);
 				if (l != null && o != null && l != o) {
 					DrawDoorToRight(r, x, y);
 				}
 			}
 		}
-	}
-
-	Level findLevelWithCoord(int x, int y) {
-		foreach (Level l in gm.levels) {
-			if ((l.mapPosition.x <= x && (l.mapPosition + l.mapSize).x > x) &&
-				(l.mapPosition.y <= y && (l.mapPosition + l.mapSize).y > y)) {
-				return l;
-			}
-		}
-		return null;
 	}
 
 	const int editorUIRoomSize = 20;
@@ -192,7 +185,7 @@ class MapConfig : EditorWindow {
 		GUIStyle style = doorHere ? colors[Color.red] : colors[Color.black];
 		if (GUI.Button(new Rect(
 			r.x + (x+1)*editorUIRoomSize - editorUIRoomMargin,
-			r.y + y*editorUIRoomSize,
+			-(r.y + y*editorUIRoomSize),
 			editorUIRoomMargin,
 			editorUIRoomSize - editorUIRoomMargin
 		), GUIContent.none, style)) {
@@ -205,15 +198,20 @@ class MapConfig : EditorWindow {
 		GUIStyle style = colors[Color.black];
 		GUI.Label(new Rect(
 			r.x + x*editorUIRoomSize + editorUIRoomPadding, 
-			r.y + y*editorUIRoomSize + editorUIRoomPadding, 
+			-(r.y + y*editorUIRoomSize + editorUIRoomPadding - editorUIRoomMargin),
 			l.mapSize.x*editorUIRoomSize - 2*editorUIRoomPadding - editorUIRoomMargin, 
-			l.mapSize.y*editorUIRoomSize - 2*editorUIRoomPadding - editorUIRoomMargin
+			-(l.mapSize.y*editorUIRoomSize - 2*editorUIRoomPadding - editorUIRoomMargin)
 		), GUIContent.none, style);
 	}
 
 	void DrawSingleScreenRectButton(Rect r, Level l, int x, int y) {
 		GUIStyle style = currentLevel == l ? colors[Color.green] : colors[Color.blue];
-		if (GUI.Button(new Rect(r.x + x*editorUIRoomSize, r.y + y*editorUIRoomSize, editorUIRoomSize - editorUIRoomMargin, editorUIRoomSize - editorUIRoomMargin), GUIContent.none, style)) {
+		if (GUI.Button(new Rect(
+			r.x + x*editorUIRoomSize, 
+			-(r.y + y*editorUIRoomSize),
+			editorUIRoomSize - editorUIRoomMargin, 
+			(editorUIRoomSize - editorUIRoomMargin)
+		), GUIContent.none, style)) {
 			DisableAllLevelsExceptFor(l);
 		}
 	}

@@ -163,13 +163,14 @@ public class LookAtPointEditor : Editor
 	static void DrawGrid(Level lb, Vector2 _mapSize, Vector2 _gridSize)
 	{
 		// Draw the grid
-		Handles.color = Color.green;
 		for (int x = 0; x <= _mapSize.x; x += 1) {
+			Handles.color =(int)(x / GameManager.SCREEN_SIZE.x) % 2 == 0 ? Color.green : Color.blue;
 			float xp = lb.transform.position.x + (x * _gridSize.x);
 			float yp = lb.transform.position.y;
 			Handles.DrawDottedLine (new Vector3 (xp, yp), new Vector3 (xp, yp + (_gridSize.y * _mapSize.y)), 4f);
 		}
 		for (int y = 0; y <= _mapSize.y; y += 1) {
+			Handles.color =(int)(y / GameManager.SCREEN_SIZE.y) % 2 == 0 ? Color.green : Color.blue;
 			float xp = lb.transform.position.x;
 			float yp = lb.transform.position.y + (y * _gridSize.y);
 			Handles.DrawDottedLine (new Vector3 (xp + (_gridSize.x * _mapSize.x), yp), new Vector3 (xp, yp), 4f);

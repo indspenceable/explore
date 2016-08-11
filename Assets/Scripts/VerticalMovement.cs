@@ -35,7 +35,7 @@ public class VerticalMovement : MonoBehaviour {
 		
 	public RaycastHit2D CheckCollisionVerticalAtDistance(float dv) {
 		// If we didn't set the jumpThruPlatformMask, then just use the standard LayerMask
-		bool falling = (dv < 0) && (jumpThruPlatformMask != null);
+		bool falling = (dv < 0) && (jumpThruPlatformMask != 0);
 		LayerMask mask = (falling ? jumpThruPlatformMask.value : 0) | levelGeometryMask.value;
 		if (dv > 0) {
 			return Physics2D.BoxCast((Vector2)UpCollider.transform.position + UpCollider.offset, 
