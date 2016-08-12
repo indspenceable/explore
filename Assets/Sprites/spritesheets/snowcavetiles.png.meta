@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d98f705e896374f7f87f5c90f8f5a092
-timeCreated: 1470955291
+timeCreated: 1470977209
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -341,51 +341,6 @@ TextureImporter:
     - name: snowcavetiles_16
       rect:
         serializedVersion: 2
-        x: 0
-        y: 192
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 16}
-    - name: snowcavetiles_17
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 192
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 16}
-    - name: snowcavetiles_18
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 192
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 16}
-    - name: snowcavetiles_19
-      rect:
-        serializedVersion: 2
         x: 96
         y: 192
         width: 32
@@ -400,7 +355,7 @@ TextureImporter:
         - {x: 5, y: 0}
         - {x: 3, y: 2}
         - {x: -3, y: 2}
-    - name: snowcavetiles_20
+    - name: snowcavetiles_17
       rect:
         serializedVersion: 2
         x: 128
@@ -417,7 +372,7 @@ TextureImporter:
         - {x: 16, y: -5}
         - {x: 16, y: 5}
         - {x: 0, y: 5}
-    - name: snowcavetiles_21
+    - name: snowcavetiles_18
       rect:
         serializedVersion: 2
         x: 160
@@ -428,13 +383,13 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -6, y: 4}
-        - {x: -6, y: -16}
+      - - {x: -5, y: 3}
+        - {x: -5, y: -16}
         - {x: 5, y: -16}
         - {x: 16, y: -5}
         - {x: 16, y: 5}
-        - {x: -4, y: 6}
-    - name: snowcavetiles_22
+        - {x: -3, y: 5}
+    - name: snowcavetiles_19
       rect:
         serializedVersion: 2
         x: 192
@@ -449,7 +404,7 @@ TextureImporter:
         - {x: 16, y: -5}
         - {x: 16, y: 5}
         - {x: -16, y: 5}
-    - name: snowcavetiles_23
+    - name: snowcavetiles_20
       rect:
         serializedVersion: 2
         x: 224
@@ -466,52 +421,7 @@ TextureImporter:
         - {x: 5, y: 3}
         - {x: 3, y: 5}
         - {x: -16, y: 5}
-    - name: snowcavetiles_24
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 16}
-    - name: snowcavetiles_25
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 16}
-    - name: snowcavetiles_26
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 16}
-    - name: snowcavetiles_27
+    - name: snowcavetiles_21
       rect:
         serializedVersion: 2
         x: 96
@@ -528,7 +438,7 @@ TextureImporter:
         - {x: 3, y: -2}
         - {x: 5, y: 0}
         - {x: 5, y: 16}
-    - name: snowcavetiles_28
+    - name: snowcavetiles_22
       rect:
         serializedVersion: 2
         x: 128
@@ -545,7 +455,7 @@ TextureImporter:
         - {x: 2, y: -3}
         - {x: 2, y: 3}
         - {x: 0, y: 5}
-    - name: snowcavetiles_29
+    - name: snowcavetiles_23
       rect:
         serializedVersion: 2
         x: 160
@@ -558,9 +468,9 @@ TextureImporter:
       outline:
       - - {x: 5, y: -16}
         - {x: 5, y: 16}
-        - {x: -6, y: 16}
-        - {x: -6, y: -16}
-    - name: snowcavetiles_30
+        - {x: -5, y: 16}
+        - {x: -5, y: -16}
+    - name: snowcavetiles_24
       rect:
         serializedVersion: 2
         x: 192
@@ -576,52 +486,7 @@ TextureImporter:
         - {x: -5, y: -5}
         - {x: 5, y: -5}
         - {x: 5, y: 5}
-    - name: snowcavetiles_31
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 16}
-    - name: snowcavetiles_32
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 128
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 16}
-    - name: snowcavetiles_33
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 128
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 16}
-    - name: snowcavetiles_34
+    - name: snowcavetiles_25
       rect:
         serializedVersion: 2
         x: 96
@@ -638,7 +503,7 @@ TextureImporter:
         - {x: 3, y: -7}
         - {x: 8, y: -7}
         - {x: 8, y: 10}
-    - name: snowcavetiles_35
+    - name: snowcavetiles_26
       rect:
         serializedVersion: 2
         x: 128
@@ -657,7 +522,7 @@ TextureImporter:
         - {x: 3, y: -9}
         - {x: 12, y: -9}
         - {x: 12, y: 6}
-    - name: snowcavetiles_36
+    - name: snowcavetiles_27
       rect:
         serializedVersion: 2
         x: 160
@@ -668,13 +533,13 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -6, y: 16}
-        - {x: -6, y: -4}
-        - {x: -4, y: -6}
+      - - {x: -5, y: 16}
+        - {x: -5, y: -3}
+        - {x: -3, y: -5}
         - {x: 16, y: -5}
         - {x: 16, y: 5}
         - {x: 5, y: 16}
-    - name: snowcavetiles_37
+    - name: snowcavetiles_28
       rect:
         serializedVersion: 2
         x: 192
@@ -689,7 +554,7 @@ TextureImporter:
         - {x: 16, y: -5}
         - {x: 16, y: 5}
         - {x: -16, y: 5}
-    - name: snowcavetiles_38
+    - name: snowcavetiles_29
       rect:
         serializedVersion: 2
         x: 224
@@ -706,6 +571,141 @@ TextureImporter:
         - {x: 3, y: -5}
         - {x: 5, y: -3}
         - {x: 5, y: 16}
+    - name: snowcavetiles_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
+    - name: snowcavetiles_31
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
+    - name: snowcavetiles_32
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
+    - name: snowcavetiles_33
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
+    - name: snowcavetiles_34
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
+    - name: snowcavetiles_35
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
+    - name: snowcavetiles_36
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
+    - name: snowcavetiles_37
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
+    - name: snowcavetiles_38
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
     outline: []
   spritePackingTag: 
   userData: 
