@@ -47,6 +47,9 @@ TagManager:
   - name: Background Tiles
     uniqueID: 2048664371
     locked: 0
+  - name: Background Tile Fade
+    uniqueID: 3937000543
+    locked: 0
   - name: Active Level
     uniqueID: 3977865197
     locked: 0
