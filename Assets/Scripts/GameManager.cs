@@ -178,14 +178,49 @@ public class GameManager : MonoBehaviour {
 		myCamera.transform.position = new Vector3(p.x, p.y, myCamera.transform.position.z);
 	}
 
-	public IEnumerator Read(string text) {
+	public IEnumerator WaitForUnscaledSeconds(float time) {
+		float dt = 0;
+		while (dt < time)  {
+			yield return null;
+			dt += Time.unscaledDeltaTime;
+		}
+	}
+
+	public IEnumerator Read(string text, AudioClip blipSound) {
 		
 		bool oldEnabled = GameManager.instance.player.enabled;
 		float oldTimeScale = Time.timeScale;
 		Time.timeScale = 0f;
 		player.enabled = false;
 
+		int delay = 0;
 		yield return null;
+		for (int i = 0; i < text.Length; i += 1) {
+			char currentChar = text[i];
+			dialogues.DisplayText(text.Substring(0,i+1));
+			delay -= 1;
+			switch(currentChar) {
+			case '\n':
+				yield return WaitForUnscaledSeconds(0.5f);
+				break;
+			case '.':
+				yield return WaitForUnscaledSeconds(0.3f);
+				break;
+			case ' ':
+				yield return WaitForUnscaledSeconds(0.01f);
+				break;
+			default:
+				yield return WaitForUnscaledSeconds(0.01f);
+				if (blipSound != null && delay <= 0) {
+					Time.timeScale = 1f;
+					AudioSource.PlayClipAtPoint(blipSound, Vector3.zero);
+					Time.timeScale = 0f;
+					delay = 3;
+				}
+				break;
+			}
+		}
+
 		dialogues.DisplayText(text);
 		while (!Input.GetButtonDown("Interact")) {
 			yield return null;
