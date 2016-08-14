@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject pausedTextContainer;
 	public TextContainer dialogues;
 	public Level currentLevel;
+	public SpriteRenderer backgroundImage;
 
 	public static bool paused = false;
 	public static readonly Vector2 SCREEN_SIZE = new Vector2(16, 12);
@@ -100,6 +101,7 @@ public class GameManager : MonoBehaviour {
 		player.transform.position += playerOffset;
 		myCamera.transform.position -= currentLevel.transform.position;
 		currentLevel.transform.position = Vector3.zero;
+		backgroundImage.sprite = targetLevel.backgroundImage;
 		GoToTarget(FindTarget());
 
 		yield return Fade(Color.black, new Color(0,0,0, 0), 0.2f);

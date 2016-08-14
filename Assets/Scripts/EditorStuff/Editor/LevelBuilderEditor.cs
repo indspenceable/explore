@@ -13,6 +13,7 @@ public class LookAtPointEditor : Editor
 	SerializedProperty sprites;
 //	SerializedProperty defaultTilePrefab;
 	SerializedProperty currentlySelectedSprite;
+	SerializedProperty backgroundImage;
 
 	void OnEnable()
 	{
@@ -22,6 +23,7 @@ public class LookAtPointEditor : Editor
 		sprites = serializedObject.FindProperty("sprites");
 //		defaultTilePrefab = serializedObject.FindProperty("defaultTilePrefab");
 		currentlySelectedSprite = serializedObject.FindProperty("currentlySelectedSprite");
+		backgroundImage = serializedObject.FindProperty("backgroundImage");
 	}
 
 	public override void OnInspectorGUI()
@@ -29,6 +31,7 @@ public class LookAtPointEditor : Editor
 		serializedObject.Update();
 		Level lb = (Level)target;
 
+		EditorGUILayout.PropertyField(backgroundImage);
 		EditorGUILayout.PropertyField(mapSize);
 		EditorGUILayout.PropertyField(mapPosition);
 		CurrentEditLayerDropdown(lb);
