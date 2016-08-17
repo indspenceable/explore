@@ -98,7 +98,7 @@ public class LookAtPointEditor : Editor
 				currentlySelectedSprite.objectReferenceValue = sprites.GetArrayElementAtIndex (0).objectReferenceValue as Sprite;
 				serializedObject.ApplyModifiedProperties ();
 			}
-			DrawTextureGUI (rect, currentlySelectedSprite.objectReferenceValue as Sprite, rect.size);
+			EditorUtil.DrawTextureGUI (rect, currentlySelectedSprite.objectReferenceValue as Sprite, rect.size);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class LookAtPointEditor : Editor
 			currentlySelectedSprite.objectReferenceValue = sprites.GetArrayElementAtIndex (i).objectReferenceValue as Sprite;
 			serializedObject.ApplyModifiedProperties ();
 		}
-		DrawTextureGUI (re, s, re.size);
+		EditorUtil.DrawTextureGUI (re, s, re.size);
 	}
 
 	void RenderAllTileButtons()
@@ -133,30 +133,6 @@ public class LookAtPointEditor : Editor
 			}
 			EditorGUILayout.EndHorizontal ();
 		}
-	}
-		
-
-
-	public static void DrawTexture(Rect position, Sprite sprite, Vector2 size)
-	{
-		Rect spriteRect = new Rect(sprite.rect.x / sprite.texture.width, sprite.rect.y / sprite.texture.height,
-			sprite.rect.width / sprite.texture.width, sprite.rect.height / sprite.texture.height);
-		Vector2 actualSize = size;
-
-		actualSize.y *= (sprite.rect.height / sprite.rect.width);
-		Graphics.DrawTexture(new Rect(position.x, position.y + (size.y - actualSize.y) / 2, actualSize.x, actualSize.y), sprite.texture, spriteRect, 0, 0, 0, 0);
-	}
-
-	public static void DrawTextureGUI(Rect position, Sprite sprite, Vector2 size)
-	{
-		Rect spriteRect = new Rect(sprite.rect.x / sprite.texture.width, 
-			sprite.rect.y / sprite.texture.height,
-			sprite.rect.width / sprite.texture.width, 
-			sprite.rect.height / sprite.texture.height);
-		Vector2 actualSize = size;
-
-		actualSize.y *= (sprite.rect.height / sprite.rect.width);
-		GUI.DrawTextureWithTexCoords(new Rect(position.x, position.y + (size.y - actualSize.y) / 2, actualSize.x, actualSize.y), sprite.texture, spriteRect);
 	}
 
 	Vector2? storedMousePosition = null;

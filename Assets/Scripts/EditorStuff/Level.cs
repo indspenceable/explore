@@ -113,9 +113,13 @@ public class Level : MonoBehaviour {
 	}
 
 	public GameObject FindTileAt(int x, int y) {
+		return FindTileAt(x, y, currentEditLayer);
+	}
+
+	public GameObject FindTileAt(int x, int y, int layer) {
 		EnsureTileLocationListIsSetup();
 		foreach (TileLocation tl in tiles) {
-			if (tl.x == x && tl.y == y && tl.editLayerId == currentEditLayer) {
+			if (tl.x == x && tl.y == y && tl.editLayerId == layer) {
 				return tl.tile;
 			}
 		}
