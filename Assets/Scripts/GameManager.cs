@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour {
 	public static bool paused = false;
 	public static readonly Vector2 SCREEN_SIZE = new Vector2(16, 12);
 
+	private GameObject currentActiveObjects;
+
 	[SerializeField]
 	public List<Level> levels;
 
@@ -85,16 +87,37 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public IEnumerator DoDoorCollision(int px, int py, Vector3 playerOffset, DoorCollider d) {
-		player.enabled = false;
-		var oldLayer = d.gameObject.layer;
-		d.gameObject.layer = LayerMask.NameToLayer("Default");
-		fadeOutOverlay.gameObject.SetActive(true);
-		yield return Fade(new Color(0,0,0, 0), Color.black, 0.2f);
+	GameObject deactivatedActiveObjectsContainer = null;
 
-		Level targetLevel = FindLevelWithCoord(px, py);
+	public void DealWithActiveObjects(Level targetLevel) {
+		// Re-activate their activeObjects container
+		if (deactivatedActiveObjectsContainer != null) {
+			deactivatedActiveObjectsContainer.SetActive(true);
+			deactivatedActiveObjectsContainer = null;
+		}
+		// Destroy the old room's activated objects
+		Destroy(currentActiveObjects);
+		currentActiveObjects = null;
+
+		Transform AOTransform = targetLevel.transform.FindChild("ActiveObjects");
+		if (AOTransform != null) {
+			deactivatedActiveObjectsContainer = AOTransform.gameObject;
+			currentActiveObjects = Instantiate(deactivatedActiveObjectsContainer) as GameObject;
+			deactivatedActiveObjectsContainer.SetActive(false);
+		}
+
+
+
+
+
+	}
+
+	public void MoveIntoLevel(Level targetLevel, Vector3 playerOffset) {
 		targetLevel.transform.position = Vector3.Scale(targetLevel.mapPosition - currentLevel.mapPosition, GameManager.SCREEN_SIZE);
 		targetLevel.gameObject.SetActive(true);
+
+		DealWithActiveObjects(targetLevel);
+
 		currentLevel.gameObject.SetActive(false);
 		currentLevel = targetLevel;
 		player.transform.position -= currentLevel.transform.position;
@@ -103,6 +126,17 @@ public class GameManager : MonoBehaviour {
 		currentLevel.transform.position = Vector3.zero;
 		backgroundImage.sprite = targetLevel.backgroundImage;
 		GoToTarget(FindTarget());
+	}
+
+	public IEnumerator DoDoorCollision(int px, int py, Vector3 playerOffset, DoorCollider d) {
+		player.enabled = false;
+		var oldLayer = d.gameObject.layer;
+		d.gameObject.layer = LayerMask.NameToLayer("Default");
+		fadeOutOverlay.gameObject.SetActive(true);
+		yield return Fade(new Color(0,0,0, 0), Color.black, 0.2f);
+
+		Level targetLevel = FindLevelWithCoord(px, py);
+		MoveIntoLevel(targetLevel, playerOffset);
 
 		yield return Fade(Color.black, new Color(0,0,0, 0), 0.2f);
 		fadeOutOverlay.gameObject.SetActive(false);
