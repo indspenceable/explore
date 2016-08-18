@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-[CustomEditor(typeof(Level))]
+//[CustomEditor(typeof(Level))]
 [CanEditMultipleObjects]
 public class LookAtPointEditor : Editor 
 {

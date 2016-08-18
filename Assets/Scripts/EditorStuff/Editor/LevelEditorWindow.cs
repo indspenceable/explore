@@ -58,41 +58,8 @@ class LevelEditorWindow : EditorWindow {
 
 		currentLayer = GUILayout.Toolbar(currentLayer, Level.LAYER_OPTIONS);
 
-		RenderAllTileButtons();
 		EditorGUILayout.Separator();
 		DrawCurrentMapWithSprites();
-	}
-
-	void RenderTileButton(int i)
-	{
-		// Get the current sprite we're rendering
-		Sprite s = util.sprites[i];
-		// Get the position it's button should be at, using autolayout
-		Rect re = EditorGUILayout.GetControlRect (GUILayout.Width (32), GUILayout.Height (32));
-		// Draw a button, then draw the sprite on top of it.
-		if (GUI.Button (re, "")) {
-			util.currentlySelectedSprite = s;
-		}
-		EditorUtil.DrawTextureGUI (re, s, re.size);
-	}
-
-	void RenderAllTileButtons()
-	{
-		int i = 0;
-		int numberOfTilesPerRow = Screen.width / 38;
-		//		numberOfTilesPerRow = 3;
-		int numberOfRows = (util.sprites.Length + numberOfTilesPerRow - 1) / numberOfTilesPerRow;
-		for (int y = 0; y < numberOfRows; y += 1) {
-			EditorGUILayout.BeginHorizontal ();
-			for (int x = 0; x < numberOfTilesPerRow; x += 1) {
-				if (i >= util.sprites.Length) {
-					continue;
-				}
-				RenderTileButton (i);
-				i += 1;
-			}
-			EditorGUILayout.EndHorizontal ();
-		}
 	}
 
 	void DrawCurrentMapWithSprites(){
@@ -109,6 +76,22 @@ class LevelEditorWindow : EditorWindow {
 			for (int x = 0; x < width; x += 1) {
 				// The rect we're rendering to, in the editor
 				Rect r = EditorGUILayout.GetControlRect(GUILayout.Width(16), GUILayout.Height(16));
+
+				// If we click on this tile
+				if (GUI.Button(r, "")) {
+					if (Event.current.button == 0 && util.currentlySelectedSprite) {
+						currentLevel.FindOrCreateTileAt(x, y, currentLayer).GetComponent<SpriteRenderer>().sprite = util.currentlySelectedSprite;
+					} else if (Event.current.button == 1) {
+						currentLevel.RemoveTileAt(x, y, currentLayer);
+					} else if (Event.current.button == 2) { // Middle mouse
+						GameObject go = currentLevel.FindTileAt(x, y, currentLayer);
+						if (go != null) {
+							util.currentlySelectedSprite = go.GetComponent<SpriteRenderer>().sprite;
+							ReRenderEditorPaletteWindow();
+						}
+					}
+				}
+
 				// The tile we wish to render
 				GameObject currentTile = currentLevel.FindTileAt(x, y, currentLayer);
 				if (currentTile != null) {
@@ -126,5 +109,14 @@ class LevelEditorWindow : EditorWindow {
 			EditorGUILayout.EndHorizontal();
 		}
 		EditorGUILayout.EndScrollView();
+	}
+
+
+	public void ReRenderEditorPaletteWindow() {
+		LevelEditorPaletteWindow[] windows = Resources.FindObjectsOfTypeAll<LevelEditorPaletteWindow>();
+		if(windows != null && windows.Length > 0)
+		{
+			windows[0].Repaint();
+		}
 	}
 }

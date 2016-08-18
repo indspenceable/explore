@@ -92,7 +92,11 @@ public class Level : MonoBehaviour {
 		}
 		return _tcs[tcid];
 	}
+
 	public GameObject FindOrCreateTileAt(int x, int y) {
+		return FindOrCreateTileAt(x, y, currentEditLayer);
+	}
+	public GameObject FindOrCreateTileAt(int x, int y, int layer) {
 		GameObject go = FindTileAt(x, y);
 		if (go == null) {
 			if (currentEditLayer == 1) {
@@ -100,14 +104,14 @@ public class Level : MonoBehaviour {
 			} else {
 				go = new GameObject("Sprite Tile");
 				go.AddComponent<SpriteRenderer>();
-				go.GetComponent<SpriteRenderer>().sortingLayerName = SORTING_LAYERS[currentEditLayer];
+				go.GetComponent<SpriteRenderer>().sortingLayerName = SORTING_LAYERS[layer];
 				go.GetComponent<SpriteRenderer>().material = shared.pixelPerfectSprite;
 				go.isStatic = true;
 			}
 
-			go.transform.parent = TileContainer(currentEditLayer).transform;
+			go.transform.parent = TileContainer(layer).transform;
 			go.transform.localPosition = new Vector3(x + gridSize.x/2, y + gridSize.y/2);
-			tiles.Add(new TileLocation(x, y, go, currentEditLayer));
+			tiles.Add(new TileLocation(x, y, go, layer));
 		}
 		return go;
 	}
@@ -127,9 +131,12 @@ public class Level : MonoBehaviour {
 	}
 		
 	public void RemoveTileAt(int x, int y) {
+		RemoveTileAt(x, y, currentEditLayer);
+	}
+	public void RemoveTileAt(int x, int y, int layer) {
 		EnsureTileLocationListIsSetup();
 		foreach (TileLocation tl in tiles) {
-			if (tl.x == x && tl.y == y && tl.editLayerId == currentEditLayer) {
+			if (tl.x == x && tl.y == y && tl.editLayerId == layer) {
 				Undo.DestroyObjectImmediate(tl.tile);
 				tiles.Remove(tl);
 				return;
