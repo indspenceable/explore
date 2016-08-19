@@ -14,8 +14,8 @@ public class Level : MonoBehaviour {
 
 #if UNITY_EDITOR
 
-	public static readonly string[] LAYER_OPTIONS = new string[]{ "Background", "Active", "Foreground" };
-	public static readonly string[] SORTING_LAYERS= new string[]{ "Background Tiles", "Active Level", "Foreground Tiles" };
+	public static readonly string[] LAYER_OPTIONS = new string[]{ "BG1", "BG2", "Geometry", "FG1", "FG2", "ActiveObjects" };
+	public static readonly string[] SORTING_LAYERS= new string[]{ "Background Tiles", "Background Tiles", "Active Level", "Foreground Tiles", "Foreground Tiles", "Active Level" };
 
 	// TODO - we never switch the gridsize from 1,1 cause it breaks things. Just bake this number in?
 	public Vector2 gridSize = new Vector2(1f, 1f);
@@ -82,12 +82,12 @@ public class Level : MonoBehaviour {
 		}
 		if (_tcs[tcid] == null) {
 			try {
-				_tcs[tcid] = transform.FindChild("TileContainer_" + tcid).gameObject;
+				_tcs[tcid] = transform.FindChild(LAYER_OPTIONS[tcid]).gameObject;
 			} catch {
 			}
 		}
 		if (_tcs[tcid] == null) {
-			_tcs[tcid] = new GameObject("TileContainer_" + tcid);
+			_tcs[tcid] = new GameObject(LAYER_OPTIONS[tcid]);
 			_tcs[tcid].transform.parent = transform;
 		}
 		return _tcs[tcid];

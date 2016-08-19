@@ -67,7 +67,7 @@ class LevelEditorWindow : EditorWindow {
 		int width = (int)(mapSize.x * GameManager.SCREEN_SIZE.x);
 		int height = (int)(mapSize.y * GameManager.SCREEN_SIZE.y);
 
-		mapScrollPosition = EditorGUILayout.BeginScrollView(mapScrollPosition);
+//		mapScrollPosition = EditorGUILayout.BeginScrollView(mapScrollPosition);
 		// Drawing from top to bottom
 		Vector2 size = new Vector2(16,16);
 
@@ -108,7 +108,7 @@ class LevelEditorWindow : EditorWindow {
 			}
 			EditorGUILayout.EndHorizontal();
 		}
-		EditorGUILayout.EndScrollView();
+//		EditorGUILayout.EndScrollView();
 	}
 
 
