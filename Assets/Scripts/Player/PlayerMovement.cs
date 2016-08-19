@@ -17,7 +17,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	public float jumpStrength = 10f;
 	public float highJumpStrength = 20f;
-	public bool highJumpEnabled = false;
 	public float gravityStrength = 30f;
 	public AudioClip jumpSoundEffect;
 
@@ -30,7 +29,6 @@ public class PlayerMovement : MonoBehaviour {
 	public float floatSpeed = 1f;
 	float jumpVx;
 	public bool initiatedJump;
-	public bool doubleJumpEnabled = true;
 	bool doubleJumpAvailable = false;
 	public AudioClip doubleJumpSoundEffect;
 
@@ -46,6 +44,12 @@ public class PlayerMovement : MonoBehaviour {
 	public HorizontalMovement horiz {get; private set;}
 
 	public LayerMask interactableMask;
+
+	public GameStateFlags currentGameState {
+		get {
+			return GetComponent<GameStateFlagsComponent>().state;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -210,7 +214,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	float getJumpStrength() {
-		return highJumpEnabled ? highJumpStrength :jumpStrength;
+		return currentGameState.highJumpEnabled ? highJumpStrength :jumpStrength;
 	}
 
 
@@ -245,7 +249,7 @@ public class PlayerMovement : MonoBehaviour {
 				vert.vy = -maxGravity;
 
 			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
-				if (doubleJumpEnabled && doubleJumpAvailable) {
+				if (currentGameState.doubleJumpEnabled && doubleJumpAvailable) {
 					AudioSource.PlayClipAtPoint(doubleJumpSoundEffect, Vector3.zero);
 					vert.vy = getJumpStrength()*2/3f;
 					doubleJumpAvailable = false;

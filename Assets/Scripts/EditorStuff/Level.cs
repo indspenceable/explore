@@ -78,7 +78,7 @@ public class Level : MonoBehaviour {
 
 	public GameObject TileContainer(int tcid) {
 		if (_tcs == null || _tcs.Length != LAYER_OPTIONS.Length) {
-			_tcs = new GameObject[4];
+			_tcs = new GameObject[LAYER_OPTIONS.Length];
 		}
 		if (_tcs[tcid] == null) {
 			try {
@@ -157,12 +157,12 @@ public class Level : MonoBehaviour {
 	}
 
 	public void RebindChildrenToTheirPrefabs() {
-		Sprite css = currentlySelectedSprite;
-		EnsureTileLocationListIsSetup();
-		foreach (TileLocation tl in tiles) {
-			currentlySelectedSprite = tl.tile.GetComponent<SpriteRenderer>().sprite;
-		}
-		currentlySelectedSprite = css;
+//		Sprite css = currentlySelectedSprite;
+//		EnsureTileLocationListIsSetup();
+//		foreach (TileLocation tl in tiles) {
+//			currentlySelectedSprite = tl.tile.GetComponent<SpriteRenderer>().sprite;
+//		}
+//		currentlySelectedSprite = css;
 	}
 
 	// in the editor, validate a bunch of things on change. But we rely on editor-specific

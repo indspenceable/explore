@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
 	public List<Level> levels;
 
 
+	// TODO move this editor crap out of here!
 	[System.Serializable]
 	public class Door {
 		public int x;
@@ -72,6 +73,8 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		instance = this;
 		GetComponent<AudioSource>().Play();
+		player.GetComponent<GameStateFlagsComponent>().state = GetComponent<GameStateFlagsComponent>().state;
+//		=GetComponent<GameStateFlagsComponent>();
 		GoToTarget(FindTarget());
 	}
 

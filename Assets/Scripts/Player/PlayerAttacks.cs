@@ -13,9 +13,13 @@ public class PlayerAttacks : MonoBehaviour {
 	public AudioClip shootSoundEffect;
 	public GameObject meleeHitPrefab;
 	public AudioClip meleeSoundEffect;
-
-
 	private PlayerMovement movement;
+
+	public GameStateFlags currentGameState {
+		get {
+			return GetComponent<GameStateFlagsComponent>().state;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -24,14 +28,15 @@ public class PlayerAttacks : MonoBehaviour {
 	}
 	// Update is called once per frame
 	public void Update () {
-		if (Input.GetButtonDown("Ranged") && MayInitiateAttack()) {
+		if (Input.GetButtonDown("Ranged") && MayInitiateAttack() && currentGameState.rangedAttackEnabled) {
 			ShootMissile();
-		} else if (Input.GetButtonDown("Melee") && MayInitiateAttack()) {
+		} else if (Input.GetButtonDown("Melee") && MayInitiateAttack() && currentGameState.meleeAttackEnabled) {
 			Melee();
 		}
 	}
 
 	private bool MayInitiateAttack() {
+		// TODO movement shouldn't own controls being enabled - that should be its own script
 		return mayInitiateAttack && movement.controlsAreEnabled && !GameManager.paused;
 	}
 
