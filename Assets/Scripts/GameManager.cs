@@ -110,11 +110,6 @@ public class GameManager : MonoBehaviour {
 			currentActiveObjects = Instantiate(deactivatedActiveObjectsContainer) as GameObject;
 			deactivatedActiveObjectsContainer.SetActive(false);
 		}
-
-
-
-
-
 	}
 
 	public void MoveIntoLevel(Level targetLevel, Vector3 playerOffset) {
@@ -211,6 +206,13 @@ public class GameManager : MonoBehaviour {
 				paused = true;
 			}
 		}
+
+		if (Input.GetKeyDown(KeyCode.S)) {
+			SaveGameState(0);
+		}
+		if (Input.GetKeyDown(KeyCode.L)) {
+			LoadGameState(0);
+		}
 	}
 
 	public void GoToTarget(Vector2 p) {
@@ -278,7 +280,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void LoadGameState(int slot) {
-		if(File.Exists(Application.persistentDataPath + "/savedGames.gd")) {
+		if(File.Exists(Application.persistentDataPath + "/game_ " + slot + ".gd")) {
 			BinaryFormatter bf = new BinaryFormatter();
 			FileStream file = File.Open(Application.persistentDataPath + "/game_ " + slot + ".gd", FileMode.Open);
 			player.GetComponent<GameStateFlagsComponent>().state = (GameStateFlags)bf.Deserialize(file);
