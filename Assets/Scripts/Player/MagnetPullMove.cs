@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 [RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerInputManager))]
 public class MagnetPullMove : MonoBehaviour {
 	public LayerMask magnetMask;
 	public float magnetDistance = 1f;
@@ -21,23 +22,22 @@ public class MagnetPullMove : MonoBehaviour {
 		}
 	}
 
+	private PlayerInputManager inputManager;
+
+	void Start() {
+		inputManager = GetComponent<PlayerInputManager>();
+	}
+
 	void Update () {
 		if (!currentGameState.magnetEnabled) {
 			return;
 		}
 		bool spriteEnabledState = false;
-		if (Input.GetAxis("MagnetPositive") > 0) {
+		if (inputManager.GetAxis("MagnetPositive") > 0) {
 			Collider2D collision = Physics2D.OverlapCircle(transform.position, magnetDistance, magnetMask); 
 			if (collision != null) {
 				
-				GetComponent<PlayerMovement>().ApplyMagnet(collision.transform.position, collision.GetComponent<Magnet>().polarity*Input.GetAxis("MagnetPositive") * weight);
-				spriteEnabledState = true;
-			}
-		} else if (Input.GetAxis("MagnetNegative") > 0) {
-			Collider2D collision = Physics2D.OverlapCircle(transform.position, magnetDistance, magnetMask); 
-			if (collision != null) {
-
-				GetComponent<PlayerMovement>().ApplyMagnet(collision.transform.position, -1*collision.GetComponent<Magnet>().polarity*Input.GetAxis("MagnetNegative") * weight);
+				GetComponent<PlayerMovement>().ApplyMagnet(collision.transform.position, collision.GetComponent<Magnet>().polarity*inputManager.GetAxis("MagnetPositive") * weight);
 				spriteEnabledState = true;
 			}
 		}

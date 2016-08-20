@@ -14,6 +14,7 @@ public class PlayerAttacks : MonoBehaviour {
 	public GameObject meleeHitPrefab;
 	public AudioClip meleeSoundEffect;
 	private PlayerMovement movement;
+	private PlayerInputManager inputManager;
 
 	public GameStateFlags currentGameState {
 		get {
@@ -25,12 +26,13 @@ public class PlayerAttacks : MonoBehaviour {
 	void Start () {
 		animator = GetComponent<Animator>();
 		movement = GetComponent<PlayerMovement>();
+		inputManager = GetComponent<PlayerInputManager>();
 	}
 	// Update is called once per frame
 	public void Update () {
-		if (Input.GetButtonDown("Ranged") && MayInitiateAttack() && currentGameState.rangedAttackEnabled) {
+		if (inputManager.GetButtonDown("Ranged") && MayInitiateAttack() && currentGameState.rangedAttackEnabled) {
 			ShootMissile();
-		} else if (Input.GetButtonDown("Melee") && MayInitiateAttack() && currentGameState.meleeAttackEnabled) {
+		} else if (inputManager.GetButtonDown("Melee") && MayInitiateAttack() && currentGameState.meleeAttackEnabled) {
 			Melee();
 		}
 	}

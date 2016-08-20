@@ -5,6 +5,7 @@ using System.Collections;
 [RequireComponent(typeof(PlayerTakeDamage))]
 [RequireComponent(typeof(VerticalMovement))]
 [RequireComponent(typeof(HorizontalMovement))]
+[RequireComponent(typeof(PlayerInputManager))]
 public class PlayerMovement : MonoBehaviour {
 	Animator animator;
 
@@ -45,6 +46,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	public LayerMask interactableMask;
 
+	private PlayerInputManager inputManager;
+
 	public GameStateFlags currentGameState {
 		get {
 			return GetComponent<GameStateFlagsComponent>().state;
@@ -58,6 +61,7 @@ public class PlayerMovement : MonoBehaviour {
 		health = GetComponent<PlayerTakeDamage>();
 		vert = GetComponent<VerticalMovement>();
 		horiz = GetComponent<HorizontalMovement>();
+		inputManager = GetComponent<PlayerInputManager>();
 	}
 
 	IEnumerator AirDodge() {
@@ -66,7 +70,7 @@ public class PlayerMovement : MonoBehaviour {
 		health.currentlyInIframes = true;
 		yield return new WaitForSeconds(airDodgeInitialDelay);
 
-		Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized * airDodgeMovementDistance;
+		Vector3 direction = new Vector3(inputManager.GetAxis("Horizontal"), inputManager.GetAxis("Vertical")).normalized * airDodgeMovementDistance;
 		Vector3 startPosition = transform.position;
 		Vector3 endPosition = transform.position + direction;
 
@@ -94,12 +98,12 @@ public class PlayerMovement : MonoBehaviour {
 		if (currentlyPerformingAirDodge)
 			return;
 	
-		if (Input.GetButtonDown("Airdodge")) {
+		if (inputManager.GetButtonDown("Airdodge")) {
 			StartCoroutine(AirDodge());
 			return;
 		}
 
-		if (Input.GetButtonDown("Interact")) {
+		if (inputManager.GetButtonDown("Interact")) {
 			InteractIfAble();
 		}
 	
@@ -175,7 +179,7 @@ public class PlayerMovement : MonoBehaviour {
 			float targetVelocity;
 			grounded = vert.CheckCollisionVerticalAtDistance(-VerticalMovement.tinyMovementStep) && vert.vy <= 0f;
 			if (grounded || airControlAllowed || (jumpVx == 0f && vert.vy < 0f && initiatedJump)) {
-				targetVelocity = maxWalkSpeed * Input.GetAxis("Horizontal");
+				targetVelocity = maxWalkSpeed * inputManager.GetAxis("Horizontal");
 			} else {
 				targetVelocity = jumpVx;
 			}
@@ -229,7 +233,7 @@ public class PlayerMovement : MonoBehaviour {
 			}
 
 			// We can jump, here.
-			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
+			if (inputManager.GetButtonDown("Jump") && controlsAreEnabled) {
 				AudioSource.PlayClipAtPoint(jumpSoundEffect, Vector3.zero);
 				vert.vy = getJumpStrength();
 				jumpVx = horiz.vx;
@@ -248,13 +252,13 @@ public class PlayerMovement : MonoBehaviour {
 			if (vert.vy < -maxGravity)
 				vert.vy = -maxGravity;
 
-			if (Input.GetButtonDown("Jump") && controlsAreEnabled) {
+			if (inputManager.GetButtonDown("Jump") && controlsAreEnabled) {
 				if (currentGameState.doubleJumpEnabled && doubleJumpAvailable) {
 					AudioSource.PlayClipAtPoint(doubleJumpSoundEffect, Vector3.zero);
 					vert.vy = getJumpStrength()*2/3f;
 					doubleJumpAvailable = false;
 				}
-			} else if (Input.GetButtonUp("Jump") && vert.vy > 0 && initiatedJump) {
+			} else if (inputManager.GetButtonUp("Jump") && vert.vy > 0 && initiatedJump) {
 				vert.vy /= 2f;
 				initiatedJump = false;
 			}

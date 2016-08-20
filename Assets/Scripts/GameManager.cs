@@ -70,6 +70,8 @@ public class GameManager : MonoBehaviour {
 		return null;
 	}
 
+	public PlayerInputManager inputManager;
+
 	// SINGLETON
 	public static GameManager instance;
 	void Start () {
@@ -78,6 +80,7 @@ public class GameManager : MonoBehaviour {
 		player.GetComponent<GameStateFlagsComponent>().state = GetComponent<GameStateFlagsComponent>().state;
 //		=GetComponent<GameStateFlagsComponent>();
 		GoToTarget(FindTarget());
+		inputManager = player.GetComponent<PlayerInputManager>();
 	}
 
 	public Image fadeOutOverlay;
@@ -189,7 +192,8 @@ public class GameManager : MonoBehaviour {
 			GoToTarget(targetP);
 		}
 
-		if (Input.GetButtonDown("Pause")) {
+		// TODO this should actually live on the player object, probably.
+		if (inputManager.GetButtonDown("Pause")) {
 			if (paused) {
 				GetComponent<AudioSource>().UnPause();
 				Time.timeScale = oldTimeScale;
@@ -263,7 +267,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		dialogues.DisplayText(text);
-		while (!Input.GetButtonDown("Interact")) {
+		while (!inputManager.GetButtonDown("Interact")) {
 			yield return null;
 		}
 		dialogues.Hide();
