@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Runtime.Serialization.Formatters.Binary; 
+using System.IO;
 
 [RequireComponent(typeof(AudioSource))]
 public class GameManager : MonoBehaviour {
@@ -268,6 +270,21 @@ public class GameManager : MonoBehaviour {
 		player.enabled = oldEnabled;
 	}
 
+	void SaveGameState(int slot) {
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create (Application.persistentDataPath + "/game_ " + slot + ".gd"); //you can call it anything you want
+		bf.Serialize(file, player.currentGameState);
+		file.Close();
+	}
+
+	void LoadGameState(int slot) {
+		if(File.Exists(Application.persistentDataPath + "/savedGames.gd")) {
+			BinaryFormatter bf = new BinaryFormatter();
+			FileStream file = File.Open(Application.persistentDataPath + "/game_ " + slot + ".gd", FileMode.Open);
+			player.GetComponent<GameStateFlagsComponent>().state = (GameStateFlags)bf.Deserialize(file);
+			file.Close();
+		}
+	}
 
 	#if UNITY_EDITOR
 	public SharedLevelEditingStuff shared = new SharedLevelEditingStuff();

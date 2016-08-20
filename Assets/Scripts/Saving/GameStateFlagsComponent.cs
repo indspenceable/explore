@@ -6,8 +6,8 @@ public class GameStateFlagsComponent : MonoBehaviour {
 }
 [System.Serializable]
 public struct GameStateFlags {
-	public int x;
-	public int y;
+	public int mapX;
+	public int mapY;
 	public bool highJumpEnabled;
 	public bool doubleJumpEnabled;
 	public bool magnetEnabled;
