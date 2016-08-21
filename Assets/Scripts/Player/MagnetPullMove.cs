@@ -33,11 +33,12 @@ public class MagnetPullMove : MonoBehaviour {
 			return;
 		}
 		bool spriteEnabledState = false;
-		if (inputManager.GetAxis("MagnetPositive") > 0) {
+		if (inputManager.GetAxis("MagnetPositive") > 0
+			|| inputManager.GetButton("MagnetPositive") ) {
+			Debug.Log("Magnet!");
 			Collider2D collision = Physics2D.OverlapCircle(transform.position, magnetDistance, magnetMask); 
 			if (collision != null) {
-				
-				GetComponent<PlayerMovement>().ApplyMagnet(collision.transform.position, collision.GetComponent<Magnet>().polarity*inputManager.GetAxis("MagnetPositive") * weight);
+				GetComponent<PlayerMovement>().ApplyMagnet(collision.transform.position, collision.GetComponent<Magnet>().polarity * 1 * weight);
 				spriteEnabledState = true;
 			}
 		}

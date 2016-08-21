@@ -21,4 +21,10 @@ public class PlayerInputManager : MonoBehaviour {
 		}
 		return false;
 	}
+	public bool GetButton(string buttonName) {
+		if (! disableInput) {
+			return Input.GetButton(buttonName);
+		}
+		return false;
+	}
 }
