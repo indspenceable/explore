@@ -33,9 +33,8 @@ public class MagnetPullMove : MonoBehaviour {
 			return;
 		}
 		bool spriteEnabledState = false;
-		if (inputManager.GetAxis("MagnetPositive") > 0
-			|| inputManager.GetButton("MagnetPositive") ) {
-			Debug.Log("Magnet!");
+		if (inputManager.GetAxis("MagnetPositive", GameMode.MOVEMENT) > 0
+			|| inputManager.GetButton("MagnetPositive", GameMode.MOVEMENT) ) {
 			Collider2D collision = Physics2D.OverlapCircle(transform.position, magnetDistance, magnetMask); 
 			if (collision != null) {
 				GetComponent<PlayerMovement>().ApplyMagnet(collision.transform.position, collision.GetComponent<Magnet>().polarity * 1 * weight);

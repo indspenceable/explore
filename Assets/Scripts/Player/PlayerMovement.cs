@@ -47,6 +47,7 @@ public class PlayerMovement : MonoBehaviour {
 	public LayerMask interactableMask;
 
 	private PlayerInputManager inputManager;
+	public bool controlsAreEnabled = true;
 
 	public GameStateFlags currentGameState {
 		get {
@@ -70,7 +71,7 @@ public class PlayerMovement : MonoBehaviour {
 		health.currentlyInIframes = true;
 		yield return new WaitForSeconds(airDodgeInitialDelay);
 
-		Vector3 direction = new Vector3(inputManager.GetAxis("Horizontal"), inputManager.GetAxis("Vertical")).normalized * airDodgeMovementDistance;
+		Vector3 direction = new Vector3(inputManager.GetAxis("Horizontal", GameMode.MOVEMENT), inputManager.GetAxis("Vertical", GameMode.MOVEMENT)).normalized * airDodgeMovementDistance;
 		Vector3 startPosition = transform.position;
 		Vector3 endPosition = transform.position + direction;
 
@@ -98,12 +99,12 @@ public class PlayerMovement : MonoBehaviour {
 		if (currentlyPerformingAirDodge)
 			return;
 	
-		if (inputManager.GetButtonDown("Airdodge")) {
+		if (inputManager.GetButtonDown("Airdodge", GameMode.MOVEMENT)) {
 			StartCoroutine(AirDodge());
 			return;
 		}
 
-		if (inputManager.GetButtonDown("Interact")) {
+		if (inputManager.GetButtonDown("Interact", GameMode.MOVEMENT)) {
 			InteractIfAble();
 		}
 	
@@ -133,17 +134,13 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void FlipIfNeeded() {
-		if (Mathf.Abs(horiz.vx) > 0 && controlsAreEnabled) {
-			if (horiz.vx < 0 && (inputManager.GetAxis("Horizontal") < 0) || vert.CheckGrounded()) {
-				facingLeft = true;
-			} else if (horiz.vx > 0 && (inputManager.GetAxis("Horizontal") > 0) || vert.CheckGrounded()) {
-				facingLeft = false;
-			}
+		if (horiz.vx < 0 && (inputManager.GetAxis("Horizontal", GameMode.MOVEMENT) < 0 || vert.CheckGrounded())) {
+			facingLeft = true;
+		} else if (horiz.vx > 0 && (inputManager.GetAxis("Horizontal", GameMode.MOVEMENT) > 0 || vert.CheckGrounded())) {
+			facingLeft = false;
 		}
 		GetComponent<SpriteRenderer>().flipX = !facingLeft;
 	}
-
-	public bool controlsAreEnabled = true;
 
 	public IEnumerator DisableControlsWhileInjured(float time) {
 		controlsAreEnabled = false;
@@ -183,7 +180,7 @@ public class PlayerMovement : MonoBehaviour {
 			float targetVelocity;
 			grounded = vert.CheckCollisionVerticalAtDistance(-VerticalMovement.tinyMovementStep) && vert.vy <= 0f;
 			if (grounded || airControlAllowed || (jumpVx == 0f && vert.vy < 0f && initiatedJump)) {
-				targetVelocity = maxWalkSpeed * inputManager.GetAxis("Horizontal");
+				targetVelocity = maxWalkSpeed * inputManager.GetAxis("Horizontal", GameMode.MOVEMENT);
 			} else {
 				targetVelocity = jumpVx;
 			}
@@ -232,7 +229,7 @@ public class PlayerMovement : MonoBehaviour {
 			}
 
 			// We can jump, here.
-			if (inputManager.GetButtonDown("Jump") && controlsAreEnabled) {
+			if (inputManager.GetButtonDown("Jump", GameMode.MOVEMENT) && controlsAreEnabled) {
 				AudioSource.PlayClipAtPoint(jumpSoundEffect, Vector3.zero);
 				vert.vy = getJumpStrength();
 				jumpVx = horiz.vx;
@@ -251,13 +248,13 @@ public class PlayerMovement : MonoBehaviour {
 			if (vert.vy < -maxGravity)
 				vert.vy = -maxGravity;
 
-			if (inputManager.GetButtonDown("Jump") && controlsAreEnabled) {
+			if (inputManager.GetButtonDown("Jump", GameMode.MOVEMENT) && controlsAreEnabled) {
 				if (currentGameState.doubleJumpEnabled && doubleJumpAvailable) {
 					AudioSource.PlayClipAtPoint(doubleJumpSoundEffect, Vector3.zero);
 					vert.vy = getJumpStrength()*2/3f;
 					doubleJumpAvailable = false;
 				}
-			} else if (inputManager.GetButtonUp("Jump") && vert.vy > 0 && initiatedJump) {
+			} else if (inputManager.GetButtonUp("Jump", GameMode.MOVEMENT) && vert.vy > 0 && initiatedJump) {
 				vert.vy /= 2f;
 				initiatedJump = false;
 			}

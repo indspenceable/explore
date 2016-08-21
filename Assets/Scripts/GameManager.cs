@@ -16,7 +16,12 @@ public class GameManager : MonoBehaviour {
 	public Level currentLevel;
 	public SpriteRenderer backgroundImage;
 
-	public static bool paused = false;
+	public GameMode currentGameMode;
+	public bool paused {
+		get {
+			return currentGameMode == GameMode.PAUSED;
+		}
+	}
 	public static readonly Vector2 SCREEN_SIZE = new Vector2(16, 12);
 
 	private GameObject currentActiveObjects;
@@ -193,13 +198,13 @@ public class GameManager : MonoBehaviour {
 		}
 
 		// TODO this should actually live on the player object, probably.
-		if (inputManager.GetButtonDown("Pause")) {
+		if (inputManager.GetButtonDown("Pause", GameMode.MOVEMENT)) {
 			if (paused) {
 				GetComponent<AudioSource>().UnPause();
 				Time.timeScale = oldTimeScale;
 				pausedTextContainer.SetActive(false);
 				player.enabled = oldEnabled;
-				paused = false;
+				currentGameMode = GameMode.MOVEMENT;
 			} else {
 				GetComponent<AudioSource>().Pause();
 				oldTimeScale = Time.timeScale;
@@ -207,7 +212,7 @@ public class GameManager : MonoBehaviour {
 				pausedTextContainer.SetActive(true);
 				oldEnabled = player.enabled;
 				player.enabled = false;
-				paused = true;
+				currentGameMode = GameMode.PAUSED;
 			}
 		}
 
@@ -267,7 +272,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		dialogues.DisplayText(text);
-		while (!inputManager.GetButtonDown("Interact")) {
+		while (!inputManager.GetButtonDown("Interact", GameMode.MOVEMENT)) {
 			yield return null;
 		}
 		dialogues.Hide();

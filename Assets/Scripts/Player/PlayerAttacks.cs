@@ -30,16 +30,16 @@ public class PlayerAttacks : MonoBehaviour {
 	}
 	// Update is called once per frame
 	public void Update () {
-		if (inputManager.GetButtonDown("Ranged") && MayInitiateAttack() && currentGameState.rangedAttackEnabled) {
+		if (inputManager.GetButtonDown("Ranged", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.rangedAttackEnabled) {
 			ShootMissile();
-		} else if (inputManager.GetButtonDown("Melee") && MayInitiateAttack() && currentGameState.meleeAttackEnabled) {
+		} else if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.meleeAttackEnabled) {
 			Melee();
 		}
 	}
 
 	private bool MayInitiateAttack() {
 		// TODO movement shouldn't own controls being enabled - that should be its own script
-		return mayInitiateAttack && movement.controlsAreEnabled && !GameManager.paused;
+		return mayInitiateAttack && movement.controlsAreEnabled;
 	}
 
 	public void ShootMissile() {

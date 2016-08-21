@@ -2,27 +2,29 @@
 using System.Collections;
 
 public class PlayerInputManager : MonoBehaviour {
-	bool disableInput = false;
-	public float GetAxis(string axisName) {
-		if (! disableInput) {
+	public float GetAxis(string axisName, GameMode gameMode) {
+		if (GameManager.instance.currentGameMode == gameMode) {
 			return Input.GetAxis(axisName);
 		}
-		return 0;
+		return 0f;
 	}
-	public bool GetButtonDown(string buttonName) {
-		if (! disableInput) {
+
+	public bool GetButtonDown(string buttonName, GameMode gameMode) {
+		if (GameManager.instance.currentGameMode == gameMode) {
 			return Input.GetButtonDown(buttonName);
 		}
 		return false;
 	}
-	public bool GetButtonUp(string buttonName) {
-		if (! disableInput) {
+
+	public bool GetButtonUp(string buttonName, GameMode gameMode) {
+		if (GameManager.instance.currentGameMode == gameMode) {
 			return Input.GetButtonUp(buttonName);
 		}
 		return false;
 	}
-	public bool GetButton(string buttonName) {
-		if (! disableInput) {
+
+	public bool GetButton(string buttonName, GameMode gameMode) {
+		if (GameManager.instance.currentGameMode == gameMode) {
 			return Input.GetButton(buttonName);
 		}
 		return false;
