@@ -134,7 +134,11 @@ public class PlayerMovement : MonoBehaviour {
 
 	private void FlipIfNeeded() {
 		if (Mathf.Abs(horiz.vx) > 0 && controlsAreEnabled) {
-			facingLeft = (horiz.vx < 0);
+			if (horiz.vx < 0 && (inputManager.GetAxis("Horizontal") < 0) || vert.CheckGrounded()) {
+				facingLeft = true;
+			} else if (horiz.vx > 0 && (inputManager.GetAxis("Horizontal") > 0) || vert.CheckGrounded()) {
+				facingLeft = false;
+			}
 		}
 		GetComponent<SpriteRenderer>().flipX = !facingLeft;
 	}
@@ -200,11 +204,6 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		animator.SetBool("horiz", horiz.vx!=0f);
-		if (horiz.vx > 0) {
-			facingLeft = false;
-		} else if (horiz.vx < 0) {
-			facingLeft = true;
-		}
 	}
 
 	void PushOutFromWalls() {
