@@ -156,6 +156,13 @@ public class GameManager : MonoBehaviour {
 
 	public IEnumerator DoDoorCollision(int px, int py, Vector3 playerOffset, DoorCollider d) {
 		player.enabled = false;
+
+		// End the airdodge early, if needed
+		if (player.currentlyPerformingAirDodge) {
+			player.StopCoroutine (player.airDodgeCoroutine);
+			player.FinishAirDodge ();
+		}
+
 		var oldLayer = d.gameObject.layer;
 		d.gameObject.layer = LayerMask.NameToLayer("Default");
 		fadeOutOverlay.gameObject.SetActive(true);

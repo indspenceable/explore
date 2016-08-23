@@ -38,7 +38,12 @@ public class PlayerMovement : MonoBehaviour {
 	public float airDodgeDuration = 0.25f;
 	public float airDodgeInitialDelay = 0.25f;
 
-	public bool currentlyPerformingAirDodge {get; private set;}
+	public bool currentlyPerformingAirDodge { 
+		get { 
+			return airDodgeCoroutine != null;
+		}
+	}
+	public IEnumerator airDodgeCoroutine { get; private set;}
 	private PlayerTakeDamage health;
 
 	public VerticalMovement vert {get; private set;}
@@ -57,7 +62,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		currentlyPerformingAirDodge = false;
+		airDodgeCoroutine = null;
 		animator = GetComponent<Animator>();
 		health = GetComponent<PlayerTakeDamage>();
 		vert = GetComponent<VerticalMovement>();
@@ -67,7 +72,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	IEnumerator AirDodge() {
 		float dt = 0f;
-		currentlyPerformingAirDodge = true;
 		health.currentlyInIframes = true;
 		yield return new WaitForSeconds(airDodgeInitialDelay);
 
@@ -90,8 +94,13 @@ public class PlayerMovement : MonoBehaviour {
 			horiz.vx = dx;
 
 		}
+		FinishAirDodge();
+	}
+
+	public void FinishAirDodge()
+	{
 		health.currentlyInIframes = false;
-		currentlyPerformingAirDodge = false;
+		airDodgeCoroutine = null;
 	}
 
 	// Woo not fixedupdate
@@ -100,7 +109,8 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 	
 		if (inputManager.GetButtonDown("Airdodge", GameMode.MOVEMENT)) {
-			StartCoroutine(AirDodge());
+			airDodgeCoroutine = AirDodge ();
+			StartCoroutine(airDodgeCoroutine);
 			return;
 		}
 
