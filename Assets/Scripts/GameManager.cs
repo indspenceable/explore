@@ -120,11 +120,29 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void MoveIntoLevel(Level targetLevel, Vector3 playerOffset) {
+	public IEnumerator SwapToNewMusic(Level nextLevel) {
+		AudioSource audioSource = GetComponent<AudioSource> ();
+		if (nextLevel.backgroundMusic != audioSource.clip && nextLevel.backgroundMusic != null) {
+			while (audioSource.volume > 0) {
+				yield return null;
+				audioSource.volume -= Time.deltaTime;
+			}
+			audioSource.clip = nextLevel.backgroundMusic;
+			audioSource.Play();
+			while (audioSource.volume < 1) {
+				yield return null;
+				audioSource.volume += Time.deltaTime;
+			}
+			audioSource.volume = 1;
+		}
+	}
+
+	public IEnumerator MoveIntoLevel(Level targetLevel, Vector3 playerOffset) {
 		targetLevel.transform.position = Vector3.Scale(targetLevel.mapPosition - currentLevel.mapPosition, GameManager.SCREEN_SIZE);
 		targetLevel.gameObject.SetActive(true);
 
 		DealWithActiveObjects(targetLevel);
+		yield return SwapToNewMusic(targetLevel);
 
 		currentLevel.gameObject.SetActive(false);
 		currentLevel = targetLevel;
@@ -144,7 +162,7 @@ public class GameManager : MonoBehaviour {
 		yield return Fade(new Color(0,0,0, 0), Color.black, 0.2f);
 
 		Level targetLevel = FindLevelWithCoord(px, py);
-		MoveIntoLevel(targetLevel, playerOffset);
+		yield return MoveIntoLevel(targetLevel, playerOffset);
 
 		yield return Fade(Color.black, new Color(0,0,0, 0), 0.2f);
 		fadeOutOverlay.gameObject.SetActive(false);

@@ -11,6 +11,7 @@ public class Level : MonoBehaviour {
 	public Vector2 mapSize = new Vector2(1, 1);
 	public Vector2 mapPosition = new Vector2(0,0);
 	public Sprite backgroundImage;
+	public AudioClip backgroundMusic;
 
 #if UNITY_EDITOR
 
