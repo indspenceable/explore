@@ -1,5 +1,5 @@
 ﻿public enum GameMode {
 	MOVEMENT,
-	SPEECH,
+	TEXT,
 	PAUSED,
 }
