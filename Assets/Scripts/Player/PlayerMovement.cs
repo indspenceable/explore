@@ -230,7 +230,7 @@ public class PlayerMovement : MonoBehaviour {
 
 			// We can jump, here.
 			if (inputManager.GetButtonDown("Jump", GameMode.MOVEMENT) && controlsAreEnabled) {
-				AudioSource.PlayClipAtPoint(jumpSoundEffect, Vector3.zero);
+				GameManager.instance.PlaySound(jumpSoundEffect);
 				vert.vy = getJumpStrength();
 				jumpVx = horiz.vx;
 				initiatedJump = true;
@@ -250,7 +250,7 @@ public class PlayerMovement : MonoBehaviour {
 
 			if (inputManager.GetButtonDown("Jump", GameMode.MOVEMENT) && controlsAreEnabled) {
 				if (currentGameState.doubleJumpEnabled && doubleJumpAvailable) {
-					AudioSource.PlayClipAtPoint(doubleJumpSoundEffect, Vector3.zero);
+					GameManager.instance.PlaySound(doubleJumpSoundEffect);
 					vert.vy = getJumpStrength()*2/3f;
 					doubleJumpAvailable = false;
 				}

@@ -34,7 +34,7 @@ public class CrumblingPlatform : MonoBehaviour, IPlatform {
 		}
 		yield return new WaitForSeconds(dtCrumble);
 		if (crumbleClip != null) {
-			AudioSource.PlayClipAtPoint(crumbleClip, Vector3.zero);
+			GameManager.instance.PlaySound(crumbleClip);
 		}
 		if (crumbleParticles != null) {
 			Instantiate(crumbleParticles, transform.position, Quaternion.identity);
@@ -43,7 +43,7 @@ public class CrumblingPlatform : MonoBehaviour, IPlatform {
 		collider2D_.enabled = false;
 		yield return new WaitForSeconds(dtRespawn);
 		if (respawnClip != null) {
-			AudioSource.PlayClipAtPoint(respawnClip, Vector3.zero);
+			GameManager.instance.PlaySound(respawnClip);
 		}
 		sr.enabled = true;
 		collider2D_.enabled = true;

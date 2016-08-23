@@ -39,14 +39,14 @@ public class Bubble : MonoBehaviour {
 	public IEnumerator DeactivateUntilRespawn(float time) {
 		sr.enabled = false;
 		if (popClip != null) {
-			AudioSource.PlayClipAtPoint(popClip, Vector3.zero);
+			GameManager.instance.PlaySound(popClip);
 		}
 		if (popParticles != null) {
 			Instantiate(popParticles, transform.position, Quaternion.identity);
 		}
 		yield return new WaitForSeconds(time);
 		if (respawnClip != null) {
-			AudioSource.PlayClipAtPoint(respawnClip, Vector3.zero);
+			GameManager.instance.PlaySound(respawnClip);
 		}
 		if (respawnParticles != null) {
 			Instantiate(respawnParticles, transform.position, Quaternion.identity);

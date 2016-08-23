@@ -258,8 +258,12 @@ public class GameManager : MonoBehaviour {
 		
 		bool oldEnabled = GameManager.instance.player.enabled;
 		float oldTimeScale = Time.timeScale;
+		GameMode oldGameMode = currentGameMode; // This should always be Movement
+
+
 		Time.timeScale = 0f;
 		player.enabled = false;
+		currentGameMode = GameMode.TEXT;
 
 		int delay = 0;
 		yield return null;
@@ -281,7 +285,7 @@ public class GameManager : MonoBehaviour {
 				yield return WaitForUnscaledSeconds(0.01f);
 				if (blipSound != null && delay <= 0) {
 					Time.timeScale = 1f;
-					AudioSource.PlayClipAtPoint(blipSound, Vector3.zero);
+					GameManager.instance.PlaySound(blipSound);
 					Time.timeScale = 0f;
 					delay = 3;
 				}
@@ -290,13 +294,14 @@ public class GameManager : MonoBehaviour {
 		}
 
 		dialogues.DisplayText(text);
-		while (!inputManager.GetButtonDown("Interact", GameMode.MOVEMENT)) {
+		while (!inputManager.GetButtonDown("Interact", GameMode.TEXT)) {
 			yield return null;
 		}
 		dialogues.Hide();
 
 		Time.timeScale = oldTimeScale;
 		player.enabled = oldEnabled;
+		currentGameMode = oldGameMode;
 	}
 
 	void SaveGameState(int slot) {
@@ -313,6 +318,14 @@ public class GameManager : MonoBehaviour {
 			player.GetComponent<GameStateFlagsComponent>().state = (GameStateFlags)bf.Deserialize(file);
 			file.Close();
 		}
+	}
+
+
+	public void PlaySound(AudioClip soundEffect) {
+		if (soundEffect == null) {
+			return;
+		}
+		AudioSource.PlayClipAtPoint (soundEffect, Vector3.zero);
 	}
 
 	#if UNITY_EDITOR

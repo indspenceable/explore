@@ -45,7 +45,7 @@ public class PlayerAttacks : MonoBehaviour {
 	public void ShootMissile() {
 		mayInitiateAttack = false;
 		animator.SetTrigger("shoot");
-		AudioSource.PlayClipAtPoint(shootSoundEffect, Vector3.zero);
+		GameManager.instance.PlaySound(shootSoundEffect);
 		float dx = GetComponent<SpriteRenderer>().flipX ? bulletVelocity : -bulletVelocity;
 		MissileHit b = (GameObject.Instantiate(missilePrefab, transform.position, Quaternion.identity) as MissileHit);
 		b.direction = new Vector3(dx, 0f);
@@ -54,7 +54,7 @@ public class PlayerAttacks : MonoBehaviour {
 	public void Melee() {
 		animator.SetTrigger("melee");
 		mayInitiateAttack = false;
-		AudioSource.PlayClipAtPoint(meleeSoundEffect, Vector3.zero);
+		GameManager.instance.PlaySound(meleeSoundEffect);
 		Vector3 dx = new Vector3(GetComponent<SpriteRenderer>().flipX ? meleeOffset : -meleeOffset, 0f);
 		(GameObject.Instantiate(meleeHitPrefab, transform.position + dx, Quaternion.identity) as GameObject).GetComponent<SpriteRenderer>().flipX = GetComponent<SpriteRenderer>().flipX;
 	}
