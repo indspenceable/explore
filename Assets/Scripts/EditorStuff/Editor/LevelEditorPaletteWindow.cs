@@ -38,21 +38,21 @@ public class LevelEditorPaletteWindow : EditorWindow {
 	}
 
 	public void OnGUI() {
-		SelectTileSheetDropdown(gm.currentLevel);
+		SelectTileSheetDropdown();
 		RenderAllTileButtons();
 		DisplayCurrentTileSpriteLarge();
 	}
 
-	void SelectTileSheetDropdown(Level lb)
+	void SelectTileSheetDropdown()
 	{
 		var tileSheetOptions = util.knownTileSheets;
 		if (tileSheetOptions == null) {
 			tileSheetOptions = new List<string> ();
 		}
-		int currentIndex = tileSheetOptions.IndexOf (lb.currentlySelectedTileSheetAssetLocation);
+		int currentIndex = tileSheetOptions.IndexOf (util.currentlySelectedTileSheetAssetLocation);
 		int selectedIndex = EditorGUILayout.Popup (currentIndex, tileSheetOptions.ToArray ());
 		if (currentIndex != selectedIndex) {
-			lb.SetCurrentTileSheet (lb.shared.knownTileSheets [selectedIndex]);
+			util.SetCurrentTileSheet (util.knownTileSheets [selectedIndex]);
 		}
 	}
 

@@ -37,7 +37,7 @@ public class LookAtPointEditor : Editor
 		CurrentEditLayerDropdown(lb);
 		BulkEditButtons (lb);
 
-		if (lb.currentEditLayer == 1) {
+		if (lb.currentEditLayer == 2) {
 //			EditorGUILayout.PropertyField(defaultTilePrefab);
 			lb.shared.defaultTilePrefab =  (EditorGUILayout.ObjectField ("Default Tile Prefab", lb.shared.defaultTilePrefab, typeof(GameObject), false) as GameObject);
 
