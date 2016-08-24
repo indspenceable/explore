@@ -58,7 +58,7 @@ class LevelEditorWindow : EditorWindow {
 
 		currentLayer = GUILayout.Toolbar(currentLayer, Level.LAYER_OPTIONS);
 
-		EditorGUILayout.Separator();
+//		EditorGUILayout.Separator();
 		DrawCurrentMapWithSprites();
 	}
 
@@ -67,7 +67,7 @@ class LevelEditorWindow : EditorWindow {
 		int width = (int)(mapSize.x * GameManager.SCREEN_SIZE.x);
 		int height = (int)(mapSize.y * GameManager.SCREEN_SIZE.y);
 
-//		mapScrollPosition = EditorGUILayout.BeginScrollView(mapScrollPosition);
+		mapScrollPosition = EditorGUILayout.BeginScrollView(mapScrollPosition);
 		// Drawing from top to bottom
 		Vector2 size = new Vector2(16,16);
 
@@ -78,11 +78,13 @@ class LevelEditorWindow : EditorWindow {
 				Rect r = EditorGUILayout.GetControlRect(GUILayout.Width(16), GUILayout.Height(16));
 
 				// If we click on this tile
-				if (GUI.Button(r, "")) {
+				if (r.Contains(Event.current.mousePosition) && Event.current.isMouse) {
 					if (Event.current.button == 0 && util.currentlySelectedSprite) {
 						currentLevel.FindOrCreateTileAt(x, y, currentLayer).GetComponent<SpriteRenderer>().sprite = util.currentlySelectedSprite;
+						Repaint();
 					} else if (Event.current.button == 1) {
 						currentLevel.RemoveTileAt(x, y, currentLayer);
+						Repaint();
 					} else if (Event.current.button == 2) { // Middle mouse
 						GameObject go = currentLevel.FindTileAt(x, y, currentLayer);
 						if (go != null) {
@@ -108,10 +110,9 @@ class LevelEditorWindow : EditorWindow {
 			}
 			EditorGUILayout.EndHorizontal();
 		}
-//		EditorGUILayout.EndScrollView();
+		EditorGUILayout.EndScrollView();
 	}
-
-
+		
 	public void ReRenderEditorPaletteWindow() {
 		LevelEditorPaletteWindow[] windows = Resources.FindObjectsOfTypeAll<LevelEditorPaletteWindow>();
 		if(windows != null && windows.Length > 0)

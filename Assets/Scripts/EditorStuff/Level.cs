@@ -98,7 +98,7 @@ public class Level : MonoBehaviour {
 		return FindOrCreateTileAt(x, y, currentEditLayer);
 	}
 	public GameObject FindOrCreateTileAt(int x, int y, int layer) {
-		GameObject go = FindTileAt(x, y);
+		GameObject go = FindTileAt(x, y, layer);
 		if (go == null) {
 			if (currentEditLayer == 1) {
 				go = PrefabUtility.InstantiatePrefab(CurrentPrefab()) as GameObject;

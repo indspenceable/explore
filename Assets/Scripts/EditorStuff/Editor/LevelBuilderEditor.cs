@@ -109,10 +109,10 @@ public class LookAtPointEditor : Editor
 		// Get the position it's button should be at, using autolayout
 		Rect re = EditorGUILayout.GetControlRect (GUILayout.Width (32), GUILayout.Height (32));
 		// Draw a button, then draw the sprite on top of it.
-		if (GUI.Button (re, "")) {
-			currentlySelectedSprite.objectReferenceValue = sprites.GetArrayElementAtIndex (i).objectReferenceValue as Sprite;
-			serializedObject.ApplyModifiedProperties ();
-		}
+//		if (GUI.Button (re, "")) {
+//			currentlySelectedSprite.objectReferenceValue = sprites.GetArrayElementAtIndex (i).objectReferenceValue as Sprite;
+//			serializedObject.ApplyModifiedProperties ();
+//		}
 		EditorUtil.DrawTextureGUI (re, s, re.size);
 	}
 
