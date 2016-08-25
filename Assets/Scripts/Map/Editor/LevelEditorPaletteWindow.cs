@@ -73,7 +73,7 @@ public class LevelEditorPaletteWindow : EditorWindow {
 	{
 		int i = 0;
 		int numberOfTilesPerRow = Screen.width / 38;
-		//		numberOfTilesPerRow = 3;
+		numberOfTilesPerRow = 8;
 		int numberOfRows = (util.sprites.Length + numberOfTilesPerRow - 1) / numberOfTilesPerRow;
 		for (int y = 0; y < numberOfRows; y += 1) {
 			EditorGUILayout.BeginHorizontal ();
