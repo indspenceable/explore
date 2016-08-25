@@ -2,4 +2,5 @@
 	MOVEMENT,
 	TEXT,
 	PAUSED,
+	SPEECH,
 }
