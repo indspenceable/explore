@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 class LevelEditorWindow : EditorWindow {
 	private Vector2 mapScrollPosition;
-	private int currentLayer = 0;
 
 	Level currentLevel {
 		get {
@@ -56,7 +55,7 @@ class LevelEditorWindow : EditorWindow {
 			return;
 		}
 
-		currentLayer = GUILayout.Toolbar(currentLayer, Level.LAYER_OPTIONS);
+//		util.currentLayer = GUILayout.Toolbar(util.currentLayer, Level.LAYER_OPTIONS);
 
 //		EditorGUILayout.Separator();
 		DrawCurrentMapWithSprites();
@@ -80,13 +79,13 @@ class LevelEditorWindow : EditorWindow {
 				// If we click on this tile
 				if (r.Contains(Event.current.mousePosition) && Event.current.isMouse) {
 					if (Event.current.button == 0 && util.currentlySelectedSprite) {
-						currentLevel.FindOrCreateTileAt(x, y, currentLayer, util).GetComponent<SpriteRenderer>().sprite = util.currentlySelectedSprite;
+						currentLevel.FindOrCreateTileAt(x, y, util.currentLayer, util).GetComponent<SpriteRenderer>().sprite = util.currentlySelectedSprite;
 						Repaint();
 					} else if (Event.current.button == 1) {
-						currentLevel.RemoveTileAt(x, y, currentLayer);
+						currentLevel.RemoveTileAt(x, y, util.currentLayer);
 						Repaint();
 					} else if (Event.current.button == 2) { // Middle mouse
-						GameObject go = currentLevel.FindTileAt(x, y, currentLayer);
+						GameObject go = currentLevel.FindTileAt(x, y, util.currentLayer);
 						if (go != null) {
 							util.currentlySelectedSprite = go.GetComponent<SpriteRenderer>().sprite;
 							ReRenderEditorPaletteWindow();
@@ -95,7 +94,7 @@ class LevelEditorWindow : EditorWindow {
 				}
 
 				// The tile we wish to render
-				GameObject currentTile = currentLevel.FindTileAt(x, y, currentLayer);
+				GameObject currentTile = currentLevel.FindTileAt(x, y, util.currentLayer);
 				if (currentTile != null) {
 					// We got one!
 					EditorUtil.DrawTextureGUI(

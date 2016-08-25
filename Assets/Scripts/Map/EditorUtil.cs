@@ -26,6 +26,7 @@ public class EditorUtil : MonoBehaviour
 		}
 	}
 	public Sprite currentlySelectedSprite;
+	public int currentLayer;
 
 	public string currentlySelectedTileSheetAssetLocation;
 	public List<string> knownTileSheets;

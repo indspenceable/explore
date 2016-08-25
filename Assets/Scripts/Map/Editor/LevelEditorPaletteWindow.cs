@@ -38,6 +38,8 @@ public class LevelEditorPaletteWindow : EditorWindow {
 	}
 
 	public void OnGUI() {
+		util.currentLayer = GUILayout.Toolbar(util.currentLayer, Level.LAYER_OPTIONS);
+
 		SelectTileSheetDropdown();
 		RenderAllTileButtons();
 		DisplayCurrentTileSpriteLarge();
