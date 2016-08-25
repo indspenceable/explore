@@ -28,43 +28,6 @@ public class GameManager : MonoBehaviour {
 
 	[SerializeField]
 	public List<Level> levels;
-
-
-	// TODO move this editor crap out of here!
-	[System.Serializable]
-	public class Door {
-		public int x;
-		public int y;
-	}
-	public enum Direction {
-		RIGHT,
-		LEFT,
-	}
-	[SerializeField]
-	public List<Door> HorizontalDoors = new List<Door>();
-	private Door FindDoor(int x, int y) {
-		foreach (var door in HorizontalDoors) {
-			if (door.x == x && door.y == y) {
-				return door;
-			}
-		}
-		return null; 
-	}
-	public bool DoorAt(int x, int y) {
-		return (FindDoor(x,y) != null);
-	}
-	public void SetDoor(int x, int y, bool shouldThereBe) {
-		Door d = FindDoor(x, y);
-		if (d == null && shouldThereBe) {
-			d = new Door();
-			d.x = x;
-			d.y = y;
-			HorizontalDoors.Add(d);
-		} else if (d != null && !shouldThereBe) {
-			HorizontalDoors.Remove(d);
-		}
-	}
-
 	public Level FindLevelWithCoord(int x, int y) {
 		foreach (Level l in levels) {
 			if ((l.mapPosition.x <= x && (l.mapPosition + l.mapSize).x > x) &&
@@ -74,6 +37,8 @@ public class GameManager : MonoBehaviour {
 		}
 		return null;
 	}
+	[SerializeField]
+	public DoorMap doors;
 
 	public PlayerInputManager inputManager;
 
@@ -83,7 +48,6 @@ public class GameManager : MonoBehaviour {
 		instance = this;
 		GetComponent<AudioSource>().Play();
 		player.GetComponent<GameStateFlagsComponent>().state = GetComponent<GameStateFlagsComponent>().state;
-//		=GetComponent<GameStateFlagsComponent>();
 		GoToTarget(FindTarget());
 		inputManager = player.GetComponent<PlayerInputManager>();
 	}
@@ -179,20 +143,20 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public IEnumerator DoorCollision(DoorCollider door) {
-		if (door.direction == Direction.RIGHT) {
+		if (door.direction == DoorMap.Direction.RIGHT) {
 			int py = Mathf.FloorToInt(player.transform.position.y / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
 			int px = (int)currentLevel.mapPosition.x + (int)currentLevel.mapSize.x-1;
 
-			if (DoorAt(px, py)) {
+			if (doors.DoorAt(px, py)) {
 				// Door going right
 				yield return DoDoorCollision(px+1, py, Vector3.right, door);
 			}
 		}
 		//
-		if (door.direction == Direction.LEFT) {
+		if (door.direction == DoorMap.Direction.LEFT) {
 			int py = Mathf.FloorToInt(player.transform.position.y / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
 			int px = (int)currentLevel.mapPosition.x-1;
-			if (DoorAt(px, py)) {
+			if (doors.DoorAt(px, py)) {
 				// Door going right
 				yield return DoDoorCollision(px, py, -Vector3.right, door);
 			}

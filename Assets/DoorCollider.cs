@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class DoorCollider : MonoBehaviour {
-	public GameManager.Direction direction;
+	public DoorMap.Direction direction;
 
 	public void OnTriggerEnter2D(Collider2D other) {
 		if (other && other.gameObject.layer == LayerMask.NameToLayer("Player") ||
