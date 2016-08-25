@@ -40,7 +40,7 @@ public class EyeBossController : MonoBehaviour {
 			foreach (GameObject g in lasers) {
 				g.transform.localScale = new Vector3(ttf, ttf, ttf);
 			}
-			time += Time.deltaTime;
+			time += GameManager.instance.ActiveGameDeltaTime;
 		}
 		foreach (GameObject g in lasers) {
 			g.transform.localScale = Vector3.one;
@@ -102,7 +102,7 @@ public class EyeBossController : MonoBehaviour {
 		while (curDist < totalDist) {
 			transform.position = Vector3.Lerp(startPos, targetPos, curDist/totalDist);
 			yield return null;
-			curDist += Time.deltaTime * moveSpeed;
+			curDist += GameManager.instance.ActiveGameDeltaTime * moveSpeed;
 		}
 		transform.position = targetPos;
 	}
@@ -117,14 +117,14 @@ public class EyeBossController : MonoBehaviour {
 		float amountRotated = 0f;
 		while (amountRotated < totalRotation) {
 			yield return null;
-			float amountToRotate = Mathf.Clamp(Time.deltaTime*rotationSpeed, 0f, totalRotation-amountRotated);
+			float amountToRotate = Mathf.Clamp(GameManager.instance.ActiveGameDeltaTime*rotationSpeed, 0f, totalRotation-amountRotated);
 			if (clockwise) {
 				amountToRotate *= -1;
 			}
 			foreach (GameObject g in lasers) {
 				g.transform.RotateAround(transform.position, Vector3.forward, amountToRotate);
 			}
-			amountRotated += Time.deltaTime*rotationSpeed;
+			amountRotated += GameManager.instance.ActiveGameDeltaTime*rotationSpeed;
 		}
 	}
 }

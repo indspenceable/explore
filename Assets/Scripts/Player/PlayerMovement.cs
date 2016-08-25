@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour {
 		while (dt <= airDodgeDuration){
 			Vector3 dtStart = Vector3.Lerp(startPosition, endPosition, airDodgeMovementCurve.Evaluate(dt/airDodgeDuration));
 			yield return null;
-			dt += Time.deltaTime;
+			dt += GameManager.instance.ActiveGameDeltaTime;
 			Vector3 dtEnd = Vector3.Lerp(startPosition, endPosition, airDodgeMovementCurve.Evaluate(dt/airDodgeDuration));
 
 			float dx = (dtEnd - dtStart).x;
@@ -119,17 +119,17 @@ public class PlayerMovement : MonoBehaviour {
 		}
 	
 		PlayerMoveUpDown();
-		vert.RiseOrFall(vert.vy * Time.deltaTime);
+		vert.RiseOrFall(vert.vy * GameManager.instance.ActiveGameDeltaTime);
 		PlayerMoveLeftRight();
-		horiz.MoveLeftOrRight(horiz.vx * Time.deltaTime);
+		horiz.MoveLeftOrRight(horiz.vx * GameManager.instance.ActiveGameDeltaTime);
 		PushOutFromWalls();
 		FlipIfNeeded();
 	}
 
 	public void ApplyMagnet(Vector3 targetPosition, float weight) {
 		Vector2 move = (targetPosition - transform.position).normalized;
-		horiz.vx += move.x * Time.deltaTime * weight;
-		vert.vy += move.y * Time.deltaTime * weight;
+		horiz.vx += move.x * GameManager.instance.ActiveGameDeltaTime * weight;
+		vert.vy += move.y * GameManager.instance.ActiveGameDeltaTime * weight;
 	}
 
 	public void InteractIfAble() {
@@ -158,7 +158,7 @@ public class PlayerMovement : MonoBehaviour {
 		float dt = 0f;
 		while (dt < time) {
 			yield return null;
-			dt += Time.deltaTime;
+			dt += GameManager.instance.ActiveGameDeltaTime;
 		}
 		animator.SetBool("injured", false);
 		controlsAreEnabled = true;
@@ -203,10 +203,10 @@ public class PlayerMovement : MonoBehaviour {
 
 			if (between) {
 				float frictionToUse = grounded ? friction : airFriction;
-				horiz.vx = approach(horiz.vx, targetVelocity, frictionToUse*Time.deltaTime);
+				horiz.vx = approach(horiz.vx, targetVelocity, frictionToUse*GameManager.instance.ActiveGameDeltaTime);
 			} else {
 				float accelerationToUse = grounded ? acc : airAcc;
-				horiz.vx = approach(horiz.vx, targetVelocity, accelerationToUse*Time.deltaTime);
+				horiz.vx = approach(horiz.vx, targetVelocity, accelerationToUse*GameManager.instance.ActiveGameDeltaTime);
 			}
 		}
 
@@ -251,9 +251,9 @@ public class PlayerMovement : MonoBehaviour {
 			floating = false;
 		} else {
 			if (floating) {
-				vert.vy = -floatSpeed * Time.deltaTime;
+				vert.vy = -floatSpeed * GameManager.instance.ActiveGameDeltaTime;
 			} else {
-				vert.vy -= gravityStrength*Time.deltaTime;
+				vert.vy -= gravityStrength*GameManager.instance.ActiveGameDeltaTime;
 			}
 			if (vert.vy < -maxGravity)
 				vert.vy = -maxGravity;

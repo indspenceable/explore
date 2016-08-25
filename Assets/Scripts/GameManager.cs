@@ -16,6 +16,16 @@ public class GameManager : MonoBehaviour {
 	public Level currentLevel;
 	public SpriteRenderer backgroundImage;
 
+	public float ActiveGameDeltaTime {
+		get {
+			if (currentGameMode == GameMode.MOVEMENT) {
+				return Time.deltaTime;
+			} else {
+				return 0f;
+			}
+		}
+	}
+
 	public GameMode currentGameMode;
 	public bool paused {
 		get {
@@ -89,13 +99,13 @@ public class GameManager : MonoBehaviour {
 		if (nextLevel.backgroundMusic != audioSource.clip && nextLevel.backgroundMusic != null) {
 			while (audioSource.volume > 0) {
 				yield return null;
-				audioSource.volume -= Time.deltaTime;
+				audioSource.volume -= GameManager.instance.ActiveGameDeltaTime;
 			}
 			audioSource.clip = nextLevel.backgroundMusic;
 			audioSource.Play();
 			while (audioSource.volume < 1) {
 				yield return null;
-				audioSource.volume += Time.deltaTime;
+				audioSource.volume += GameManager.instance.ActiveGameDeltaTime;
 			}
 			audioSource.volume = 1;
 		}
@@ -165,7 +175,6 @@ public class GameManager : MonoBehaviour {
 
 
 	bool oldEnabled;
-	float oldTimeScale;
 
 	Vector2 FindTarget() {
 		float halfWidth = SCREEN_SIZE.x / 2;
@@ -181,7 +190,7 @@ public class GameManager : MonoBehaviour {
 		Vector2 targetP = FindTarget();
 
 		// Can the camera go there?
-		myCamera.transform.position = Vector3.Lerp(myCamera.transform.position, new Vector3(targetP.x, targetP.y, myCamera.transform.position.z), Time.deltaTime * lerpWeight);
+		myCamera.transform.position = Vector3.Lerp(myCamera.transform.position, new Vector3(targetP.x, targetP.y, myCamera.transform.position.z), GameManager.instance.ActiveGameDeltaTime * lerpWeight);
 		if (Mathf.Abs(myCamera.transform.position.x - targetP.x) + Mathf.Abs(myCamera.transform.position.y - targetP.y) < minDistanceThreshold) {
 			GoToTarget(targetP);
 		}
@@ -190,14 +199,11 @@ public class GameManager : MonoBehaviour {
 		if (inputManager.GetButtonDown("Pause", GameMode.MOVEMENT)) {
 			if (paused) {
 				GetComponent<AudioSource>().UnPause();
-				Time.timeScale = oldTimeScale;
 				pausedTextContainer.SetActive(false);
 				player.enabled = oldEnabled;
 				currentGameMode = GameMode.MOVEMENT;
 			} else {
 				GetComponent<AudioSource>().Pause();
-				oldTimeScale = Time.timeScale;
-				Time.timeScale = 0f;
 				pausedTextContainer.SetActive(true);
 				oldEnabled = player.enabled;
 				player.enabled = false;
@@ -228,11 +234,9 @@ public class GameManager : MonoBehaviour {
 	public IEnumerator Read(string text, AudioClip blipSound) {
 		
 		bool oldEnabled = GameManager.instance.player.enabled;
-		float oldTimeScale = Time.timeScale;
 		GameMode oldGameMode = currentGameMode; // This should always be Movement
 
 
-		Time.timeScale = 0f;
 		player.enabled = false;
 		currentGameMode = GameMode.TEXT;
 
@@ -244,20 +248,18 @@ public class GameManager : MonoBehaviour {
 			delay -= 1;
 			switch(currentChar) {
 			case '\n':
-				yield return WaitForUnscaledSeconds(0.5f);
+				yield return new WaitForSeconds(0.5f);
 				break;
 			case '.':
-				yield return WaitForUnscaledSeconds(0.3f);
+				yield return new WaitForSeconds(0.3f);
 				break;
 			case ' ':
-				yield return WaitForUnscaledSeconds(0.01f);
+				yield return new WaitForSeconds(0.01f);
 				break;
 			default:
 				yield return WaitForUnscaledSeconds(0.01f);
 				if (blipSound != null && delay <= 0) {
-					Time.timeScale = 1f;
 					GameManager.instance.PlaySound(blipSound);
-					Time.timeScale = 0f;
 					delay = 3;
 				}
 				break;
@@ -270,7 +272,6 @@ public class GameManager : MonoBehaviour {
 		}
 		dialogues.Hide();
 
-		Time.timeScale = oldTimeScale;
 		player.enabled = oldEnabled;
 		currentGameMode = oldGameMode;
 	}

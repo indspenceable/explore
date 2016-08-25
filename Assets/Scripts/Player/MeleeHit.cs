@@ -6,7 +6,7 @@ public class MeleeHit : MonoBehaviour {
 	private float duration = 0f;
 
 	public void Update () {
-		duration += Time.deltaTime;
+		duration += GameManager.instance.ActiveGameDeltaTime;
 		if (duration > lifespan) {
 			Destroy(gameObject);
 		}

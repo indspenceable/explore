@@ -25,7 +25,7 @@ public class PlayerTakeDamage : MonoBehaviour {
 		float dt = 0f;
 		while (dt < time) {
 			yield return null;
-			dt += Time.deltaTime;
+			dt += GameManager.instance.ActiveGameDeltaTime;
 		}
 		currentlyInIframes = false;
 	}

@@ -36,8 +36,8 @@ public class FallingHazard : MonoBehaviour, ICanHitPlayer {
 		float vy = -5;
 		while (!CheckForHitGround()) {
 			yield return null;
-			vy -= gravity * Time.deltaTime;
-			transform.Translate(Vector3.up * vy * Time.deltaTime, Space.World);
+			vy -= gravity * GameManager.instance.ActiveGameDeltaTime;
+			transform.Translate(Vector3.up * vy * GameManager.instance.ActiveGameDeltaTime, Space.World);
 		}
 
 		// TODO shatter!

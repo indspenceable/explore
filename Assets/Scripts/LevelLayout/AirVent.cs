@@ -12,11 +12,11 @@ public class AirVent : MonoBehaviour {
 		PlayerMovement player = other.GetComponent<PlayerMovement>();
 		if (player != null && !player.currentlyPerformingAirDodge) {
 			if (changeYVelocity) {
-				player.vert.vy += (player.gravityStrength + yVelocityFactor) * Time.deltaTime;
+				player.vert.vy += (player.gravityStrength + yVelocityFactor) * GameManager.instance.ActiveGameDeltaTime;
 				player.initiatedJump = false;
 			}
 			if (changeXVelocity) {
-				player.horiz.vx += xVelocityFactor * Time.deltaTime;
+				player.horiz.vx += xVelocityFactor * GameManager.instance.ActiveGameDeltaTime;
 			}
 		}
 	}

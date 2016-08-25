@@ -21,8 +21,8 @@ public class Roller : MonoBehaviour {
 	private IEnumerator Fall() {
 		vert.vy = 0;
 		while (! vert.CheckGrounded()) {
-			vert.vy -= gravity * Time.deltaTime;
-			vert.RiseOrFall(Time.deltaTime * vert.vy);
+			vert.vy -= gravity * GameManager.instance.ActiveGameDeltaTime;
+			vert.RiseOrFall(GameManager.instance.ActiveGameDeltaTime * vert.vy);
 			yield return null;
 		}
 		StartCoroutine(FullSpeedAhead());
@@ -31,11 +31,11 @@ public class Roller : MonoBehaviour {
 	private IEnumerator FullSpeedAhead() {
 		horiz.vx = fullSpeed*direction;
 		while (true) {
-			vert.vy -= gravity * Time.deltaTime;
-			vert.RiseOrFall(Time.deltaTime * vert.vy);
+			vert.vy -= gravity * GameManager.instance.ActiveGameDeltaTime;
+			vert.RiseOrFall(GameManager.instance.ActiveGameDeltaTime * vert.vy);
 
 			float startingVx = horiz.vx;
-			horiz.MoveLeftOrRight(Time.deltaTime * horiz.vx);
+			horiz.MoveLeftOrRight(GameManager.instance.ActiveGameDeltaTime * horiz.vx);
 			if (horiz.vx == 0f) {
 				horiz.vx = -startingVx;
 				direction *= -1;
@@ -56,11 +56,11 @@ public class Roller : MonoBehaviour {
 		vert.vy = Mathf.Abs(horiz.vx);
 		while (Mathf.Abs(horiz.vx) > 0.1f) {
 			// Bounce vertically
-			vert.vy -= gravity * Time.deltaTime;
-			vert.RiseOrFall(Time.deltaTime * vert.vy);
+			vert.vy -= gravity * GameManager.instance.ActiveGameDeltaTime;
+			vert.RiseOrFall(GameManager.instance.ActiveGameDeltaTime * vert.vy);
 
 			float startingVx = horiz.vx;
-			horiz.MoveLeftOrRight(Time.deltaTime * horiz.vx);
+			horiz.MoveLeftOrRight(GameManager.instance.ActiveGameDeltaTime * horiz.vx);
 			if (horiz.vx == 0f) {
 				horiz.vx = -startingVx;
 				direction *= -1;

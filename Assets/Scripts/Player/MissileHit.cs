@@ -13,9 +13,9 @@ public class MissileHit : MonoBehaviour {
 	}
 
 	public void Update () {
-		transform.position += direction*Time.deltaTime;
+		transform.position += direction*GameManager.instance.ActiveGameDeltaTime;
 
-		dt += Time.deltaTime;
+		dt += GameManager.instance.ActiveGameDeltaTime;
 		if (dt > lifespan || Physics2D.IsTouchingLayers(myCollider, levelGeometryLayerMask)) {
 			Destroy(gameObject);
 		}

@@ -37,8 +37,8 @@ public class Crawler : MonoBehaviour {
 
 	private IEnumerator Fall() {
 		while (!vert.CheckGrounded()) {
-			vert.vy -= gravity * Time.deltaTime;
-			vert.Fall(Time.deltaTime * vert.vy);
+			vert.vy -= gravity * GameManager.instance.ActiveGameDeltaTime;
+			vert.Fall(GameManager.instance.ActiveGameDeltaTime * vert.vy);
 			yield return null;
 		}
 	}
@@ -47,9 +47,9 @@ public class Crawler : MonoBehaviour {
 		float dt = 0f;
 		while (dt < crawlPeriod) {
 			yield return null;
-			dt += Time.deltaTime;
+			dt += GameManager.instance.ActiveGameDeltaTime;
 			float pct = dt/crawlPeriod;
-			transform.Translate(Vector3.right * crawlVelocity.Evaluate(pct) * Time.deltaTime * crawlVelocityScale * scaleByDirection(), Space.World);
+			transform.Translate(Vector3.right * crawlVelocity.Evaluate(pct) * GameManager.instance.ActiveGameDeltaTime * crawlVelocityScale * scaleByDirection(), Space.World);
 			if (!vert.CheckGrounded()) {
 				// Start another coroutine
 				yield return StartCoroutine(Fall());
