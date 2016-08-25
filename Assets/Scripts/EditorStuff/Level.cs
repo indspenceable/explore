@@ -17,50 +17,7 @@ public class Level : MonoBehaviour {
 
 	public static readonly string[] LAYER_OPTIONS = new string[]{ "BG1", "BG2", "Geometry", "FG1", "FG2", "ActiveObjects" };
 	public static readonly string[] SORTING_LAYERS= new string[]{ "Background Tiles", "Background Tiles", "Active Level", "Foreground Tiles", "Foreground Tiles", "Active Level" };
-
-	// TODO - we never switch the gridsize from 1,1 cause it breaks things. Just bake this number in?
-	public Vector2 gridSize = new Vector2(1f, 1f);
-	public Texture2D importTileSheet;
-	public string currentlySelectedTileSheetAssetLocation;
-	public Sprite[] sprites;
-	public Sprite currentlySelectedSprite;
-	public int currentEditLayer = 0;
 	private GameObject[] _tcs;
-
-	public SharedLevelEditingStuff shared {
-		get {
-			return GameObject.Find("GameManager").GetComponent<GameManager>().shared;
-		}
-	}
-
-	public SharedLevelEditingStuff.SpritePrefabPairing LocateByCurrentSprite() {
-		if (shared.spritePrefabPairings == null) {
-			shared.spritePrefabPairings = new List<SharedLevelEditingStuff.SpritePrefabPairing>();
-		}
-		foreach (SharedLevelEditingStuff.SpritePrefabPairing spp in shared.spritePrefabPairings) {
-			if (spp.sprite == currentlySelectedSprite) {
-				return spp;
-			}
-		}
-		return null;
-	}
-	public void SetCurrentPrefab(GameObject prefab) {
-		SharedLevelEditingStuff.SpritePrefabPairing spp = LocateByCurrentSprite();
-		if (spp != null) {
-			spp.prefab = prefab;
-		} else {
-			shared.spritePrefabPairings.Add(new SharedLevelEditingStuff.SpritePrefabPairing(currentlySelectedSprite, prefab));
-		}
-	}
-
-	public GameObject CurrentPrefab() {
-		SharedLevelEditingStuff.SpritePrefabPairing spp = LocateByCurrentSprite();
-		if (spp != null) {
-			return spp.prefab;
-		} else {
-			return shared.defaultTilePrefab;
-		}
-	}
 
 	public struct TileLocation {
 		public TileLocation(int _x, int _y, GameObject _tile, int _editLayerId) {
@@ -94,31 +51,28 @@ public class Level : MonoBehaviour {
 		return _tcs[tcid];
 	}
 
-	public GameObject FindOrCreateTileAt(int x, int y) {
-		return FindOrCreateTileAt(x, y, currentEditLayer);
+	public bool OnPrefabLayer(int layer) {
+		return layer == 2 || layer == 5;
 	}
-	public GameObject FindOrCreateTileAt(int x, int y, int layer) {
+
+	public GameObject FindOrCreateTileAt(int x, int y, int layer, EditorUtil util) {
 		GameObject go = FindTileAt(x, y, layer);
 		if (go == null) {
-			if (currentEditLayer == 1) {
-				go = PrefabUtility.InstantiatePrefab(CurrentPrefab()) as GameObject;
+			if (OnPrefabLayer(layer) && false) {
+//				go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
 			} else {
 				go = new GameObject("Sprite Tile");
 				go.AddComponent<SpriteRenderer>();
 				go.GetComponent<SpriteRenderer>().sortingLayerName = SORTING_LAYERS[layer];
-				go.GetComponent<SpriteRenderer>().material = shared.pixelPerfectSprite;
+				go.GetComponent<SpriteRenderer>().material = util.pixelPerfectSprite;
 				go.isStatic = true;
 			}
 
 			go.transform.parent = TileContainer(layer).transform;
-			go.transform.localPosition = new Vector3(x + gridSize.x/2, y + gridSize.y/2);
+			go.transform.localPosition = new Vector3(x + 0.5f, y + 0.5f);
 			tiles.Add(new TileLocation(x, y, go, layer));
 		}
 		return go;
-	}
-
-	public GameObject FindTileAt(int x, int y) {
-		return FindTileAt(x, y, currentEditLayer);
 	}
 
 	public GameObject FindTileAt(int x, int y, int layer) {
@@ -130,10 +84,7 @@ public class Level : MonoBehaviour {
 		}
 		return null;
 	}
-		
-	public void RemoveTileAt(int x, int y) {
-		RemoveTileAt(x, y, currentEditLayer);
-	}
+
 	public void RemoveTileAt(int x, int y, int layer) {
 		EnsureTileLocationListIsSetup();
 		foreach (TileLocation tl in tiles) {
@@ -151,19 +102,10 @@ public class Level : MonoBehaviour {
 			for (int l = 0; l < LAYER_OPTIONS.Length; l +=1) {
 				for (int i = 0; i < TileContainer(l).transform.childCount; i+=1) {
 					Transform child = TileContainer(l).transform.GetChild(i);
-					tiles.Add(new TileLocation(Mathf.RoundToInt(child.localPosition.x-gridSize.x/2), Mathf.RoundToInt(child.localPosition.y-gridSize.y/2), child.gameObject, l));
+					tiles.Add(new TileLocation(Mathf.RoundToInt(child.localPosition.x-0.5f), Mathf.RoundToInt(child.localPosition.y-0.5f), child.gameObject, l));
 				}
 			}
 		}
-	}
-
-	public void RebindChildrenToTheirPrefabs() {
-//		Sprite css = currentlySelectedSprite;
-//		EnsureTileLocationListIsSetup();
-//		foreach (TileLocation tl in tiles) {
-//			currentlySelectedSprite = tl.tile.GetComponent<SpriteRenderer>().sprite;
-//		}
-//		currentlySelectedSprite = css;
 	}
 
 	// in the editor, validate a bunch of things on change. But we rely on editor-specific
@@ -172,38 +114,6 @@ public class Level : MonoBehaviour {
 	void OnValidate(){
 		mapSize = new Vector2((int) mapSize.x, (int) mapSize.y);
 		mapPosition = new Vector2((int) mapPosition.x, (int) mapPosition.y);
-		if (importTileSheet) {
-			SetCurrentTileSheet(AssetDatabase.GetAssetPath( importTileSheet ));
-			importTileSheet = null;
-		}
-		RebindChildrenToTheirPrefabs();
-	}
-
-	public void SetCurrentTileSheet(string target) {
-		currentlySelectedTileSheetAssetLocation = target;
-		shared.knownTileSheets.Add(currentlySelectedTileSheetAssetLocation);
-		shared.knownTileSheets = shared.knownTileSheets.Distinct().ToList();
-
-		sprites = AssetDatabase.LoadAllAssetsAtPath( currentlySelectedTileSheetAssetLocation )
-			.OfType<Sprite>().ToArray();
-		if (sprites.Length == 0) {
-			Debug.LogError("Unable to set to non-multiSprite value.");
-			importTileSheet = null;
-		}
-	}
-
-	public void RemoveCurrentSpritesheet() {
-		shared.knownTileSheets.Remove(currentlySelectedTileSheetAssetLocation);
-		SetCurrentTileSheet(shared.knownTileSheets[0]);
-	}
-
-	public void ReInstantiateTiles() {
-	}
-
-	public void RebindTileList() {
-		tiles = null;
-		_tcs = null;
-		EnsureTileLocationListIsSetup();
 	}
 #endif
 }

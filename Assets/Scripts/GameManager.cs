@@ -334,8 +334,4 @@ public class GameManager : MonoBehaviour {
 		}
 		AudioSource.PlayClipAtPoint (soundEffect, Vector3.zero);
 	}
-
-	#if UNITY_EDITOR
-	public SharedLevelEditingStuff shared = new SharedLevelEditingStuff();
-	#endif
 }

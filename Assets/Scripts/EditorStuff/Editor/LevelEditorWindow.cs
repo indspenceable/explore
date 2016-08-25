@@ -80,7 +80,7 @@ class LevelEditorWindow : EditorWindow {
 				// If we click on this tile
 				if (r.Contains(Event.current.mousePosition) && Event.current.isMouse) {
 					if (Event.current.button == 0 && util.currentlySelectedSprite) {
-						currentLevel.FindOrCreateTileAt(x, y, currentLayer).GetComponent<SpriteRenderer>().sprite = util.currentlySelectedSprite;
+						currentLevel.FindOrCreateTileAt(x, y, currentLayer, util).GetComponent<SpriteRenderer>().sprite = util.currentlySelectedSprite;
 						Repaint();
 					} else if (Event.current.button == 1) {
 						currentLevel.RemoveTileAt(x, y, currentLayer);
