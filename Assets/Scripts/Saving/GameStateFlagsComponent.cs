@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameStateFlagsComponent : MonoBehaviour {
 	public GameStateFlags state;
@@ -13,4 +14,6 @@ public struct GameStateFlags {
 	public bool magnetEnabled;
 	public bool meleeAttackEnabled;
 	public bool rangedAttackEnabled;
+
+	public List<string> flags;
 }

@@ -91,6 +91,9 @@ public class GameManager : MonoBehaviour {
 			deactivatedActiveObjectsContainer = AOTransform.gameObject;
 			currentActiveObjects = Instantiate(deactivatedActiveObjectsContainer) as GameObject;
 			deactivatedActiveObjectsContainer.SetActive(false);
+			foreach (IActivatableObject o in currentActiveObjects.GetComponentsInChildren<IActivatableObject>()) {
+				o.Activate();
+			}
 		}
 	}
 
