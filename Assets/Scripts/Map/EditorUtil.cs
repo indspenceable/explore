@@ -53,6 +53,9 @@ public class EditorUtil : MonoBehaviour
 
 	public static void DrawTextureGUI(Rect position, Sprite sprite, Vector2 size)
 	{
+		if (sprite == null) {
+			return;
+		}
 		Rect spriteRect = new Rect(sprite.rect.x / sprite.texture.width, 
 			sprite.rect.y / sprite.texture.height,
 			sprite.rect.width / sprite.texture.width, 

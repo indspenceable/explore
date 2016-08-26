@@ -254,13 +254,13 @@ public class GameManager : MonoBehaviour {
 				yield return new WaitForSeconds(0.3f);
 				break;
 			case ' ':
-				yield return new WaitForSeconds(0.01f);
+				yield return new WaitForSecondsRealtime(0.00001f);
 				break;
 			default:
-				yield return WaitForUnscaledSeconds(0.01f);
+				yield return new WaitForSecondsRealtime(0.00001f);
 				if (blipSound != null && delay <= 0) {
 					GameManager.instance.PlaySound(blipSound);
-					delay = 3;
+					delay = 2;
 				}
 				break;
 			}
