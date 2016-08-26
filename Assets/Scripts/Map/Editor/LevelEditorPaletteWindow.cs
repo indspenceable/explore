@@ -38,11 +38,17 @@ public class LevelEditorPaletteWindow : EditorWindow {
 	}
 
 	public void OnGUI() {
+		int oldLayer = util.currentLayer;
 		util.currentLayer = GUILayout.Toolbar(util.currentLayer, Level.LAYER_OPTIONS);
 
 		SelectTileSheetDropdown();
 		RenderAllTileButtons();
 		DisplayCurrentTileSpriteLarge();
+
+
+		if (util.currentLayer != oldLayer) {
+			ReRender();
+		}
 	}
 
 	void SelectTileSheetDropdown()
@@ -98,6 +104,15 @@ public class LevelEditorPaletteWindow : EditorWindow {
 				EditorUtil.DrawTextureGUI (rect, util.currentlySelectedSprite, rect.size);
 			}
 		}
+	}
+
+	public void ReRender() {
+		LevelEditorWindow[] windows = Resources.FindObjectsOfTypeAll<LevelEditorWindow>();
+		if(windows != null && windows.Length > 0)
+		{
+			windows[0].Repaint();
+		}
+		Repaint();
 	}
 }
 

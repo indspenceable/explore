@@ -88,7 +88,7 @@ class LevelEditorWindow : EditorWindow {
 						GameObject go = currentLevel.FindTileAt(x, y, util.currentLayer);
 						if (go != null) {
 							util.currentlySelectedSprite = go.GetComponent<SpriteRenderer>().sprite;
-							ReRenderEditorPaletteWindow();
+							ReRender();
 						}
 					}
 				}
@@ -112,11 +112,12 @@ class LevelEditorWindow : EditorWindow {
 		EditorGUILayout.EndScrollView();
 	}
 		
-	public void ReRenderEditorPaletteWindow() {
+	public void ReRender() {
 		LevelEditorPaletteWindow[] windows = Resources.FindObjectsOfTypeAll<LevelEditorPaletteWindow>();
 		if(windows != null && windows.Length > 0)
 		{
 			windows[0].Repaint();
 		}
+		Repaint();
 	}
 }
