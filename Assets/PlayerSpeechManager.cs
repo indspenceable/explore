@@ -6,6 +6,7 @@ public class PlayerSpeechManager : MonoBehaviour {
 	PlayerInputManager inputManager;
 	string pendingSpeech;
 	const int MAX_SPEECH = 10;
+	public LayerMask voiceLayer;
 
 	public Text speechUIText;
 
@@ -20,6 +21,11 @@ public class PlayerSpeechManager : MonoBehaviour {
 				// We're done here.
 				GameManager.instance.currentGameMode = GameMode.MOVEMENT;
 				speechUIText.gameObject.SetActive(false);
+				foreach(Collider2D c in Physics2D.OverlapPointAll(transform.position, voiceLayer)) {
+					foreach(IVoiceReciever vr in c.gameObject.GetComponents<IVoiceReciever>()) {
+						vr.RecieveString(pendingSpeech);
+					}
+				}
 			} else if (Input.inputString == "\b") {
 				if (pendingSpeech.Length > 0) {
 					pendingSpeech = pendingSpeech.Substring(0, pendingSpeech.Length-1);

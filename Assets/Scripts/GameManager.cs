@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		instance = this;
 		GetComponent<AudioSource>().Play();
-		player.GetComponent<GameStateFlagsComponent>().state = GetComponent<GameStateFlagsComponent>().state;
+//		player.GetComponent<GameStateFlagsComponent>().state;
 		GoToTarget(FindTarget());
 		inputManager = player.GetComponent<PlayerInputManager>();
 	}

@@ -5,7 +5,7 @@ public class GameStateDoor : MonoBehaviour, IActivatableObject {
 	public string flagName;
 
 	public void Activate () {
-		if (GameManager.instance.player.currentGameState.flags.IndexOf(flagName) != -1) {
+		if (GameManager.instance.player.currentGameState.flags.Contains(flagName)) {
 			Destroy(gameObject);
 		}
 	}
