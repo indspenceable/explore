@@ -60,6 +60,9 @@ public class GameManager : MonoBehaviour {
 //		player.GetComponent<GameStateFlagsComponent>().state;
 		GoToTarget(FindTarget());
 		inputManager = player.GetComponent<PlayerInputManager>();
+
+		DealWithActiveObjects(currentLevel);
+		InstallAndPlayMusic(GetComponent<AudioSource> (), currentLevel.backgroundMusic);
 	}
 
 	public Image fadeOutOverlay;
@@ -97,6 +100,12 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	void InstallAndPlayMusic(AudioSource audioSource, AudioClip backgroundMusic)
+	{
+		audioSource.clip = backgroundMusic;
+		audioSource.Play ();
+	}
+
 	public IEnumerator SwapToNewMusic(Level nextLevel) {
 		AudioSource audioSource = GetComponent<AudioSource> ();
 		if (nextLevel.backgroundMusic != audioSource.clip && nextLevel.backgroundMusic != null) {
@@ -104,8 +113,7 @@ public class GameManager : MonoBehaviour {
 				yield return null;
 				audioSource.volume -= GameManager.instance.ActiveGameDeltaTime;
 			}
-			audioSource.clip = nextLevel.backgroundMusic;
-			audioSource.Play();
+			InstallAndPlayMusic(audioSource, nextLevel.backgroundMusic);
 			while (audioSource.volume < 1) {
 				yield return null;
 				audioSource.volume += GameManager.instance.ActiveGameDeltaTime;
