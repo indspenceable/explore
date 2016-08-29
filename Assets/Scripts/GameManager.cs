@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour {
 
 		DealWithActiveObjects(currentLevel);
 		InstallAndPlayMusic(GetComponent<AudioSource> (), currentLevel.backgroundMusic);
+		backgroundImage.sprite = currentLevel.backgroundImage;
 	}
 
 	public Image fadeOutOverlay;
