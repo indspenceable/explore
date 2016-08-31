@@ -25,7 +25,7 @@ Attack:
   Whip (w/ grapple)
   Fireball (or other elements)
   Staff (for highjump/airspin)
-  Spear (for platform) 
+  Spear (for platform)
 
 ShadowStep
 Airdodge
@@ -56,3 +56,43 @@ Slide
 helmet (for waterfalls)
 ice beam
 fast movement
+
+-- Water
+1) Iron Boots (sink in water)
+2) Bubble - unlimited air
+3) ice shard (attack + freeze water)
+* Ignore currents?
+
+-- Land movement
+4) ShadowDodge (descend 1-way platforms)
+5) Create platform in wall.
+6) Magnet Pull (also pull in pickups)
+7) Swing from hooks ala DKC
+??? Climb Ceilings/Walls
+??? Phase-step (airdodge? port through walls?)
+??? Wall Jump?
+
+--- Staff Moves
+8/9/10) Helicopter hover / Ground+Air Attack / High Jump / stomp?
+* Ice Staff
+* Fire Staff
+* Charge Staff
+
+-- Other
+11) Fire-skin (lava + fire bursts)
+* Reduce Damage
+* Increase Range
+
+-- Spells
+12) Illumination
+13) X-Ray
+14) Teleport To Save Points
+15) Use save points
+16) Levitate
+17) Activate Mechanism
+18) Summon Rain
+19) Commands to minions in certain rooms
+
+-- Strictly Keys
+19) Use Mirrors as Doors
+20) Open Regular Doors
