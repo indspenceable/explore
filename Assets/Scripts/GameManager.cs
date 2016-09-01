@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
 	public TextContainer dialogues;
 	public Level currentLevel;
 	public SpriteRenderer backgroundImage;
+	public LevelContainer levels;
 
 	public float ActiveGameDeltaTime {
 		get {
@@ -37,17 +38,6 @@ public class GameManager : MonoBehaviour {
 	private GameObject currentActiveObjects;
 
 	[SerializeField]
-	public List<Level> levels;
-	public Level FindLevelWithCoord(int x, int y) {
-		foreach (Level l in levels) {
-			if ((l.mapPosition.x <= x && (l.mapPosition + l.mapSize).x > x) &&
-				(l.mapPosition.y <= y && (l.mapPosition + l.mapSize).y > y)) {
-				return l;
-			}
-		}
-		return null;
-	}
-	[SerializeField]
 	public DoorMap doors;
 
 	public PlayerInputManager inputManager;
@@ -64,6 +54,11 @@ public class GameManager : MonoBehaviour {
 		DealWithActiveObjects(currentLevel);
 		InstallAndPlayMusic(GetComponent<AudioSource> (), currentLevel.backgroundMusic);
 		backgroundImage.sprite = currentLevel.backgroundImage;
+
+		levels.BuildCache();
+		foreach (Level l in levels.levels) {
+			l.gameObject.SetActive(l == currentLevel);
+		}
 	}
 
 	public Image fadeOutOverlay;
@@ -124,7 +119,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public IEnumerator MoveIntoLevel(Level targetLevel, Vector3 playerOffset) {
-		targetLevel.transform.position = Vector3.Scale(targetLevel.mapPosition - currentLevel.mapPosition, GameManager.SCREEN_SIZE);
+//		targetLevel.transform.position = Vector3.Scale(targetLevel.mapPosition - currentLevel.mapPosition, GameManager.SCREEN_SIZE);
 		targetLevel.gameObject.SetActive(true);
 
 		DealWithActiveObjects(targetLevel);
@@ -132,10 +127,10 @@ public class GameManager : MonoBehaviour {
 
 		currentLevel.gameObject.SetActive(false);
 		currentLevel = targetLevel;
-		player.transform.position -= currentLevel.transform.position;
+//		player.transform.position -= currentLevel.transform.position;
 		player.transform.position += playerOffset;
-		myCamera.transform.position -= currentLevel.transform.position;
-		currentLevel.transform.position = Vector3.zero;
+//		myCamera.transform.position -= currentLevel.transform.position;
+//		currentLevel.transform.position = Vector3.zero;
 		backgroundImage.sprite = targetLevel.backgroundImage;
 		GoToTarget(FindTarget());
 	}
@@ -154,7 +149,7 @@ public class GameManager : MonoBehaviour {
 		fadeOutOverlay.gameObject.SetActive(true);
 		yield return Fade(new Color(0,0,0, 0), Color.black, 0.2f);
 
-		Level targetLevel = FindLevelWithCoord(px, py);
+		Level targetLevel = levels.FindLevelWithCoord(px, py);
 		yield return MoveIntoLevel(targetLevel, playerOffset);
 
 		yield return Fade(Color.black, new Color(0,0,0, 0), 0.2f);
@@ -166,7 +161,7 @@ public class GameManager : MonoBehaviour {
 
 	public IEnumerator DoorCollision(DoorCollider door) {
 		if (door.direction == DoorMap.Direction.RIGHT) {
-			int py = Mathf.FloorToInt(player.transform.position.y / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
+			int py = Mathf.FloorToInt((player.transform.position.y - currentLevel.transform.position.y) / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
 			int px = (int)currentLevel.mapPosition.x + (int)currentLevel.mapSize.x-1;
 
 			if (doors.DoorAt(px, py)) {
@@ -176,7 +171,7 @@ public class GameManager : MonoBehaviour {
 		}
 		//
 		if (door.direction == DoorMap.Direction.LEFT) {
-			int py = Mathf.FloorToInt(player.transform.position.y / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
+			int py = Mathf.FloorToInt((player.transform.position.y - currentLevel.transform.position.y) / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
 			int px = (int)currentLevel.mapPosition.x-1;
 			if (doors.DoorAt(px, py)) {
 				// Door going right
@@ -192,8 +187,8 @@ public class GameManager : MonoBehaviour {
 		float halfWidth = SCREEN_SIZE.x / 2;
 		float halfHeight = SCREEN_SIZE.y / 2;
 		Vector2 scaledMap = Vector2.Scale(currentLevel.mapSize, SCREEN_SIZE);
-		float px = Mathf.Clamp(player.transform.position.x, halfWidth, scaledMap.x-halfWidth);
-		float py = Mathf.Clamp(player.transform.position.y, halfHeight, scaledMap.y-halfHeight);
+		float px = Mathf.Clamp(player.transform.position.x, currentLevel.transform.position.x + halfWidth, currentLevel.transform.position.x + scaledMap.x-halfWidth);
+		float py = Mathf.Clamp(player.transform.position.y, currentLevel.transform.position.y + halfHeight, currentLevel.transform.position.y + scaledMap.y-halfHeight);
 		return new Vector2(px, py);
 	}
 

@@ -62,15 +62,6 @@ class MapConfig : EditorWindow {
 			GameObject levelGO = new GameObject();
 			levelGO.transform.parent = levelContainer.transform;
 			Level l = levelGO.AddComponent<Level>();
-			gm.levels.Add(l);
-			DisableAllLevelsExceptFor(l);
-		}
-		if (GUILayout.Button("Re-scan for current level")) {
-			foreach(Level l in gm.levels) {
-				if (l.gameObject.activeSelf && currentLevel != l) {
-					DisableAllLevelsExceptFor(l);
-				}
-			}
 		}
 		EditorGUILayout.EndHorizontal();
 
@@ -117,21 +108,25 @@ class MapConfig : EditorWindow {
 		EditorGUILayout.BeginHorizontal ();
 		if (GUILayout.Button ("<")) {
 			currentLevel.mapPosition += new Vector2(-1,0);
+			currentLevel.MoveMeToMyPosition();
 		}
 		if (GUILayout.Button ("v")) {
 			currentLevel.mapPosition += new Vector2(0,-1);
+			currentLevel.MoveMeToMyPosition();
 		}
 		if (GUILayout.Button ("^")) {
 			currentLevel.mapPosition += new Vector2(0,1);
+			currentLevel.MoveMeToMyPosition();
 		}
 		if (GUILayout.Button (">")) {
 			currentLevel.mapPosition += new Vector2(1,0);
+			currentLevel.MoveMeToMyPosition();
 		}
 		EditorGUILayout.EndHorizontal ();
 	}
 
 	void DisplayMap(Rect r) {
-		foreach(Level l in gm.levels) {
+		foreach(Level l in gm.levels.levels) {
 			if (l == null) {
 				continue;
 			}
@@ -152,7 +147,7 @@ class MapConfig : EditorWindow {
 		int maxY = -999;
 
 		// Calculate the outer bounds of the map
-		foreach(Level l in gm.levels) {
+		foreach(Level l in gm.levels.levels) {
 			if (l.mapPosition.x < minX) {
 				minX = (int)l.mapPosition.x;
 			}
@@ -168,8 +163,8 @@ class MapConfig : EditorWindow {
 		}
 		for (int x = minX; x < maxX; x += 1)  {
 			for (int y = minY; y < maxY; y+=1) {
-				Level l = gm.FindLevelWithCoord(x, y);
-				Level o = gm.FindLevelWithCoord(x+1, y);
+				Level l = gm.levels.FindLevelWithCoord(x, y);
+				Level o = gm.levels.FindLevelWithCoord(x+1, y);
 				if (l != null && o != null && l != o) {
 					DrawDoorToRight(r, x, y);
 				}
@@ -212,16 +207,9 @@ class MapConfig : EditorWindow {
 			editorUIRoomSize - editorUIRoomMargin, 
 			(editorUIRoomSize - editorUIRoomMargin)
 		), GUIContent.none, style)) {
-			DisableAllLevelsExceptFor(l);
+			gm.currentLevel = l;
+			Selection.activeGameObject = l.gameObject;
+			SceneView.FrameLastActiveSceneView();
 		}
 	}
-
-	void DisableAllLevelsExceptFor(Level _l) {
-		foreach(Level l in gm.levels) {
-			l.gameObject.SetActive(l == _l);
-		}
-		currentLevel = _l;
-		Selection.activeGameObject = _l.gameObject;
-	}
-
 }

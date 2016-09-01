@@ -114,6 +114,11 @@ public class Level : MonoBehaviour {
 	void OnValidate(){
 		mapSize = new Vector2((int) mapSize.x, (int) mapSize.y);
 		mapPosition = new Vector2((int) mapPosition.x, (int) mapPosition.y);
+		MoveMeToMyPosition();
+	}
+
+	public void MoveMeToMyPosition() {
+		transform.position = new Vector3(mapPosition.x * GameManager.SCREEN_SIZE.x, mapPosition.y * GameManager.SCREEN_SIZE.y);
 	}
 #endif
 }
