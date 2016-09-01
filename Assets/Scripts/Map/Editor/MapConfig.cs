@@ -163,8 +163,8 @@ class MapConfig : EditorWindow {
 		}
 		for (int x = minX; x < maxX; x += 1)  {
 			for (int y = minY; y < maxY; y+=1) {
-				Level l = gm.levels.FindLevelWithCoord(x, y);
-				Level o = gm.levels.FindLevelWithCoord(x+1, y);
+				Level l = gm.levels.FindLevelByMapCoords(x, y);
+				Level o = gm.levels.FindLevelByMapCoords(x+1, y);
 				if (l != null && o != null && l != o) {
 					DrawDoorToRight(r, x, y);
 				}

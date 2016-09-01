@@ -46,19 +46,23 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 	void Start () {
 		instance = this;
+		levels.BuildCache();
+		currentLevel = levels.FindLevelByWorldCoords(player.transform.position);
+		if (currentLevel == null) {
+			Debug.LogError("Player is starting outside of a room!");
+		}
+
 		GetComponent<AudioSource>().Play();
-//		player.GetComponent<GameStateFlagsComponent>().state;
-		GoToTarget(FindTarget());
+
 		inputManager = player.GetComponent<PlayerInputManager>();
 
 		DealWithActiveObjects(currentLevel);
 		InstallAndPlayMusic(GetComponent<AudioSource> (), currentLevel.backgroundMusic);
 		backgroundImage.sprite = currentLevel.backgroundImage;
-
-		levels.BuildCache();
 		foreach (Level l in levels.levels) {
 			l.gameObject.SetActive(l == currentLevel);
 		}
+		GoToTarget(FindTarget());
 	}
 
 	public Image fadeOutOverlay;
@@ -150,7 +154,7 @@ public class GameManager : MonoBehaviour {
 		fadeOutOverlay.gameObject.SetActive(true);
 		yield return Fade(new Color(0,0,0, 0), Color.black, 0.2f);
 
-		Level targetLevel = levels.FindLevelWithCoord(px, py);
+		Level targetLevel = levels.FindLevelByMapCoords(px, py);
 		yield return MoveIntoLevel(targetLevel, playerOffset);
 
 		yield return Fade(Color.black, new Color(0,0,0, 0), 0.2f);

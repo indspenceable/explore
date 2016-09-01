@@ -16,7 +16,7 @@ public class LevelContainer : MonoBehaviour {
 	public void BuildCache() {
 		_levels = levels;
 	}
-	public Level FindLevelWithCoord(int x, int y) {
+	public Level FindLevelByMapCoords(int x, int y) {
 		foreach (Level l in levels) {
 			if ((l.mapPosition.x <= x && (l.mapPosition + l.mapSize).x > x) &&
 				(l.mapPosition.y <= y && (l.mapPosition + l.mapSize).y > y)) {
@@ -24,5 +24,11 @@ public class LevelContainer : MonoBehaviour {
 			}
 		}
 		return null;
+	}
+	public Level FindLevelByWorldCoords(float x, float y) {
+		return FindLevelByMapCoords(Mathf.FloorToInt(x/GameManager.SCREEN_SIZE.x), Mathf.FloorToInt(y/GameManager.SCREEN_SIZE.y));
+	}
+	public Level FindLevelByWorldCoords(Vector3 pos) {
+		return FindLevelByWorldCoords(pos.x, pos.y);
 	}
 }
