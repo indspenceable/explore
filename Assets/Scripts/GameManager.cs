@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour {
 		foreach (Level l in levels.levels) {
 			l.gameObject.SetActive(l == currentLevel);
 		}
-		GoToTarget(FindTarget());
+		MoveCameraToCameraTargetInstantly(FindTarget());
 	}
 
 	public Image fadeOutOverlay;
@@ -137,10 +137,19 @@ public class GameManager : MonoBehaviour {
 //		myCamera.transform.position -= currentLevel.transform.position;
 //		currentLevel.transform.position = Vector3.zero;
 		backgroundImage.sprite = targetLevel.backgroundImage;
-		GoToTarget(FindTarget());
+		MoveCameraToCameraTargetInstantly(FindTarget());
 	}
 
-	public IEnumerator DoDoorCollision(int px, int py, Vector3 playerOffset, DoorCollider d) {
+	public IEnumerator DoDoorCollision(Vector3 playerOffset, DoorCollider d) {
+		var oldLayer = d.gameObject.layer;
+		d.gameObject.layer = LayerMask.NameToLayer("Default");
+
+		yield return DoRoomTransitionFull(playerOffset);
+
+		d.gameObject.layer = oldLayer;
+	}
+
+	public IEnumerator DoRoomTransitionFull(Vector3 playerDestination) {
 		player.enabled = false;
 
 		// End the airdodge early, if needed
@@ -149,19 +158,17 @@ public class GameManager : MonoBehaviour {
 			player.FinishAirDodge ();
 		}
 
-		var oldLayer = d.gameObject.layer;
-		d.gameObject.layer = LayerMask.NameToLayer("Default");
+
 		fadeOutOverlay.gameObject.SetActive(true);
 		yield return Fade(new Color(0,0,0, 0), Color.black, 0.2f);
 
-		Level targetLevel = levels.FindLevelByMapCoords(px, py);
-		yield return MoveIntoLevel(targetLevel, playerOffset);
+		Level targetLevel = levels.FindLevelByWorldCoords(playerDestination);
+		yield return MoveIntoLevel(targetLevel, playerDestination-player.transform.position);
 
 		yield return Fade(Color.black, new Color(0,0,0, 0), 0.2f);
 		fadeOutOverlay.gameObject.SetActive(false);
 
 		player.enabled = true;
-		d.gameObject.layer = oldLayer;
 	}
 
 	public IEnumerator DoorCollision(DoorCollider door) {
@@ -171,7 +178,7 @@ public class GameManager : MonoBehaviour {
 
 			if (doors.DoorAt(px, py)) {
 				// Door going right
-				yield return DoDoorCollision(px+1, py, Vector3.right, door);
+				yield return DoDoorCollision(player.transform.position+Vector3.right, door);
 			}
 		}
 		//
@@ -180,7 +187,7 @@ public class GameManager : MonoBehaviour {
 			int px = (int)currentLevel.mapPosition.x-1;
 			if (doors.DoorAt(px, py)) {
 				// Door going right
-				yield return DoDoorCollision(px, py, -Vector3.right, door);
+				yield return DoDoorCollision(player.transform.position-Vector3.right, door);
 			}
 		}
 	}
@@ -204,7 +211,7 @@ public class GameManager : MonoBehaviour {
 		// Can the camera go there?
 		myCamera.transform.position = Vector3.Lerp(myCamera.transform.position, new Vector3(targetP.x, targetP.y, myCamera.transform.position.z), GameManager.instance.ActiveGameDeltaTime * lerpWeight);
 		if (Mathf.Abs(myCamera.transform.position.x - targetP.x) + Mathf.Abs(myCamera.transform.position.y - targetP.y) < minDistanceThreshold) {
-			GoToTarget(targetP);
+			MoveCameraToCameraTargetInstantly(targetP);
 		}
 
 		// TODO this should actually live on the player object, probably.
@@ -231,7 +238,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void GoToTarget(Vector2 p) {
+	public void MoveCameraToCameraTargetInstantly(Vector2 p) {
 		myCamera.transform.position = new Vector3(p.x, p.y, myCamera.transform.position.z);
 	}
 
