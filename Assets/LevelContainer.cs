@@ -16,6 +16,11 @@ public class LevelContainer : MonoBehaviour {
 	public void BuildCache() {
 		_levels = levels;
 	}
+	// Only should be used in the editor...
+	#if UNITY_EDITOR
+	public void DestroyCache() {
+	}
+	#endif
 	public Level FindLevelByMapCoords(int x, int y) {
 		foreach (Level l in levels) {
 			if ((l.mapPosition.x <= x && (l.mapPosition + l.mapSize).x > x) &&

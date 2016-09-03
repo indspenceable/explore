@@ -15,7 +15,7 @@ class MapConfig : EditorWindow {
 	Dictionary<Color, GUIStyle> colors = new Dictionary<Color, GUIStyle>();
 
 	GameManager gm;
-	GameObject levelContainer;
+	LevelContainer levelContainer;
 	Level currentLevel {
 		get {
 			return gm.currentLevel;
@@ -32,16 +32,13 @@ class MapConfig : EditorWindow {
 	bool inPlayModeLastFrame = false;
 
 	void OnGUI () {
-		// We should have a game manager.
-//		return;
-		levelContainer = GameObject.Find("Levels");
+		levelContainer = GameObject.Find("Levels").GetComponent<LevelContainer>();
 		if (GameObject.Find("GameManager") == null) {
-//			Debug.LogError("No Game Manager in Screen! Aborting.");
 			EditorGUILayout.LabelField("No Game Manager.");
 			return;
 		} else if (levelContainer == null) {
 			Debug.Log("No Level Container. Creating one.");
-			levelContainer = new GameObject("Levels");
+			levelContainer = new GameObject("Levels").AddComponent<LevelContainer>();
 		}
 		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 
@@ -56,7 +53,8 @@ class MapConfig : EditorWindow {
 		AddColor(Color.black);
 		AddColor(Color.gray);
 
-
+		levelContainer.BuildCache();
+	
 		EditorGUILayout.BeginHorizontal();
 		if (GUILayout.Button("Add new Level")) {
 			GameObject levelGO = new GameObject();
@@ -68,6 +66,8 @@ class MapConfig : EditorWindow {
 		MoveViewportOptions ();
 		MoveCurrentLevelPositionOptions ();
 		DisplayMap(EditorGUILayout.GetControlRect());
+
+		levelContainer.DestroyCache();
 	}
 
 	void AddColor(Color c) {
