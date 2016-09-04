@@ -65,6 +65,7 @@ class MapConfig : EditorWindow {
 			Level l = levelGO.AddComponent<Level>();
 			l.mapPosition = currentLevel.mapPosition;
 			currentLevel = l;
+			Undo.RegisterCreatedObjectUndo(l, "Undo create level");
 			levelContainer.BuildCache();
 		}
 		EditorGUILayout.EndHorizontal();
