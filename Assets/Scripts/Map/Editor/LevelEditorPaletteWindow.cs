@@ -4,6 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class LevelEditorPaletteWindow : EditorWindow {
+	public static void Redraw() {
+	}
+
 	GameManager _gm;
 	GameManager gm {
 		get {
@@ -47,7 +50,7 @@ public class LevelEditorPaletteWindow : EditorWindow {
 
 
 		if (util.currentLayer != oldLayer) {
-			ReRender();
+			EditorWindowUtil.RepaintAll();
 		}
 	}
 
@@ -104,15 +107,6 @@ public class LevelEditorPaletteWindow : EditorWindow {
 				EditorUtil.DrawTextureGUI (rect, util.currentlySelectedSprite, rect.size);
 			}
 		}
-	}
-
-	public void ReRender() {
-		LevelEditorWindow[] windows = Resources.FindObjectsOfTypeAll<LevelEditorWindow>();
-		if(windows != null && windows.Length > 0)
-		{
-			windows[0].Repaint();
-		}
-		Repaint();
 	}
 }
 

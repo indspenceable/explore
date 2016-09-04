@@ -30,8 +30,10 @@ class MapConfig : EditorWindow {
 	}
 
 	bool inPlayModeLastFrame = false;
+	bool change = false;
 
 	void OnGUI () {
+		change = false;
 		levelContainer = GameObject.Find("Levels").GetComponent<LevelContainer>();
 		if (GameObject.Find("GameManager") == null) {
 			EditorGUILayout.LabelField("No Game Manager.");
@@ -57,11 +59,13 @@ class MapConfig : EditorWindow {
 	
 		EditorGUILayout.BeginHorizontal();
 		if (GUILayout.Button("Add new Level")) {
+			levelContainer.DestroyCache();
 			GameObject levelGO = new GameObject();
 			levelGO.transform.parent = levelContainer.transform;
 			Level l = levelGO.AddComponent<Level>();
 			l.mapPosition = currentLevel.mapPosition;
 			currentLevel = l;
+			levelContainer.BuildCache();
 		}
 		EditorGUILayout.EndHorizontal();
 
@@ -70,6 +74,11 @@ class MapConfig : EditorWindow {
 		DisplayMap(EditorGUILayout.GetControlRect());
 
 		levelContainer.DestroyCache();
+
+		if (change) {
+			currentLevel.MoveMeToMyPosition();
+			EditorWindowUtil.RepaintAll();
+		}
 	}
 
 	void AddColor(Color c) {
@@ -85,22 +94,34 @@ class MapConfig : EditorWindow {
 
 	}
 
+	private void MoveAll(Vector2 v) {
+		foreach (Level l in gm.levels.levels) {
+			Undo.RecordObject(l, "Shift Map");
+			l.mapPosition += v;
+			l.MoveMeToMyPosition();
+		}
+	}
+
 	void MoveViewportOptions()
 	{
 		GUILayout.Label ("Move Viewport");
 		EditorGUILayout.BeginHorizontal ();
 		if (GUILayout.Button ("<")) {
+			MoveAll(new Vector2(-1,0));
+			change = true;
 		}
-		;
 		if (GUILayout.Button ("v")) {
+			MoveAll(new Vector2(0,-1));
+			change = true;
 		}
-		;
 		if (GUILayout.Button ("^")) {
+			MoveAll(new Vector2(0, 1));
+			change = true;
 		}
-		;
 		if (GUILayout.Button (">")) {
+			MoveAll(new Vector2(1,0));
+			change = true;
 		}
-		;
 		EditorGUILayout.EndHorizontal ();
 	}
 
@@ -110,19 +131,19 @@ class MapConfig : EditorWindow {
 		EditorGUILayout.BeginHorizontal ();
 		if (GUILayout.Button ("<")) {
 			currentLevel.mapPosition += new Vector2(-1,0);
-			currentLevel.MoveMeToMyPosition();
+			change = true;
 		}
 		if (GUILayout.Button ("v")) {
 			currentLevel.mapPosition += new Vector2(0,-1);
-			currentLevel.MoveMeToMyPosition();
+			change = true;
 		}
 		if (GUILayout.Button ("^")) {
 			currentLevel.mapPosition += new Vector2(0,1);
-			currentLevel.MoveMeToMyPosition();
+			change = true;
 		}
 		if (GUILayout.Button (">")) {
 			currentLevel.mapPosition += new Vector2(1,0);
-			currentLevel.MoveMeToMyPosition();
+			change = true;
 		}
 		EditorGUILayout.EndHorizontal ();
 	}
@@ -187,6 +208,7 @@ class MapConfig : EditorWindow {
 			editorUIRoomMargin,
 			editorUIRoomSize - editorUIRoomMargin
 		), GUIContent.none, style)) {
+			change = true;
 			gm.doors.SetDoor(x, y, !doorHere);
 		}
 	}
@@ -209,6 +231,7 @@ class MapConfig : EditorWindow {
 			editorUIRoomSize - editorUIRoomMargin, 
 			(editorUIRoomSize - editorUIRoomMargin)
 		), GUIContent.none, style)) {
+			change = true;
 			gm.currentLevel = l;
 			Selection.activeGameObject = l.gameObject;
 			SceneView.FrameLastActiveSceneView();
