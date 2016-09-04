@@ -118,6 +118,7 @@ public class Level : MonoBehaviour {
 		mapPosition = new Vector2((int) mapPosition.x, (int) mapPosition.y);
 		MoveMeToMyPosition();
 		gameObject.name = (levelName == null || levelName == "") ? "Level" : levelName;
+		gameObject.name = "(" + (int)mapPosition.x + ", " + (int)mapPosition.y + ") " + gameObject.name;
 	}
 
 	public void MoveMeToMyPosition() {
