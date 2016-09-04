@@ -79,7 +79,12 @@ class LevelEditorWindow : EditorWindow {
 				// If we click on this tile
 				if (r.Contains(Event.current.mousePosition) && Event.current.isMouse) {
 					if (Event.current.button == 0 && util.currentlySelectedSprite) {
-						currentLevel.FindOrCreateTileAt(x, y, util.currentLayer, util).GetComponent<SpriteRenderer>().sprite = util.currentlySelectedSprite;
+						GameObject go = currentLevel.FindOrCreateTileAt(x, y, util.currentLayer, util);
+						go.GetComponent<SpriteRenderer>().sprite = util.currentlySelectedSprite;
+						if (util.CurrentLayerNeedsCollider()) {
+							go.AddComponent<BoxCollider2D>();
+							go.layer = LayerMask.NameToLayer("Level Geometry");
+						}
 						Repaint();
 					} else if (Event.current.button == 1) {
 						currentLevel.RemoveTileAt(x, y, util.currentLayer);

@@ -12,6 +12,7 @@ public class Level : MonoBehaviour {
 	public Vector2 mapPosition = new Vector2(0,0);
 	public Sprite backgroundImage;
 	public AudioClip backgroundMusic;
+	public string levelName;
 
 #if UNITY_EDITOR
 
@@ -47,6 +48,7 @@ public class Level : MonoBehaviour {
 		if (_tcs[tcid] == null) {
 			_tcs[tcid] = new GameObject(LAYER_OPTIONS[tcid]);
 			_tcs[tcid].transform.parent = transform;
+			_tcs[tcid].transform.localPosition = Vector3.zero;
 		}
 		return _tcs[tcid];
 	}
@@ -115,6 +117,7 @@ public class Level : MonoBehaviour {
 		mapSize = new Vector2((int) mapSize.x, (int) mapSize.y);
 		mapPosition = new Vector2((int) mapPosition.x, (int) mapPosition.y);
 		MoveMeToMyPosition();
+		gameObject.name = (levelName == null || levelName == "") ? "Level" : levelName;
 	}
 
 	public void MoveMeToMyPosition() {

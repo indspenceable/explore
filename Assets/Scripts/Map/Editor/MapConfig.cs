@@ -60,6 +60,8 @@ class MapConfig : EditorWindow {
 			GameObject levelGO = new GameObject();
 			levelGO.transform.parent = levelContainer.transform;
 			Level l = levelGO.AddComponent<Level>();
+			l.mapPosition = currentLevel.mapPosition;
+			currentLevel = l;
 		}
 		EditorGUILayout.EndHorizontal();
 

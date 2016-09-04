@@ -27,10 +27,13 @@ public class EditorUtil : MonoBehaviour
 	}
 	public Sprite currentlySelectedSprite;
 	public int currentLayer;
-
 	public string currentlySelectedTileSheetAssetLocation;
 	public List<string> knownTileSheets;
 	public Material pixelPerfectSprite;
+
+	public bool CurrentLayerNeedsCollider() {
+		return currentLayer == 2;
+	}
 
 	public void SetCurrentTileSheet(string target) {
 		currentlySelectedTileSheetAssetLocation = target;
