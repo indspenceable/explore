@@ -7,9 +7,9 @@ public class MagnetPullMove : MonoBehaviour {
 	public float magnetDistance = 1f;
 	public float weight = 30f;
 	public SpriteRenderer sprite;
-	public GameStateFlags currentGameState {
+	public SerailizableGameState currentGameState {
 		get {
-			return GetComponent<GameStateFlagsComponent>().state;
+			return GetComponent<SerailizableGameStateComponent>().state;
 		}
 	}
 
@@ -29,7 +29,7 @@ public class MagnetPullMove : MonoBehaviour {
 	}
 
 	void Update () {
-		if (!currentGameState.magnetEnabled) {
+		if (!currentGameState.enabled(GameStateFlag.MAGNET)) {
 			return;
 		}
 		bool spriteEnabledState = false;

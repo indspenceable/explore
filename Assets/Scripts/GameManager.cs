@@ -306,7 +306,7 @@ public class GameManager : MonoBehaviour {
 		if(File.Exists(Application.persistentDataPath + "/game_ " + slot + ".gd")) {
 			BinaryFormatter bf = new BinaryFormatter();
 			FileStream file = File.Open(Application.persistentDataPath + "/game_ " + slot + ".gd", FileMode.Open);
-			player.GetComponent<GameStateFlagsComponent>().state = (GameStateFlags)bf.Deserialize(file);
+			player.GetComponent<SerailizableGameStateComponent>().state = (SerailizableGameState)bf.Deserialize(file);
 			file.Close();
 		}
 	}

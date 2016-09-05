@@ -16,9 +16,9 @@ public class PlayerAttacks : MonoBehaviour {
 	private PlayerMovement movement;
 	private PlayerInputManager inputManager;
 
-	public GameStateFlags currentGameState {
+	public SerailizableGameState currentGameState {
 		get {
-			return GetComponent<GameStateFlagsComponent>().state;
+			return GetComponent<SerailizableGameStateComponent>().state;
 		}
 	}
 
@@ -30,9 +30,9 @@ public class PlayerAttacks : MonoBehaviour {
 	}
 	// Update is called once per frame
 	public void Update () {
-		if (inputManager.GetButtonDown("Ranged", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.rangedAttackEnabled) {
+		if (inputManager.GetButtonDown("Ranged", GameMode.MOVEMENT) && MayInitiateAttack() && false) {
 			ShootMissile();
-		} else if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.meleeAttackEnabled) {
+		} else if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.enabled(GameStateFlag.MELEE)) {
 			Melee();
 		}
 	}

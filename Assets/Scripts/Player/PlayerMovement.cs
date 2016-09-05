@@ -54,9 +54,9 @@ public class PlayerMovement : MonoBehaviour {
 	private PlayerInputManager inputManager;
 	public bool controlsAreEnabled = true;
 
-	public GameStateFlags currentGameState {
+	public SerailizableGameState currentGameState {
 		get {
-			return GetComponent<GameStateFlagsComponent>().state;
+			return GetComponent<SerailizableGameStateComponent>().state;
 		}
 	}
 
@@ -224,7 +224,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	float getJumpStrength() {
-		return currentGameState.highJumpEnabled ? highJumpStrength :jumpStrength;
+		return currentGameState.enabled(GameStateFlag.HIGH_JUMP) ? highJumpStrength :jumpStrength;
 	}
 
 
@@ -259,7 +259,7 @@ public class PlayerMovement : MonoBehaviour {
 				vert.vy = -maxGravity;
 
 			if (inputManager.GetButtonDown("Jump", GameMode.MOVEMENT) && controlsAreEnabled) {
-				if (currentGameState.doubleJumpEnabled && doubleJumpAvailable) {
+				if (currentGameState.enabled(GameStateFlag.DOUBLE_JUMP) && doubleJumpAvailable) {
 					GameManager.instance.PlaySound(doubleJumpSoundEffect);
 					vert.vy = getJumpStrength()*2/3f;
 					doubleJumpAvailable = false;
