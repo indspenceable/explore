@@ -2,6 +2,8 @@
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.IO;
 
 public class LevelEditorPaletteWindow : EditorWindow {
 	public static void Redraw() {
@@ -44,10 +46,14 @@ public class LevelEditorPaletteWindow : EditorWindow {
 		int oldLayer = util.currentLayer;
 		util.currentLayer = GUILayout.Toolbar(util.currentLayer, Level.LAYER_OPTIONS);
 
-		SelectTileSheetDropdown();
-		RenderAllTileButtons();
-		DisplayCurrentTileSpriteLarge();
-
+		if (util.CurrentLayerIsPrefabs()) {
+			RenderAllSelectPrefabButtons();
+			DisplayCurrentPrefabSpriteLarge();
+		} else {
+			SelectTileSheetDropdown();
+			RenderAllTileButtons();
+			DisplayCurrentTileSpriteLarge();
+		}
 
 		if (util.currentLayer != oldLayer) {
 			EditorWindowUtil.RepaintAll();
@@ -67,7 +73,7 @@ public class LevelEditorPaletteWindow : EditorWindow {
 		}
 	}
 
-	void RenderTileButton(int i)
+	void RenderSpriteTileButton(int i)
 	{
 		// Get the current sprite we're rendering
 		Sprite s = util.sprites[i];
@@ -92,7 +98,46 @@ public class LevelEditorPaletteWindow : EditorWindow {
 				if (i >= util.sprites.Length) {
 					continue;
 				}
-				RenderTileButton (i);
+				RenderSpriteTileButton (i);
+				i += 1;
+			}
+			EditorGUILayout.EndHorizontal ();
+		}
+	}
+
+	void RenderPrefabTileButton(string guid) {
+		string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+		// Get the current sprite we're rendering
+		GameObject[] foo = AssetDatabase.LoadAllAssetsAtPath(assetPath).OfType<GameObject>().ToArray();
+
+
+		// Get the position it's button should be at, using autolayout
+		Rect re = EditorGUILayout.GetControlRect (GUILayout.Width (32), GUILayout.Height (32));
+		// Draw a button, then draw the sprite on top of it.
+		if (GUI.Button (re, "")) {
+			util.currentlySelectedPrefab = foo[0];
+		}
+		if (foo.Length > 0) {
+			if (foo[0].GetComponent<SpriteRenderer>() != null) {
+				EditorUtil.DrawTextureGUI (re, foo[0].GetComponent<SpriteRenderer>().sprite, re.size);
+			}
+		}
+	}
+
+	void RenderAllSelectPrefabButtons() {
+		string[] objs = AssetDatabase.FindAssets("t:Object", new string[]{"Assets/Prefabs"});
+
+		int i = 0;
+		int numberOfTilesPerRow = Screen.width / 38;
+		numberOfTilesPerRow = 8;
+		int numberOfRows = (objs.Length + numberOfTilesPerRow - 1) / numberOfTilesPerRow;
+		for (int y = 0; y < numberOfRows; y += 1) {
+			EditorGUILayout.BeginHorizontal ();
+			for (int x = 0; x < numberOfTilesPerRow; x += 1) {
+				if (i >= objs.Length) {
+					continue;
+				}
+				RenderPrefabTileButton (objs[i]);
 				i += 1;
 			}
 			EditorGUILayout.EndHorizontal ();
@@ -106,6 +151,14 @@ public class LevelEditorPaletteWindow : EditorWindow {
 			if ( util.currentlySelectedSprite != null) {
 				EditorUtil.DrawTextureGUI (rect, util.currentlySelectedSprite, rect.size);
 			}
+		}
+	}
+
+	void DisplayCurrentPrefabSpriteLarge()
+	{
+		Rect rect = EditorGUILayout.GetControlRect (GUILayout.Width (128), GUILayout.Height (128));
+		if ( util.currentlySelectedPrefab != null && util.currentlySelectedPrefab.GetComponent<SpriteRenderer>() != null) {
+			EditorUtil.DrawTextureGUI (rect, util.currentlySelectedPrefab.GetComponent<SpriteRenderer>().sprite, rect.size);
 		}
 	}
 }

@@ -26,6 +26,8 @@ public class EditorUtil : MonoBehaviour
 		}
 	}
 	public Sprite currentlySelectedSprite;
+	public GameObject currentlySelectedPrefab;
+
 	public int currentLayer;
 	public string currentlySelectedTileSheetAssetLocation;
 	public List<string> knownTileSheets;
@@ -34,12 +36,16 @@ public class EditorUtil : MonoBehaviour
 	public bool CurrentLayerNeedsCollider() {
 		return currentLayer == 2;
 	}
+	public bool CurrentLayerIsPrefabs() {
+		return currentLayer == 5;
+	}
 
 	public void SetCurrentTileSheet(string target) {
 		currentlySelectedTileSheetAssetLocation = target;
 		knownTileSheets.Add(currentlySelectedTileSheetAssetLocation);
 		knownTileSheets = knownTileSheets.Distinct().ToList();
 
+		Debug.Log(currentlySelectedTileSheetAssetLocation);
 		sprites = AssetDatabase.LoadAllAssetsAtPath( currentlySelectedTileSheetAssetLocation )
 			.OfType<Sprite>().ToArray();
 	}

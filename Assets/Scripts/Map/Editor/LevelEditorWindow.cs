@@ -78,23 +78,12 @@ class LevelEditorWindow : EditorWindow {
 
 				// If we click on this tile
 				if (r.Contains(Event.current.mousePosition) && Event.current.isMouse) {
-					if (Event.current.button == 0 && util.currentlySelectedSprite) {
-						GameObject go = currentLevel.FindOrCreateTileAt(x, y, util.currentLayer, util);
-						go.GetComponent<SpriteRenderer>().sprite = util.currentlySelectedSprite;
-						if (util.CurrentLayerNeedsCollider()) {
-							go.AddComponent<BoxCollider2D>();
-							go.layer = LayerMask.NameToLayer("Level Geometry");
-						}
-						Repaint();
+					if (Event.current.button == 0) {
+						SetTile(x, y);
 					} else if (Event.current.button == 1) {
-						currentLevel.RemoveTileAt(x, y, util.currentLayer);
-						Repaint();
+						RemoveTile(x, y);
 					} else if (Event.current.button == 2) { // Middle mouse
-						GameObject go = currentLevel.FindTileAt(x, y, util.currentLayer);
-						if (go != null) {
-							util.currentlySelectedSprite = go.GetComponent<SpriteRenderer>().sprite;
-							EditorWindowUtil.RepaintAll();
-						}
+						Eyedropper(x, y);
 					}
 				}
 
@@ -115,5 +104,37 @@ class LevelEditorWindow : EditorWindow {
 			EditorGUILayout.EndHorizontal();
 		}
 		EditorGUILayout.EndScrollView();
+	}
+
+	void SetTile(int x, int y) {
+		if (util.CurrentLayerIsPrefabs()) {
+			if (util.currentlySelectedPrefab) {
+				GameObject go = currentLevel.FindOrCreateTileAt(x, y, util.currentLayer, util, util.currentlySelectedPrefab);
+				Repaint();
+			}
+		} else {
+			if (util.currentlySelectedSprite) {
+				GameObject go = currentLevel.FindOrCreateTileAt(x, y, util.currentLayer, util);
+				go.GetComponent<SpriteRenderer>().sprite = util.currentlySelectedSprite;
+				if (util.CurrentLayerNeedsCollider()) {
+					go.AddComponent<BoxCollider2D>();
+					go.layer = LayerMask.NameToLayer("Level Geometry");
+				}
+				Repaint();
+			}
+		}
+	}
+
+	void RemoveTile(int x, int y) {
+		currentLevel.RemoveTileAt(x, y, util.currentLayer);
+		Repaint();
+	}
+
+	void Eyedropper(int x, int y) {
+		GameObject go = currentLevel.FindTileAt(x, y, util.currentLayer);
+		if (go != null) {
+			util.currentlySelectedSprite = go.GetComponent<SpriteRenderer>().sprite;
+			EditorWindowUtil.RepaintAll();
+		}
 	}
 }

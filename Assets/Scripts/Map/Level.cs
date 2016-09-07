@@ -53,15 +53,15 @@ public class Level : MonoBehaviour {
 		return _tcs[tcid];
 	}
 
-	public bool OnPrefabLayer(int layer) {
-		return layer == 2 || layer == 5;
-	}
+	public GameObject FindOrCreateTileAt(int x, int y, int layer, EditorUtil util, GameObject prefab=null) {
+		if (util.CurrentLayerIsPrefabs()) {
+			RemoveTileAt(x, y, layer);
+		}
 
-	public GameObject FindOrCreateTileAt(int x, int y, int layer, EditorUtil util) {
 		GameObject go = FindTileAt(x, y, layer);
 		if (go == null) {
-			if (OnPrefabLayer(layer) && false) {
-//				go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+			if (util.CurrentLayerIsPrefabs()) {
+				go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
 			} else {
 				go = new GameObject("Sprite Tile");
 				go.AddComponent<SpriteRenderer>();
