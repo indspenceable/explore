@@ -210,7 +210,7 @@ class MapConfig : EditorWindow {
 			editorUIRoomSize - editorUIRoomMargin
 		), GUIContent.none, style)) {
 			change = true;
-			gm.doors.SetDoor(x, y, !doorHere);
+//			gm.doors.SetDoor(x, y, !doorHere);
 		}
 	}
 
