@@ -90,15 +90,19 @@ class LevelEditorWindow : EditorWindow {
 				// The tile we wish to render
 				GameObject currentTile = currentLevel.FindTileAt(x, y, util.currentLayer);
 				if (currentTile != null) {
-					// We got one!
-					EditorUtil.DrawTextureGUI(
-						r,
-						currentTile.GetComponent<SpriteRenderer>().sprite,
-						size
-					);
+					if (!(util.CurrentLayerIsPrefabs() && currentTile.GetComponent<SpriteRenderer>() == null)) {
+						// We got one!
+						EditorUtil.DrawTextureGUI(
+							r,
+							currentTile.GetComponent<SpriteRenderer>().sprite,
+							size
+						);
+					} else {
+						EditorGUI.DrawRect(r, Color.blue);
+					}
 				} else {
 					// Don't draw anything! We've already reserved the UI space.
-					 EditorGUI.DrawRect(r, Color.magenta);
+					EditorGUI.DrawRect(r, Color.magenta);
 				}
 			}
 			EditorGUILayout.EndHorizontal();
