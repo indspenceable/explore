@@ -216,18 +216,16 @@ public class GameManager : MonoBehaviour {
 
 		// TODO this should actually live on the player object, probably.
 		if (inputManager.GetButtonDown("Pause", GameMode.MOVEMENT)) {
-			if (paused) {
-				GetComponent<AudioSource>().UnPause();
-				pausedTextContainer.SetActive(false);
-				player.enabled = oldEnabled;
-				currentGameMode = GameMode.MOVEMENT;
-			} else {
-				GetComponent<AudioSource>().Pause();
-				pausedTextContainer.SetActive(true);
-				oldEnabled = player.enabled;
-				player.enabled = false;
-				currentGameMode = GameMode.PAUSED;
-			}
+			GetComponent<AudioSource>().Pause();
+			pausedTextContainer.SetActive(true);
+			oldEnabled = player.enabled;
+			player.enabled = false;
+			currentGameMode = GameMode.PAUSED;
+		} else if (inputManager.GetButtonDown("Pause", GameMode.PAUSED)) {
+			GetComponent<AudioSource>().UnPause();
+			pausedTextContainer.SetActive(false);
+			player.enabled = oldEnabled;
+			currentGameMode = GameMode.MOVEMENT;
 		}
 
 		if (Input.GetKeyDown(KeyCode.S)) {
