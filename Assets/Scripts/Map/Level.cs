@@ -54,14 +54,11 @@ public class Level : MonoBehaviour {
 	}
 
 	public GameObject FindOrCreateTileAt(int x, int y, int layer, EditorUtil util, GameObject prefab=null) {
-		if (util.CurrentLayerIsPrefabs()) {
-			RemoveTileAt(x, y, layer);
-		}
-
 		GameObject go = FindTileAt(x, y, layer);
 		if (go == null) {
 			if (util.CurrentLayerIsPrefabs()) {
 				go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+
 			} else {
 				go = new GameObject("Sprite Tile");
 				go.AddComponent<SpriteRenderer>();
@@ -70,6 +67,7 @@ public class Level : MonoBehaviour {
 				go.isStatic = true;
 			}
 
+			Undo.RegisterCreatedObjectUndo(go, "Paint Tile");
 			go.transform.parent = TileContainer(layer).transform;
 			go.transform.localPosition = new Vector3(x + 0.5f, y + 0.5f);
 			tiles.Add(new TileLocation(x, y, go, layer));
