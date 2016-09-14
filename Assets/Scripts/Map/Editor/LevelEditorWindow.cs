@@ -45,6 +45,18 @@ class LevelEditorWindow : EditorWindow {
 		window.Show();
 	}
 
+	void OnEnable(){
+		Undo.undoRedoPerformed += HandleUndoRedoCallback;
+	}
+
+	void HandleUndoRedoCallback ()
+	{
+		foreach (var l in gm.levels.levels) {
+			l.tiles = null;
+		}
+		Repaint();
+	}
+
 	void OnGUI () {
 		if (gm == null) {
 			GUILayout.Label("No Game Manager on the field");
@@ -111,6 +123,7 @@ class LevelEditorWindow : EditorWindow {
 	}
 
 	void SetTile(int x, int y) {
+		RemoveTile(x,y);	
 		if (util.CurrentLayerIsPrefabs()) {
 			if (util.currentlySelectedPrefab) {
 				GameObject go = currentLevel.FindOrCreateTileAt(x, y, util.currentLayer, util, util.currentlySelectedPrefab);
