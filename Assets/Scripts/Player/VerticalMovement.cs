@@ -21,22 +21,22 @@ public class VerticalMovement : MonoBehaviour {
 			vy = 0;
 		}
 	}
-	public void Fall(float amt) {
+	public void Fall(float amt, bool useAscendOnlyPlatforms=true) {
 		float i = 0f;
 		Vector3 step = new Vector3(0f, -tinyMovementStep);
-		while (i > amt && !CheckCollisionVerticalAtDistance(-tinyMovementStep)) {
+		while (i > amt && !CheckCollisionVerticalAtDistance(-tinyMovementStep, useAscendOnlyPlatforms)) {
 			transform.Translate(step);
 			i -= tinyMovementStep;
 		}
-		if (CheckCollisionVerticalAtDistance(-tinyMovementStep) && vy < 0) {
+		if (CheckCollisionVerticalAtDistance(-tinyMovementStep, useAscendOnlyPlatforms) && vy < 0) {
 			vy = 0;
 		}
 	}
 		
-	public RaycastHit2D CheckCollisionVerticalAtDistance(float dv) {
+	public RaycastHit2D CheckCollisionVerticalAtDistance(float dv, bool useAscendOnlyPlatforms=true) {
 		// If we didn't set the jumpThruPlatformMask, then just use the standard LayerMask
-		bool falling = (dv < 0) && (jumpThruPlatformMask != 0);
-		LayerMask mask = (falling ? jumpThruPlatformMask.value : 0) | levelGeometryMask.value;
+		bool falling = (dv < 0) && (jumpThruPlatformMask != 0) ;
+		LayerMask mask = ((falling && useAscendOnlyPlatforms) ? jumpThruPlatformMask.value : 0) | levelGeometryMask.value;
 		if (dv > 0) {
 			return Physics2D.BoxCast((Vector2)UpCollider.transform.position + UpCollider.offset, 
 				UpCollider.size, 0f, Vector2.up, dv, mask);
@@ -46,12 +46,12 @@ public class VerticalMovement : MonoBehaviour {
 		}
 	}
 
-	public void RiseOrFall(float amt)
+	public void RiseOrFall(float amt, bool useAscendOnlyPlatforms=true)
 	{
 		if (amt > 0) {
 			Rise (amt);
 		} else if (amt < 0) {
-			Fall (amt);
+			Fall (amt, useAscendOnlyPlatforms);
 		}
 	}
 

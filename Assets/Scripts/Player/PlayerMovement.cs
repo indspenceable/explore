@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour {
 			float dx = (dtEnd - dtStart).x;
 			float dy = (dtEnd - dtStart).y;
 
-			vert.RiseOrFall(dy);
+			vert.RiseOrFall(dy, false);
 			vert.vy = dy;
 			horiz.MoveLeftOrRight(dx);
 			horiz.vx = dx;
