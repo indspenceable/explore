@@ -14,6 +14,7 @@ public class LevelContainer : MonoBehaviour {
 	}
 
 	public void BuildCache() {
+		Debug.Log("Building cache!");
 		_levels = levels;
 	}
 	// Only should be used in the editor...

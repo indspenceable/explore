@@ -80,6 +80,8 @@ class MapConfig : EditorWindow {
 			currentLevel.MoveMeToMyPosition();
 			EditorWindowUtil.RepaintAll();
 		}
+
+		levelContainer.DestroyCache();
 	}
 
 	void AddColor(Color c) {

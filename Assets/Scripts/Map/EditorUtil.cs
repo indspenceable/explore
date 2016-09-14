@@ -40,6 +40,12 @@ public class EditorUtil : MonoBehaviour
 		return currentLayer == 5;
 	}
 
+	public enum Tool {
+		PENCIL = 0,
+		BUCKET = 1,
+	}
+	public Tool currentTool = Tool.PENCIL;
+
 	public void SetCurrentTileSheet(string target) {
 		currentlySelectedTileSheetAssetLocation = target;
 		knownTileSheets.Add(currentlySelectedTileSheetAssetLocation);

@@ -45,6 +45,7 @@ public class LevelEditorPaletteWindow : EditorWindow {
 	public void OnGUI() {
 		int oldLayer = util.currentLayer;
 		util.currentLayer = GUILayout.Toolbar(util.currentLayer, Level.LAYER_OPTIONS);
+		util.currentTool = (EditorUtil.Tool)GUILayout.Toolbar((int)util.currentTool, System.Enum.GetNames(typeof(EditorUtil.Tool)));
 
 		if (util.CurrentLayerIsPrefabs()) {
 			RenderAllSelectPrefabButtons();
