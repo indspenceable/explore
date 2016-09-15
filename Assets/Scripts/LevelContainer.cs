@@ -19,6 +19,9 @@ public class LevelContainer : MonoBehaviour {
 			Debug.Log("FORCING A CACHE BUILD.");
 		}
 		_levels = levels;
+		if (force) {
+			Debug.Log("now we have: " + _levels.Length);
+		}
 	}
 	// Only should be used in the editor...
 	#if UNITY_EDITOR
@@ -27,12 +30,14 @@ public class LevelContainer : MonoBehaviour {
 	}
 	#endif
 	public Level FindLevelByMapCoords(int x, int y) {
+		Debug.Log("Looking for level at... " + x + ", " + y);
 		foreach (Level l in levels) {
 			if ((l.mapPosition.x <= x && (l.mapPosition + l.mapSize).x > x) &&
 				(l.mapPosition.y <= y && (l.mapPosition + l.mapSize).y > y)) {
 				return l;
 			}
 		}
+		Debug.Log("nothing!");
 		return null;
 	}
 	public Level FindLevelByWorldCoords(float x, float y) {
