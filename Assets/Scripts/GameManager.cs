@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 	void Start () {
 		instance = this;
-		levels.BuildCache();
+		levels.BuildCache(true);
 		currentLevel = levels.FindLevelByWorldCoords(player.transform.position);
 		if (currentLevel == null) {
 			Debug.LogError("Player is starting outside of a room!");

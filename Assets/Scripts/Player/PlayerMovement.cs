@@ -75,7 +75,13 @@ public class PlayerMovement : MonoBehaviour {
 		health.currentlyInIframes = true;
 		yield return new WaitForSeconds(airDodgeInitialDelay);
 
-		Vector3 direction = new Vector3(inputManager.GetAxis("Horizontal", GameMode.MOVEMENT), inputManager.GetAxis("Vertical", GameMode.MOVEMENT)).normalized * airDodgeMovementDistance;
+//		Vector3 direction = new Vector3(inputManager.GetAxis("Horizontal", GameMode.MOVEMENT), inputManager.GetAxis("Vertical", GameMode.MOVEMENT)).normalized * airDodgeMovementDistance;
+		Vector3 direction;
+		if (vert.CheckGrounded()) {
+			direction = Vector2.down;
+		} else {
+			direction = Vector2.zero;
+		}
 		Vector3 startPosition = transform.position;
 		Vector3 endPosition = transform.position + direction;
 

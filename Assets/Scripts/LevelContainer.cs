@@ -13,8 +13,11 @@ public class LevelContainer : MonoBehaviour {
 		}
 	}
 
-	public void BuildCache() {
-		Debug.Log("Building cache!");
+	public void BuildCache(bool force=false) {
+		if (force) {
+			_levels = null;
+			Debug.Log("FORCING A CACHE BUILD.");
+		}
 		_levels = levels;
 	}
 	// Only should be used in the editor...
