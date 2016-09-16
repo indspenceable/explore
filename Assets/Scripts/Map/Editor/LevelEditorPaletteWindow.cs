@@ -6,9 +6,6 @@ using System.Linq;
 using System.IO;
 
 public class LevelEditorPaletteWindow : EditorWindow {
-	public static void Redraw() {
-	}
-
 	GameManager _gm;
 	GameManager gm {
 		get {
