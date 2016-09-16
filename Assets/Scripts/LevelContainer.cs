@@ -26,7 +26,8 @@ public class LevelContainer : MonoBehaviour {
 	// Only should be used in the editor...
 	#if UNITY_EDITOR
 	public void DestroyCache() {
-		_levels = null;
+		if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+			_levels = null;
 	}
 	#endif
 	public Level FindLevelByMapCoords(int x, int y) {
