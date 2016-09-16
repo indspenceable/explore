@@ -109,19 +109,24 @@ public class LevelEditorPaletteWindow : EditorWindow {
 	void RenderPrefabTileButton(string guid) {
 		string assetPath = AssetDatabase.GUIDToAssetPath(guid);
 		// Get the current sprite we're rendering
-		GameObject[] foo = AssetDatabase.LoadAllAssetsAtPath(assetPath).OfType<GameObject>().ToArray();
-
+		GameObject[] gameObjects = AssetDatabase.LoadAllAssetsAtPath(assetPath).OfType<GameObject>().ToArray();
+		if (gameObjects.Length == 0) return;
+		GameObject go = gameObjects[0];
 
 		// Get the position it's button should be at, using autolayout
-		Rect re = EditorGUILayout.GetControlRect (GUILayout.Width (32), GUILayout.Height (32));
+		Rect re = EditorGUILayout.GetControlRect (GUILayout.Width (64), GUILayout.Height (64));
 		// Draw a button, then draw the sprite on top of it.
-		if (GUI.Button (re, "")) {
-			util.currentlySelectedPrefab = foo[0];
+		Sprite s = null;
+		if (go.GetComponent<SpriteRenderer>() != null) {
+			s = go.GetComponent<SpriteRenderer>().sprite;
 		}
-		if (foo.Length > 0) {
-			if (foo[0].GetComponent<SpriteRenderer>() != null) {
-				EditorUtil.DrawTextureGUI (re, foo[0].GetComponent<SpriteRenderer>().sprite, re.size);
-			}
+		string label = (s == null) ? go.name : "";
+
+		if (GUI.Button (re, label)) {
+			util.currentlySelectedPrefab = go;
+		}
+		if (s != null) {
+			EditorUtil.DrawTextureGUI (re, s, re.size);
 		}
 	}
 
