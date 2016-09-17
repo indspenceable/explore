@@ -63,8 +63,8 @@ public class VerticalMovement : MonoBehaviour {
 	}
 
 	public bool CheckGrounded() {
-		if (CheckCollisionVerticalAtDistance(-0.25f) && vy <= 0f) {
-			Fall(-0.25f);
+		if (CheckCollisionVerticalAtDistance(-tinyMovementStep) && vy <= 0f) {
+//			Fall(-tinyMovementStep);
 			RestOnGround();
 			return true;
 		}
