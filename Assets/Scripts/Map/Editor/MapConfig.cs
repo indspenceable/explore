@@ -205,20 +205,24 @@ class MapConfig : EditorWindow {
 						Selection.activeGameObject = l.gameObject;
 						SceneView.FrameLastActiveSceneView();
 					}
-					Color c = l.color;
-					EditorGUI.DrawRect(r, c);
+					Color roomColor = l.color;
+					Color lineColor = Color.black;
+					if (l == gm.currentLevel) {
+						lineColor = Color.red;
+					}
+					EditorGUI.DrawRect(r, roomColor);
 					if (FindLevel(x+ox+1, y+oy) != l) {
 						// Connect to right
-						EditorGUI.DrawRect(new Rect(r.center + new Vector2(4, -8), new Vector2(4,16)), Color.black);
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(4, -8), new Vector2(4,16)), lineColor);
 					}
 					if (FindLevel(x+ox-1, y+oy) != l) {
-						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-8, -8), new Vector2(4,16)), Color.black);
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-8, -8), new Vector2(4,16)), lineColor);
 					}
 					if (FindLevel(x+ox, y+oy+1) != l) {
-						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-8, -8), new Vector2(16,4)), Color.black);
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-8, -8), new Vector2(16,4)), lineColor);
 					}
 					if (FindLevel(x+ox, y+oy-1) != l) {
-						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-8, 4), new Vector2(16,4)), Color.black);
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-8, 4), new Vector2(16,4)), lineColor);
 					}
 				}
 			}
