@@ -86,7 +86,7 @@ class LevelEditorWindow : EditorWindow {
 			EditorGUILayout.BeginHorizontal();
 			for (int x = 0; x < width; x += 1) {
 				// The rect we're rendering to, in the editor
-				Rect r = EditorGUILayout.GetControlRect(GUILayout.Width(16), GUILayout.Height(16));
+				Rect r = EditorGUILayout.GetControlRect(false, 16, util.style, GUILayout.Width(16));
 
 				// If we click on this tile
 				if (r.Contains(Event.current.mousePosition) && Event.current.isMouse) {
