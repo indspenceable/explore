@@ -7,8 +7,7 @@ public class DoorMap {
 	public enum Direction {
 		RIGHT,
 		LEFT,
-	}
-	public bool DoorAt(int x, int y) {
-		return (GameManager.instance.levels.FindLevelByMapCoords(x+1,y) != null) && (GameManager.instance.levels.FindLevelByMapCoords(x,y) != null);
+		UP,
+		DOWN,
 	}
 }

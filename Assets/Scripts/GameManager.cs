@@ -176,7 +176,8 @@ public class GameManager : MonoBehaviour {
 			int py = Mathf.FloorToInt((player.transform.position.y - currentLevel.transform.position.y) / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
 			int px = (int)currentLevel.mapPosition.x + (int)currentLevel.mapSize.x-1;
 
-			if (doors.DoorAt(px, py)) {
+//			if (doors.DoorAt(px, py)) {
+			if (true) {
 				// Door going right
 				yield return DoDoorCollision(player.transform.position+Vector3.right, door);
 			}
@@ -185,9 +186,28 @@ public class GameManager : MonoBehaviour {
 		if (door.direction == DoorMap.Direction.LEFT) {
 			int py = Mathf.FloorToInt((player.transform.position.y - currentLevel.transform.position.y) / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
 			int px = (int)currentLevel.mapPosition.x-1;
-			if (doors.DoorAt(px, py)) {
+//			if (doors.DoorAt(px, py)) {
+			if (true) {
 				// Door going right
 				yield return DoDoorCollision(player.transform.position-Vector3.right, door);
+			}
+		}
+		if (door.direction == DoorMap.Direction.UP) {
+			int px = Mathf.FloorToInt((player.transform.position.x - currentLevel.transform.position.x) / GameManager.SCREEN_SIZE.x + currentLevel.mapPosition.x);
+			int py = (int)currentLevel.mapPosition.y + (int)currentLevel.mapSize.y-1;
+			//			if (doors.DoorAt(px, py)) {
+			if (true) {
+				// Door going right
+				yield return DoDoorCollision(player.transform.position+Vector3.up, door);
+			}
+		}
+		if (door.direction == DoorMap.Direction.DOWN) {
+			int px = Mathf.FloorToInt((player.transform.position.x - currentLevel.transform.position.x) / GameManager.SCREEN_SIZE.x + currentLevel.mapPosition.x);
+			int py = (int)currentLevel.mapPosition.y-1;
+			//			if (doors.DoorAt(px, py)) {
+			if (true) {
+				// Door going right
+				yield return DoDoorCollision(player.transform.position-Vector3.up, door);
 			}
 		}
 	}
