@@ -30,6 +30,8 @@ class MapConfig : EditorWindow {
 
 	bool inPlayModeLastFrame = false;
 	bool change = false;
+	int displayWidth = 20;
+	int displayHeight = 20;
 
 	Dictionary<int, Dictionary<int, Level>> coordsToLevel;
 	void AddLevel(int x, int y, Level l) {
@@ -56,6 +58,7 @@ class MapConfig : EditorWindow {
 	}
 
 	Vector2 viewPortPosition = Vector2.zero;
+	EditorUtil util;
 
 	void OnGUI () {
 		change = false;
@@ -64,6 +67,7 @@ class MapConfig : EditorWindow {
 			return;
 		}
 		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+		util = gm.GetComponent<EditorUtil>();
 
 		if (EditorApplication.isPlaying != inPlayModeLastFrame) {
 			colors = new Dictionary<Color, GUIStyle>();
@@ -186,30 +190,35 @@ class MapConfig : EditorWindow {
 	void DisplayMap() {
 		int ox = (int)viewPortPosition.x;
 		int oy = (int)viewPortPosition.y;
-		for (int y = 9; y >= 0; y -= 1) {
-			EditorGUILayout.BeginHorizontal();
-			for (int x = 0; x < 10; x += 1) {
-				Rect r = EditorGUILayout.GetControlRect(GUILayout.Width(16), GUILayout.Height(16));
+		GUIStyle buttonStyle = new GUIStyle();
+//		buttonStyle.
+
+		for (int y = displayHeight-1; y >= 0; y -= 1) {
+			EditorGUILayout.BeginHorizontal(util.style);
+			for (int x = 0; x < displayWidth; x += 1) {
+				Rect r = EditorGUILayout.GetControlRect(false, 16, util.style, GUILayout.Width(16));
 				Level l = FindLevel(x+ox, y+oy);
 				if (l != null) {
-					if (GUI.Button(r, GUIContent.none)) {
+					if (GUI.Button(r, GUIContent.none, util.style)) {
 						change = true;
 						gm.currentLevel = l;
 						Selection.activeGameObject = l.gameObject;
 						SceneView.FrameLastActiveSceneView();
 					}
-					if (FindLevel(x+ox+1, y+oy) == l) {
+					Color c = l.color;
+					EditorGUI.DrawRect(r, c);
+					if (FindLevel(x+ox+1, y+oy) != l) {
 						// Connect to right
-						EditorGUI.DrawRect(new Rect(r.center + new Vector2(4, -2), new Vector2(4,4)), Color.black);
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(4, -8), new Vector2(4,16)), Color.black);
 					}
-					if (FindLevel(x+ox-1, y+oy) == l) {
-						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-8, -2), new Vector2(4,4)), Color.black);
+					if (FindLevel(x+ox-1, y+oy) != l) {
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-8, -8), new Vector2(4,16)), Color.black);
 					}
-					if (FindLevel(x+ox, y+oy+1) == l) {
-						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-2, -8), new Vector2(4,4)), Color.black);
+					if (FindLevel(x+ox, y+oy+1) != l) {
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-8, -8), new Vector2(16,4)), Color.black);
 					}
-					if (FindLevel(x+ox, y+oy-1) == l) {
-						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-2, 4), new Vector2(4,4)), Color.black);
+					if (FindLevel(x+ox, y+oy-1) != l) {
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-8, 4), new Vector2(16,4)), Color.black);
 					}
 				}
 			}
@@ -217,90 +226,90 @@ class MapConfig : EditorWindow {
 		}
 
 	}
-
-	void DisplayMapOld(Rect r) {
-		foreach(Level l in gm.levels.levels) {
-			if (l == null) {
-				continue;
-			}
-			DrawFullRoomRect(r, l, (int)l.mapPosition.x, (int)l.mapPosition.y);
-			for (int dx = 0; dx < l.mapSize.x; dx+=1) {
-				for (int dy = 0; dy < l.mapSize.y; dy+=1) {
-					DrawSingleScreenRectButton(r, l, (int)l.mapPosition.x + dx, (int)l.mapPosition.y + dy);
-				}
-			}
-		}
-		DrawDoors(r);
-	}
-
-	void DrawDoors(Rect r) {
-		int minX = 0;
-		int maxX = 10;
-		int minY = 0;
-		int maxY = 10;
-		for (int x = minX; x < maxX; x += 1)  {
-			for (int y = minY; y < maxY; y+=1) {
-				Level l = FindLevel(x, y);
-				Level o = FindLevel(x+1, y);
-				if (l != null && o != null && l != o) {
-					DrawDoorToRight(r, x, y);
-				}
-			}
-		}
-	}
-
-	const int editorUIRoomSize = 20;
-	const int editorUIRoomPadding = 6;
-	const int editorUIRoomMargin = 10;
-
-	void DrawDoorToRight(Rect r, int x, int y) {
-		bool doorHere = gm.doors.DoorAt(x,y);
-		GUIStyle style = doorHere ? colors[Color.red] : colors[Color.black];
-		if (GUI.Button(new Rect(
-			r.x + (x+1)*editorUIRoomSize - editorUIRoomMargin,
-			-(r.y + y*editorUIRoomSize),
-			editorUIRoomMargin,
-			editorUIRoomSize - editorUIRoomMargin
-		), GUIContent.none, style)) {
-			change = true;
-//			gm.doors.SetDoor(x, y, !doorHere);
-		}
-	}
-
-	void DrawFullRoomRect(Rect r, Level l, int x, int y) {
-		GUIStyle style = colors[Color.black];
-		GUI.Label(new Rect(
-			r.x + x*editorUIRoomSize + editorUIRoomPadding, 
-			-(r.y + y*editorUIRoomSize + editorUIRoomPadding - editorUIRoomMargin),
-			l.mapSize.x*editorUIRoomSize - 2*editorUIRoomPadding - editorUIRoomMargin, 
-			-(l.mapSize.y*editorUIRoomSize - 2*editorUIRoomPadding - editorUIRoomMargin)
-		), GUIContent.none, style);
-	}
-
-	void DrawSingleScreenRectButton(Rect r, Level l, int x, int y) {
-		GUIStyle style = currentLevel == l ? colors[Color.green] : colors[Color.blue];
-		if (GUI.Button(new Rect(
-			r.x + x*editorUIRoomSize, 
-			-(r.y + y*editorUIRoomSize),
-			editorUIRoomSize - editorUIRoomMargin, 
-			(editorUIRoomSize - editorUIRoomMargin)
-		), GUIContent.none, style)) {
-			change = true;
-			gm.currentLevel = l;
-			Selection.activeGameObject = l.gameObject;
-			SceneView.FrameLastActiveSceneView();
-		}
-	}
-
-	void OnSceneGui() {
-		Debug.Log("DOINN IT UGHH");
-		Vector3 a = Vector3.Scale(viewPortPosition, GameManager.SCREEN_SIZE);
-		Vector3 b = Vector3.Scale(viewPortPosition + new Vector2(10, 0), GameManager.SCREEN_SIZE);
-		Vector3 c = Vector3.Scale(viewPortPosition + new Vector2(0, 10), GameManager.SCREEN_SIZE);
-		Vector3 d = Vector3.Scale(viewPortPosition + new Vector2(10, 10), GameManager.SCREEN_SIZE);
-		Debug.DrawLine(a,b);
-		Debug.DrawLine(a,c);
-		Debug.DrawLine(b,d);
-		Debug.DrawLine(c,d);
-	}
+//
+//	void DisplayMapOld(Rect r) {
+//		foreach(Level l in gm.levels.levels) {
+//			if (l == null) {
+//				continue;
+//			}
+//			DrawFullRoomRect(r, l, (int)l.mapPosition.x, (int)l.mapPosition.y);
+//			for (int dx = 0; dx < l.mapSize.x; dx+=1) {
+//				for (int dy = 0; dy < l.mapSize.y; dy+=1) {
+//					DrawSingleScreenRectButton(r, l, (int)l.mapPosition.x + dx, (int)l.mapPosition.y + dy);
+//				}
+//			}
+//		}
+//		DrawDoors(r);
+//	}
+//
+//	void DrawDoors(Rect r) {
+//		int minX = 0;
+//		int maxX = displayWidth;
+//		int minY = 0;
+//		int maxY = displayHeight;
+//		for (int x = minX; x < maxX; x += 1)  {
+//			for (int y = minY; y < maxY; y+=1) {
+//				Level l = FindLevel(x, y);
+//				Level o = FindLevel(x+1, y);
+//				if (l != null && o != null && l != o) {
+//					DrawDoorToRight(r, x, y);
+//				}
+//			}
+//		}
+//	}
+//
+//	const int editorUIRoomSize = 20;
+//	const int editorUIRoomPadding = 6;
+//	const int editorUIRoomMargin = 10;
+//
+//	void DrawDoorToRight(Rect r, int x, int y) {
+//		bool doorHere = gm.doors.DoorAt(x,y);
+//		GUIStyle style = doorHere ? colors[Color.red] : colors[Color.black];
+//		if (GUI.Button(new Rect(
+//			r.x + (x+1)*editorUIRoomSize - editorUIRoomMargin,
+//			-(r.y + y*editorUIRoomSize),
+//			editorUIRoomMargin,
+//			editorUIRoomSize - editorUIRoomMargin
+//		), GUIContent.none, style)) {
+//			change = true;
+////			gm.doors.SetDoor(x, y, !doorHere);
+//		}
+//	}
+//
+//	void DrawFullRoomRect(Rect r, Level l, int x, int y) {
+//		GUIStyle style = colors[Color.black];
+//		GUI.Label(new Rect(
+//			r.x + x*editorUIRoomSize + editorUIRoomPadding, 
+//			-(r.y + y*editorUIRoomSize + editorUIRoomPadding - editorUIRoomMargin),
+//			l.mapSize.x*editorUIRoomSize - 2*editorUIRoomPadding - editorUIRoomMargin, 
+//			-(l.mapSize.y*editorUIRoomSize - 2*editorUIRoomPadding - editorUIRoomMargin)
+//		), GUIContent.none, style);
+//	}
+//
+//	void DrawSingleScreenRectButton(Rect r, Level l, int x, int y) {
+//		GUIStyle style = currentLevel == l ? colors[Color.green] : colors[Color.blue];
+//		if (GUI.Button(new Rect(
+//			r.x + x*editorUIRoomSize, 
+//			-(r.y + y*editorUIRoomSize),
+//			editorUIRoomSize - editorUIRoomMargin, 
+//			(editorUIRoomSize - editorUIRoomMargin)
+//		), GUIContent.none, style)) {
+//			change = true;
+//			gm.currentLevel = l;
+//			Selection.activeGameObject = l.gameObject;
+//			SceneView.FrameLastActiveSceneView();
+//		}
+//	}
+//
+//	void OnSceneGUI() {
+//		Debug.Log("DOINN IT UGHH");
+//		Vector3 a = Vector3.Scale(viewPortPosition, GameManager.SCREEN_SIZE);
+//		Vector3 b = Vector3.Scale(viewPortPosition + new Vector2(10, 0), GameManager.SCREEN_SIZE);
+//		Vector3 c = Vector3.Scale(viewPortPosition + new Vector2(0, 10), GameManager.SCREEN_SIZE);
+//		Vector3 d = Vector3.Scale(viewPortPosition + new Vector2(10, 10), GameManager.SCREEN_SIZE);
+//		Debug.DrawLine(a,b);
+//		Debug.DrawLine(a,c);
+//		Debug.DrawLine(b,d);
+//		Debug.DrawLine(c,d);
+//	}
 }

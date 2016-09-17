@@ -27,6 +27,7 @@ public class EditorUtil : MonoBehaviour
 	}
 	public Sprite currentlySelectedSprite;
 	public GameObject currentlySelectedPrefab;
+	public GUIStyle style;
 
 	public int currentLayer;
 	public string currentlySelectedTileSheetAssetLocation;

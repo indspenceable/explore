@@ -33,6 +33,8 @@ public class Level : MonoBehaviour {
 		public int editLayerId;
 	}
 
+	public Color color;
+
 	public List<TileLocation> tiles;
 
 	public GameObject TileContainer(int tcid) {
