@@ -9,6 +9,6 @@ public class DoorMap {
 		LEFT,
 	}
 	public bool DoorAt(int x, int y) {
-		return true;
+		return (GameManager.instance.levels.FindLevelByMapCoords(x+1,y) != null) && (GameManager.instance.levels.FindLevelByMapCoords(x,y) != null);
 	}
 }

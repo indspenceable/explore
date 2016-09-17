@@ -122,5 +122,17 @@ public class Level : MonoBehaviour {
 	public void MoveMeToMyPosition() {
 		transform.position = new Vector3(mapPosition.x * GameManager.SCREEN_SIZE.x, mapPosition.y * GameManager.SCREEN_SIZE.y);
 	}
+
+	public void AlignGameObjects() {
+		MoveMeToMyPosition();
+		tiles = null;
+		EnsureTileLocationListIsSetup();
+		for (int i = 0; i < LAYER_OPTIONS.Length; i+=1) {
+			foreach (TileLocation tl in tiles) {
+				Undo.RecordObject(tl.tile, "Align Tiles");
+				tl.tile.transform.localPosition = new Vector3(tl.x + 0.5f, tl.y+0.5f);
+			}
+		}
+	}
 #endif
 }

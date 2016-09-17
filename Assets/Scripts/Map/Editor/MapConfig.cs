@@ -15,7 +15,6 @@ class MapConfig : EditorWindow {
 	Dictionary<Color, GUIStyle> colors = new Dictionary<Color, GUIStyle>();
 
 	GameManager gm;
-	LevelContainer levelContainer;
 	Level currentLevel {
 		get {
 			return gm.currentLevel;
@@ -32,15 +31,37 @@ class MapConfig : EditorWindow {
 	bool inPlayModeLastFrame = false;
 	bool change = false;
 
+	Dictionary<int, Dictionary<int, Level>> coordsToLevel;
+	void AddLevel(int x, int y, Level l) {
+		if (coordsToLevel == null)
+		{
+			coordsToLevel = new Dictionary<int, Dictionary<int, Level>>();
+		}
+		if (!coordsToLevel.ContainsKey(x)) {
+			coordsToLevel[x] = new Dictionary<int, Level>();
+		}
+		coordsToLevel[x][y] = l;
+	}
+	Level FindLevel(int x, int y) {
+		if (coordsToLevel == null)
+		{
+			coordsToLevel = new Dictionary<int, Dictionary<int, Level>>();
+		}
+		if (coordsToLevel.ContainsKey(x)) {
+			if (coordsToLevel[x].ContainsKey(y)) {
+				return coordsToLevel[x][y];
+			}
+		}
+		return null;
+	}
+
+	Vector2 viewPortPosition = Vector2.zero;
+
 	void OnGUI () {
 		change = false;
-		levelContainer = GameObject.Find("Levels").GetComponent<LevelContainer>();
 		if (GameObject.Find("GameManager") == null) {
 			EditorGUILayout.LabelField("No Game Manager.");
 			return;
-		} else if (levelContainer == null) {
-			Debug.Log("No Level Container. Creating one.");
-			levelContainer = new GameObject("Levels").AddComponent<LevelContainer>();
 		}
 		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 
@@ -55,33 +76,44 @@ class MapConfig : EditorWindow {
 		AddColor(Color.black);
 		AddColor(Color.gray);
 
-		levelContainer.BuildCache();
+
+		coordsToLevel = null;
+		gm.levels.DestroyCache();
+		foreach (Level l in gm.levels.levels) {
+			for (int x = 0; x < (int)l.mapSize.x; x += 1) {
+				for (int y = 0; y < (int)l.mapSize.y; y += 1) {
+					int ox = (int)l.mapPosition.x;
+					int oy = (int)l.mapPosition.y;
+					AddLevel(x+ox, y+oy, l);
+				}
+			}
+		}
 	
 		EditorGUILayout.BeginHorizontal();
+		viewPortPosition = EditorGUILayout.Vector2Field("Viewport Position", viewPortPosition);
+		viewPortPosition.x = (int)viewPortPosition.x;
+		viewPortPosition.y = (int)viewPortPosition.y;
 		if (GUILayout.Button("Add new Level")) {
-			levelContainer.DestroyCache();
 			GameObject levelGO = new GameObject();
-			levelGO.transform.parent = levelContainer.transform;
+			levelGO.transform.parent = gm.levels.transform;
 			Level l = levelGO.AddComponent<Level>();
 			l.mapPosition = currentLevel.mapPosition;
 			currentLevel = l;
 			Undo.RegisterCreatedObjectUndo(l, "Undo create level");
-			levelContainer.BuildCache();
+		}
+		if (GUILayout.Button("Align Current Level")) {
+			currentLevel.AlignGameObjects();
 		}
 		EditorGUILayout.EndHorizontal();
 
 		MoveViewportOptions ();
 		MoveCurrentLevelPositionOptions ();
-		DisplayMap(EditorGUILayout.GetControlRect());
-
-		levelContainer.DestroyCache();
+		DisplayMap();
 
 		if (change) {
 			currentLevel.MoveMeToMyPosition();
 			EditorWindowUtil.RepaintAll();
 		}
-
-		levelContainer.DestroyCache();
 	}
 
 	void AddColor(Color c) {
@@ -110,20 +142,20 @@ class MapConfig : EditorWindow {
 		GUILayout.Label ("Move Viewport");
 		EditorGUILayout.BeginHorizontal ();
 		if (GUILayout.Button ("<")) {
-			MoveAll(new Vector2(-1,0));
-			change = true;
+			viewPortPosition += (new Vector2(-1,0));
+//			change = true;
 		}
 		if (GUILayout.Button ("v")) {
-			MoveAll(new Vector2(0,-1));
-			change = true;
+			viewPortPosition += (new Vector2(0,-1));
+//			change = true;
 		}
 		if (GUILayout.Button ("^")) {
-			MoveAll(new Vector2(0, 1));
-			change = true;
+			viewPortPosition += (new Vector2(0, 1));
+//			change = true;
 		}
 		if (GUILayout.Button (">")) {
-			MoveAll(new Vector2(1,0));
-			change = true;
+			viewPortPosition += (new Vector2(1,0));
+//			change = true;
 		}
 		EditorGUILayout.EndHorizontal ();
 	}
@@ -151,7 +183,42 @@ class MapConfig : EditorWindow {
 		EditorGUILayout.EndHorizontal ();
 	}
 
-	void DisplayMap(Rect r) {
+	void DisplayMap() {
+		int ox = (int)viewPortPosition.x;
+		int oy = (int)viewPortPosition.y;
+		for (int y = 9; y >= 0; y -= 1) {
+			EditorGUILayout.BeginHorizontal();
+			for (int x = 0; x < 10; x += 1) {
+				Rect r = EditorGUILayout.GetControlRect(GUILayout.Width(16), GUILayout.Height(16));
+				Level l = FindLevel(x+ox, y+oy);
+				if (l != null) {
+					if (GUI.Button(r, GUIContent.none)) {
+						change = true;
+						gm.currentLevel = l;
+						Selection.activeGameObject = l.gameObject;
+						SceneView.FrameLastActiveSceneView();
+					}
+					if (FindLevel(x+ox+1, y+oy) == l) {
+						// Connect to right
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(4, -2), new Vector2(4,4)), Color.black);
+					}
+					if (FindLevel(x+ox-1, y+oy) == l) {
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-8, -2), new Vector2(4,4)), Color.black);
+					}
+					if (FindLevel(x+ox, y+oy+1) == l) {
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-2, -8), new Vector2(4,4)), Color.black);
+					}
+					if (FindLevel(x+ox, y+oy-1) == l) {
+						EditorGUI.DrawRect(new Rect(r.center + new Vector2(-2, 4), new Vector2(4,4)), Color.black);
+					}
+				}
+			}
+			EditorGUILayout.EndHorizontal();
+		}
+
+	}
+
+	void DisplayMapOld(Rect r) {
 		foreach(Level l in gm.levels.levels) {
 			if (l == null) {
 				continue;
@@ -167,30 +234,14 @@ class MapConfig : EditorWindow {
 	}
 
 	void DrawDoors(Rect r) {
-		int minX = 999;
-		int maxX = -999;
-		int minY = 999;
-		int maxY = -999;
-
-		// Calculate the outer bounds of the map
-		foreach(Level l in gm.levels.levels) {
-			if (l.mapPosition.x < minX) {
-				minX = (int)l.mapPosition.x;
-			}
-			if (l.mapPosition.y < minY) {
-				minY = (int)l.mapPosition.y;
-			}
-			if (l.mapPosition.x + l.mapSize.x > maxX) {
-				maxX = (int)(l.mapPosition+l.mapSize).x;
-			}
-			if (l.mapPosition.y + l.mapSize.y > maxY) {
-				maxY = (int)(l.mapPosition+l.mapSize).y;
-			}
-		}
+		int minX = 0;
+		int maxX = 10;
+		int minY = 0;
+		int maxY = 10;
 		for (int x = minX; x < maxX; x += 1)  {
 			for (int y = minY; y < maxY; y+=1) {
-				Level l = gm.levels.FindLevelByMapCoords(x, y);
-				Level o = gm.levels.FindLevelByMapCoords(x+1, y);
+				Level l = FindLevel(x, y);
+				Level o = FindLevel(x+1, y);
 				if (l != null && o != null && l != o) {
 					DrawDoorToRight(r, x, y);
 				}
@@ -239,5 +290,17 @@ class MapConfig : EditorWindow {
 			Selection.activeGameObject = l.gameObject;
 			SceneView.FrameLastActiveSceneView();
 		}
+	}
+
+	void OnSceneGui() {
+		Debug.Log("DOINN IT UGHH");
+		Vector3 a = Vector3.Scale(viewPortPosition, GameManager.SCREEN_SIZE);
+		Vector3 b = Vector3.Scale(viewPortPosition + new Vector2(10, 0), GameManager.SCREEN_SIZE);
+		Vector3 c = Vector3.Scale(viewPortPosition + new Vector2(0, 10), GameManager.SCREEN_SIZE);
+		Vector3 d = Vector3.Scale(viewPortPosition + new Vector2(10, 10), GameManager.SCREEN_SIZE);
+		Debug.DrawLine(a,b);
+		Debug.DrawLine(a,c);
+		Debug.DrawLine(b,d);
+		Debug.DrawLine(c,d);
 	}
 }
