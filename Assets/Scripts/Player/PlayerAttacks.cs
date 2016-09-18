@@ -30,7 +30,7 @@ public class PlayerAttacks : MonoBehaviour {
 	}
 	// Update is called once per frame
 	public void Update () {
-		if (inputManager.GetButtonDown("Ranged", GameMode.MOVEMENT) && MayInitiateAttack() && false) {
+		if (inputManager.GetButtonDown("Ranged", GameMode.MOVEMENT) && MayInitiateAttack()) {
 			ShootMissile();
 		} else if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.enabled(GameStateFlag.MELEE)) {
 			Melee();
@@ -47,7 +47,7 @@ public class PlayerAttacks : MonoBehaviour {
 		animator.SetTrigger("shoot");
 		GameManager.instance.PlaySound(shootSoundEffect);
 		float dx = GetComponent<SpriteRenderer>().flipX ? bulletVelocity : -bulletVelocity;
-		MissileHit b = (GameObject.Instantiate(missilePrefab, transform.position, Quaternion.identity) as MissileHit);
+		MissileHit b = GameObject.Instantiate(missilePrefab, transform.position, Quaternion.identity) as MissileHit;
 		b.direction = new Vector3(dx, 0f);
 	}
 
