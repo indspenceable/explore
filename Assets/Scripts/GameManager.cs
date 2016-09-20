@@ -198,7 +198,8 @@ public class GameManager : MonoBehaviour {
 			//			if (doors.DoorAt(px, py)) {
 			if (true) {
 				// Door going right
-				yield return DoDoorCollision(player.transform.position+Vector3.up, door);
+				player.vert.vy = 0f;
+				yield return DoDoorCollision(player.transform.position+(Vector3.up*2), door);
 			}
 		}
 		if (door.direction == DoorMap.Direction.DOWN) {
