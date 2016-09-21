@@ -11,6 +11,7 @@ public enum GameStateFlag {
 	DOUBLE_JUMP = 1 << 1,
 	MAGNET = 1 << 2,
 	MELEE = 1 << 3,
+	RANGED = 1 << 4,
 }
 
 [System.Serializable]
