@@ -114,7 +114,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (currentlyPerformingAirDodge)
 			return;
 	
-		if (inputManager.GetButtonDown("Airdodge", GameMode.MOVEMENT)) {
+		if (inputManager.GetButtonDown("Airdodge", GameMode.MOVEMENT) && currentGameState.enabled(GameStateFlag.SHADOW_STEP)) {
 			airDodgeCoroutine = AirDodge ();
 			StartCoroutine(airDodgeCoroutine);
 			return;

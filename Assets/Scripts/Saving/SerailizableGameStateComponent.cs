@@ -12,6 +12,7 @@ public enum GameStateFlag {
 	MAGNET = 1 << 2,
 	MELEE = 1 << 3,
 	RANGED = 1 << 4,
+	SHADOW_STEP = 1 << 5,
 }
 
 [System.Serializable]
