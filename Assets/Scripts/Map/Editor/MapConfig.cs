@@ -30,7 +30,7 @@ class MapConfig : EditorWindow {
 
 	bool inPlayModeLastFrame = false;
 	bool change = false;
-	int displayWidth = 20;
+	int displayWidth = 30;
 	int displayHeight = 20;
 
 	Dictionary<int, Dictionary<int, Level>> coordsToLevel;
@@ -57,7 +57,7 @@ class MapConfig : EditorWindow {
 		return null;
 	}
 
-	Vector2 viewPortPosition = Vector2.zero;
+	Vector2 viewPortPosition = new Vector2(5, -32);
 	EditorUtil util;
 
 	void OnGUI () {
