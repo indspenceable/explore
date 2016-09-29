@@ -5,8 +5,8 @@ public class GameStateGate : MonoBehaviour, IActivatableObject {
 	public string flagName;
 
 	public void Activate () {
-		if (GameManager.instance.player.currentGameState.flags.Contains(flagName)) {
-			Destroy(gameObject);
-		}
+//		if (GameManager.instance.player.currentGameState.flags.Contains(flagName)) {
+//			Destroy(gameObject);
+//		}
 	}
 }

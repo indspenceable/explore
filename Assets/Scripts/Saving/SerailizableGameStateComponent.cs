@@ -23,19 +23,16 @@ public class SerailizableGameState {
 	[EnumFlagsAttribute]
 	public GameStateFlag upgrades;
 
-	public List<string> flags = new List<string>();
-	public void ToggleFlag(string flagName) {
-		if (flags.Contains(flagName)) {
-			flags.Remove(flagName);
-		} else {
-			flags.Add(flagName);
-		}
-	}
 	public bool enabled(GameStateFlag flag) {
 		return (flag & upgrades) != 0;
 	}
 	public void enable(GameStateFlag flag) {
 		upgrades = (flag | upgrades);
+	}
+
+	public HashSet<KeyValuePair<int,int>> visitedLocations = new HashSet<KeyValuePair<int, int>>();
+	public bool hasVisited(int x, int y) {
+		return visitedLocations.Contains (new KeyValuePair<int, int> (x, y));
 	}
 }
 

@@ -111,6 +111,11 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Woo not fixedupdate
 	public void Update () {
+		currentGameState.visitedLocations.Add (
+			GameManager.instance.levels.MapCoordsTolevelCoords (
+				transform.position.x,
+				transform.position.y));
+
 		if (currentlyPerformingAirDodge)
 			return;
 	

@@ -8,6 +8,7 @@ public class MinimapManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		cells = new List<MinimapCell>(GetComponentsInChildren<MinimapCell> ());
+		Debug.Log ("setting the GM.");
 		gm = GameManager.instance;
 	}
 	
@@ -35,7 +36,7 @@ public class MinimapManager : MonoBehaviour {
 		left = right = up = down = false;
 		// Find the actual Level that the cell represents
 		Level cellLevel = gm.levels.FindLevelByMapCoords(lx, ly);
-		if (cellLevel != null) {
+		if (cellLevel != null && gm.player.currentGameState.hasVisited(lx, ly)) {
 			cell.gameObject.SetActive (true);
 			left = gm.levels.FindLevelByMapCoords  (lx - 1, ly)     != cellLevel;
 			right = gm.levels.FindLevelByMapCoords (lx + 1, ly)     != cellLevel;
