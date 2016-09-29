@@ -31,18 +31,22 @@ public class LevelContainer : MonoBehaviour {
 	}
 	#endif
 	public Level FindLevelByMapCoords(int x, int y) {
-		Debug.Log("Looking for level at... " + x + ", " + y);
 		foreach (Level l in levels) {
 			if ((l.mapPosition.x <= x && (l.mapPosition + l.mapSize).x > x) &&
 				(l.mapPosition.y <= y && (l.mapPosition + l.mapSize).y > y)) {
 				return l;
 			}
 		}
-		Debug.Log("nothing!");
 		return null;
 	}
+
+	public KeyValuePair<int, int> MapCoordsTolevelCoords(float x, float y) {
+		return new KeyValuePair<int, int> (Mathf.FloorToInt (x / GameManager.SCREEN_SIZE.x), Mathf.FloorToInt (y / GameManager.SCREEN_SIZE.y));
+	}
+
 	public Level FindLevelByWorldCoords(float x, float y) {
-		return FindLevelByMapCoords(Mathf.FloorToInt(x/GameManager.SCREEN_SIZE.x), Mathf.FloorToInt(y/GameManager.SCREEN_SIZE.y));
+		KeyValuePair<int, int> p = MapCoordsTolevelCoords (x, y);
+		return FindLevelByMapCoords(p.Key, p.Value);
 	}
 	public Level FindLevelByWorldCoords(Vector3 pos) {
 		return FindLevelByWorldCoords(pos.x, pos.y);
