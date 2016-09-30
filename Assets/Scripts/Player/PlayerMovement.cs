@@ -109,12 +109,14 @@ public class PlayerMovement : MonoBehaviour {
 		airDodgeCoroutine = null;
 	}
 
+	public void VisitCurrentLocation ()
+	{
+		currentGameState.visitedLocations.Add (GameManager.instance.levels.MapCoordsTolevelCoords (transform.position.x, transform.position.y));
+	}
+
 	// Woo not fixedupdate
 	public void Update () {
-		currentGameState.visitedLocations.Add (
-			GameManager.instance.levels.MapCoordsTolevelCoords (
-				transform.position.x,
-				transform.position.y));
+		VisitCurrentLocation ();
 
 		if (currentlyPerformingAirDodge)
 			return;

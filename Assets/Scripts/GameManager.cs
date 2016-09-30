@@ -134,6 +134,7 @@ public class GameManager : MonoBehaviour {
 		currentLevel = targetLevel;
 //		player.transform.position -= currentLevel.transform.position;
 		player.transform.position += playerOffset;
+		player.VisitCurrentLocation ();
 //		myCamera.transform.position -= currentLevel.transform.position;
 //		currentLevel.transform.position = Vector3.zero;
 		backgroundImage.sprite = targetLevel.backgroundImage;
