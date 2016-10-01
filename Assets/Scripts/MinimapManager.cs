@@ -17,6 +17,7 @@ public class MinimapManager : MonoBehaviour {
 		if (gm == null) {
 			Start ();
 		}
+		gm.player.VisitCurrentLocation();
 		KeyValuePair<int, int> pp = gm.levels.MapCoordsTolevelCoords (
 			gm.player.transform.position.x, 
 			gm.player.transform.position.y);
