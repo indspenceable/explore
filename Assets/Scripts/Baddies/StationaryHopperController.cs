@@ -10,7 +10,7 @@ public class StationaryHopperController : MonoBehaviour, IActivatableObject {
 	public float jumpVelocity = 5f;
 
 	// Use this for initialization
-	public void Activate() {
+	public void Activate(Level l) {
 		vert = GetComponent<VerticalMovement>();
 		StartCoroutine(Fall());
 	}

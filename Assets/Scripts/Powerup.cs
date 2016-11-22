@@ -13,7 +13,7 @@ public class Powerup : MonoBehaviour, IActivatableObject {
 
 
 
-	public void Activate() {
+	public void Activate(Level l) {
 		if (GameManager.instance.player.currentGameState.enabled(upgrade)) {
 			Destroy(gameObject);
 		}

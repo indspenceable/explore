@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour {
 			currentActiveObjects.transform.position = deactivatedActiveObjectsContainer.transform.position;
 			deactivatedActiveObjectsContainer.SetActive(false);
 			foreach (IActivatableObject o in currentActiveObjects.GetComponentsInChildren<IActivatableObject>()) {
-				o.Activate();
+				o.Activate(targetLevel);
 			}
 		}
 	}

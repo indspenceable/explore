@@ -12,7 +12,7 @@ public class Roller : MonoBehaviour, IActivatableObject {
 	public int direction = 1;
 
 	// Use this for initialization
-	public void Activate () {
+	public void Activate(Level l) {
 		vert = GetComponent<VerticalMovement>();
 		horiz = GetComponent<HorizontalMovement>();
 		StartCoroutine(Fall());

@@ -21,7 +21,7 @@ public class Crawler : MonoBehaviour, IActivatableObject {
 	void Start () {
 		vert = GetComponent<VerticalMovement>();
 	}
-	public void Activate() {
+	public void Activate(Level l) {
 		StartCoroutine(Walk());
 	}
 

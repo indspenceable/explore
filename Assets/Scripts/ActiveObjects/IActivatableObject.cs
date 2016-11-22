@@ -2,5 +2,5 @@
 using System.Collections;
 
 public interface IActivatableObject {
-	void Activate();
+	void Activate(Level l);
 }

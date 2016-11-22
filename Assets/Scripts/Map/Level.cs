@@ -14,6 +14,13 @@ public class Level : MonoBehaviour {
 	public AudioClip backgroundMusic;
 	public string levelName;
 
+	public float LeftBorder() {
+		return mapPosition.x * GameManager.SCREEN_SIZE.x;
+	}
+	public float BottomBorder() {
+		return mapPosition.y * GameManager.SCREEN_SIZE.y;
+	}
+
 #if UNITY_EDITOR
 
 	public static readonly string[] LAYER_OPTIONS = new string[]{ "BG1", "BG2", "Geometry", "FG1", "FG2", "ActiveObjects" };
@@ -121,8 +128,9 @@ public class Level : MonoBehaviour {
 		gameObject.name = "(" + (int)mapPosition.x + ", " + (int)mapPosition.y + ") " + gameObject.name;
 	}
 
+
 	public void MoveMeToMyPosition() {
-		transform.position = new Vector3(mapPosition.x * GameManager.SCREEN_SIZE.x, mapPosition.y * GameManager.SCREEN_SIZE.y);
+		transform.position = new Vector3(LeftBorder(), BottomBorder());
 	}
 
 	public void AlignGameObjects() {
