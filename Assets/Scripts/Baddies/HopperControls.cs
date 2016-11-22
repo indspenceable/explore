@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(VerticalMovement))]
 [RequireComponent(typeof(HorizontalMovement))]
-public class HopperControls : MonoBehaviour {
+public class HopperControls : MonoBehaviour, IActivatableObject {
 	private VerticalMovement vert;
 	private HorizontalMovement horiz;
 	public float gravity = 30f;
@@ -12,7 +12,7 @@ public class HopperControls : MonoBehaviour {
 	public float jumpVelocity = 5f;
 
 	// Use this for initialization
-	void Start () {
+	public void Activate() {
 		vert = GetComponent<VerticalMovement>();
 		horiz = GetComponent<HorizontalMovement>();
 		horiz.vx = jumpStrength;

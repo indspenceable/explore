@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(VerticalMovement))]
-public class Crawler : MonoBehaviour {
+public class Crawler : MonoBehaviour, IActivatableObject {
 	public Transform rightGround;
 	public Transform rightWall;
 	public Transform leftGround;
@@ -20,6 +20,8 @@ public class Crawler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		vert = GetComponent<VerticalMovement>();
+	}
+	public void Activate() {
 		StartCoroutine(Walk());
 	}
 

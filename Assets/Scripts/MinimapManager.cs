@@ -31,7 +31,7 @@ public class MinimapManager : MonoBehaviour {
 
 		int lx = px + cell.x;
 		int ly = py + cell.y;
-		Debug.Log ("looking at " + lx + ", " + ly);
+//		Debug.Log ("looking at " + lx + ", " + ly);
 		// Set up variables for if we should enable walls on this cell
 		bool left, right, up, down;
 		left = right = up = down = false;
@@ -44,7 +44,7 @@ public class MinimapManager : MonoBehaviour {
 			up = gm.levels.FindLevelByMapCoords    (lx,     ly + 1) != cellLevel;
 			down = gm.levels.FindLevelByMapCoords  (lx,     ly - 1) != cellLevel;
 		} else {
-			Debug.Log ("DEACTIVATING A CELL.");
+//			Debug.Log ("DEACTIVATING A CELL.");
 			cell.gameObject.SetActive (false);
 		}
 		cell.leftBorder.SetActive (left);

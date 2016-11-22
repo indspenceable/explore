@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(VerticalMovement))]
 [RequireComponent(typeof(HorizontalMovement))]
-public class Roller : MonoBehaviour {
+public class Roller : MonoBehaviour, IActivatableObject {
 	private VerticalMovement vert;
 	private HorizontalMovement horiz;
 	public float gravity = 30f;
@@ -12,7 +12,7 @@ public class Roller : MonoBehaviour {
 	public int direction = 1;
 
 	// Use this for initialization
-	void Start () {
+	public void Activate () {
 		vert = GetComponent<VerticalMovement>();
 		horiz = GetComponent<HorizontalMovement>();
 		StartCoroutine(Fall());
@@ -74,7 +74,7 @@ public class Roller : MonoBehaviour {
 			yield return null;
 		}
 		yield return new WaitForSeconds(3f);
-		yield return FullSpeedAhead();
+		StartCoroutine(FullSpeedAhead());
 	}
 
 
