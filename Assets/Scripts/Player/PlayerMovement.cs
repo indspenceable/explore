@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour {
 			return airDodgeCoroutine != null;
 		}
 	}
-	public IEnumerator airDodgeCoroutine { get; private set;}
+	public IEnumerator airDodgeCoroutine;
 	private PlayerTakeDamage health;
 
 	public VerticalMovement vert {get; private set;}
@@ -71,7 +71,6 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	IEnumerator AirDodge() {
-		float dt = 0f;
 		health.currentlyInIframes = true;
 		yield return new WaitForSeconds(airDodgeInitialDelay);
 
@@ -82,14 +81,20 @@ public class PlayerMovement : MonoBehaviour {
 		} else {
 			direction = Vector2.zero;
 		}
+		yield return MoveAlongVectorByCurve(direction, airDodgeDuration, airDodgeMovementCurve);
+	}
+
+	public IEnumerator MoveAlongVectorByCurve(Vector3 direction, float time, AnimationCurve curve) {
+		float dt = 0f;
 		Vector3 startPosition = transform.position;
 		Vector3 endPosition = transform.position + direction;
 
-		while (dt <= airDodgeDuration){
-			Vector3 dtStart = Vector3.Lerp(startPosition, endPosition, airDodgeMovementCurve.Evaluate(dt/airDodgeDuration));
+		while (dt <= time){
+//			Debug.Log("Did a thing." + dt + ", " + time);
+			Vector3 dtStart = Vector3.Lerp(startPosition, endPosition, curve.Evaluate(dt/time));
 			yield return null;
 			dt += GameManager.instance.ActiveGameDeltaTime;
-			Vector3 dtEnd = Vector3.Lerp(startPosition, endPosition, airDodgeMovementCurve.Evaluate(dt/airDodgeDuration));
+			Vector3 dtEnd = Vector3.Lerp(startPosition, endPosition, curve.Evaluate(dt/time));
 
 			float dx = (dtEnd - dtStart).x;
 			float dy = (dtEnd - dtStart).y;
@@ -157,9 +162,9 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void FlipIfNeeded() {
-		if (horiz.vx < 0 && (inputManager.GetAxis("Horizontal", GameMode.MOVEMENT) < 0 || vert.CheckGrounded())) {
+		if (horiz.vx < 0 && (inputManager.GetAxis("Horizontal", GameMode.MOVEMENT) < 0)) {
 			facingLeft = true;
-		} else if (horiz.vx > 0 && (inputManager.GetAxis("Horizontal", GameMode.MOVEMENT) > 0 || vert.CheckGrounded())) {
+		} else if (horiz.vx > 0 && (inputManager.GetAxis("Horizontal", GameMode.MOVEMENT) > 0)) {
 			facingLeft = false;
 		}
 		GetComponent<SpriteRenderer>().flipX = !facingLeft;

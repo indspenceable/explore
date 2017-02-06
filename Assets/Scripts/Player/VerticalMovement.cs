@@ -37,6 +37,7 @@ public class VerticalMovement : MonoBehaviour {
 		// If we didn't set the jumpThruPlatformMask, then just use the standard LayerMask
 		bool falling = (dv < 0) && (jumpThruPlatformMask != 0) ;
 		LayerMask mask = ((falling && useAscendOnlyPlatforms) ? jumpThruPlatformMask.value : 0) | levelGeometryMask.value;
+//		LayerMask mask = jumpThruPlatformMask.value | levelGeometryMask.value;
 		if (dv > 0) {
 			return Physics2D.BoxCast((Vector2)UpCollider.transform.position + UpCollider.offset, 
 				UpCollider.size, 0f, Vector2.up, dv, mask);

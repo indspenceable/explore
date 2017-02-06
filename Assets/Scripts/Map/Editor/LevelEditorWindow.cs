@@ -138,7 +138,7 @@ class LevelEditorWindow : EditorWindow {
 		RemoveTile(x,y);	
 		if (util.CurrentLayerIsPrefabs()) {
 			if (util.currentlySelectedPrefab) {
-				GameObject go = currentLevel.FindOrCreateTileAt(x, y, util.currentLayer, util, util.currentlySelectedPrefab);
+				currentLevel.FindOrCreateTileAt(x, y, util.currentLayer, util, util.currentlySelectedPrefab);
 				Repaint();
 			}
 		} else {

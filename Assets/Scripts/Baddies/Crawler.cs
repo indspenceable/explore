@@ -22,6 +22,7 @@ public class Crawler : MonoBehaviour, IActivatableObject {
 		vert = GetComponent<VerticalMovement>();
 	}
 	public void Activate(Level l) {
+		GetComponent<SpriteRenderer>().flipX = !facingRight;
 		StartCoroutine(Walk());
 	}
 

@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour {
 
 	// SINGLETON
 	public static GameManager instance;
+
 	void Start () {
 		instance = this;
 		levels.BuildCache(true);
@@ -124,13 +125,19 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public IEnumerator MoveIntoLevel(Level targetLevel, Vector3 playerOffset) {
+		if (currentLevel == targetLevel) {
+			Debug.Log("moving into same level.");
+			yield break;
+		} else {
+			Debug.Log("Moving into another level.");
+		}
 //		targetLevel.transform.position = Vector3.Scale(targetLevel.mapPosition - currentLevel.mapPosition, GameManager.SCREEN_SIZE);
 		targetLevel.gameObject.SetActive(true);
 
 		DealWithActiveObjects(targetLevel);
 		yield return SwapToNewMusic(targetLevel);
-
 		currentLevel.gameObject.SetActive(false);
+
 		currentLevel = targetLevel;
 //		player.transform.position -= currentLevel.transform.position;
 		player.transform.position += playerOffset;
@@ -139,18 +146,27 @@ public class GameManager : MonoBehaviour {
 //		currentLevel.transform.position = Vector3.zero;
 		backgroundImage.sprite = targetLevel.backgroundImage;
 		MoveCameraToCameraTargetInstantly(FindTarget());
+
+		if (! currentLevel.gameObject.activeSelf) {
+			Debug.LogError("Current level is not active?");
+		}
 	}
 
-	public IEnumerator DoDoorCollision(Vector3 playerOffset, DoorCollider d) {
+
+	public IEnumerator DoDoorCollision(Vector3 playerDestination, DoorCollider d) {
+		// While we transition, change the layer to default.
 		var oldLayer = d.gameObject.layer;
 		d.gameObject.layer = LayerMask.NameToLayer("Default");
+		d.gameObject.SetActive(false);
 
-		yield return DoRoomTransitionFull(playerOffset);
+		yield return DoRoomTransitionFull(playerDestination);
 
 		d.gameObject.layer = oldLayer;
+		d.gameObject.SetActive(true);
 	}
 
 	public IEnumerator DoRoomTransitionFull(Vector3 playerDestination) {
+		player.controlsAreEnabled = false;
 		player.enabled = false;
 
 		// End the airdodge early, if needed
@@ -164,18 +180,20 @@ public class GameManager : MonoBehaviour {
 		yield return Fade(new Color(0,0,0, 0), Color.black, 0.2f);
 
 		Level targetLevel = levels.FindLevelByWorldCoords(playerDestination);
+		Debug.Log("offset is: " + (playerDestination-player.transform.position));
 		yield return MoveIntoLevel(targetLevel, playerDestination-player.transform.position);
 
 		yield return Fade(Color.black, new Color(0,0,0, 0), 0.2f);
 		fadeOutOverlay.gameObject.SetActive(false);
 
 		player.enabled = true;
+		player.controlsAreEnabled = true;
 	}
 
 	public IEnumerator DoorCollision(DoorCollider door) {
 		if (door.direction == DoorMap.Direction.RIGHT) {
-			int py = Mathf.FloorToInt((player.transform.position.y - currentLevel.transform.position.y) / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
-			int px = (int)currentLevel.mapPosition.x + (int)currentLevel.mapSize.x-1;
+//			int py = Mathf.FloorToInt((player.transform.position.y - currentLevel.transform.position.y) / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
+//			int px = (int)currentLevel.mapPosition.x + (int)currentLevel.mapSize.x-1;
 
 //			if (doors.DoorAt(px, py)) {
 			if (true) {
@@ -185,17 +203,17 @@ public class GameManager : MonoBehaviour {
 		}
 		//
 		if (door.direction == DoorMap.Direction.LEFT) {
-			int py = Mathf.FloorToInt((player.transform.position.y - currentLevel.transform.position.y) / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
-			int px = (int)currentLevel.mapPosition.x-1;
+//			int py = Mathf.FloorToInt((player.transform.position.y - currentLevel.transform.position.y) / GameManager.SCREEN_SIZE.y + currentLevel.mapPosition.y);
+//			int px = (int)currentLevel.mapPosition.x-1;
 //			if (doors.DoorAt(px, py)) {
 			if (true) {
-				// Door going right
+				// Door going left
 				yield return DoDoorCollision(player.transform.position-Vector3.right, door);
 			}
 		}
 		if (door.direction == DoorMap.Direction.UP) {
-			int px = Mathf.FloorToInt((player.transform.position.x - currentLevel.transform.position.x) / GameManager.SCREEN_SIZE.x + currentLevel.mapPosition.x);
-			int py = (int)currentLevel.mapPosition.y + (int)currentLevel.mapSize.y-1;
+//			int px = Mathf.FloorToInt((player.transform.position.x - currentLevel.transform.position.x) / GameManager.SCREEN_SIZE.x + currentLevel.mapPosition.x);
+//			int py = (int)currentLevel.mapPosition.y + (int)currentLevel.mapSize.y-1;
 			//			if (doors.DoorAt(px, py)) {
 			if (true) {
 				// Door going right
@@ -204,8 +222,8 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 		if (door.direction == DoorMap.Direction.DOWN) {
-			int px = Mathf.FloorToInt((player.transform.position.x - currentLevel.transform.position.x) / GameManager.SCREEN_SIZE.x + currentLevel.mapPosition.x);
-			int py = (int)currentLevel.mapPosition.y-1;
+//			int px = Mathf.FloorToInt((player.transform.position.x - currentLevel.transform.position.x) / GameManager.SCREEN_SIZE.x + currentLevel.mapPosition.x);
+//			int py = (int)currentLevel.mapPosition.y-1;
 			//			if (doors.DoorAt(px, py)) {
 			if (true) {
 				// Door going right

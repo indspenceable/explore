@@ -190,7 +190,7 @@ class MapConfig : EditorWindow {
 	void DisplayMap() {
 		int ox = (int)viewPortPosition.x;
 		int oy = (int)viewPortPosition.y;
-		GUIStyle buttonStyle = new GUIStyle();
+//		GUIStyle buttonStyle = new GUIStyle();
 //		buttonStyle.
 
 		for (int y = displayHeight-1; y >= 0; y -= 1) {

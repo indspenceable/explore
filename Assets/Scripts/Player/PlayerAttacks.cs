@@ -16,6 +16,9 @@ public class PlayerAttacks : MonoBehaviour {
 	private PlayerMovement movement;
 	private PlayerInputManager inputManager;
 
+	public float meleeMoveTime;
+	public AnimationCurve meleeMovementCurve;
+
 	public SerailizableGameState currentGameState {
 		get {
 			return GetComponent<SerailizableGameStateComponent>().state;
@@ -32,7 +35,7 @@ public class PlayerAttacks : MonoBehaviour {
 	public void Update () {
 		if (inputManager.GetButtonDown("Ranged", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.enabled(GameStateFlag.RANGED)) {
 			ShootMissile();
-		} else if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.enabled(GameStateFlag.MELEE)) {
+		} else if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.enabled(GameStateFlag.MELEE) && movement.vert.CheckGrounded() ) {
 			Melee();
 		}
 	}
@@ -57,6 +60,8 @@ public class PlayerAttacks : MonoBehaviour {
 		GameManager.instance.PlaySound(meleeSoundEffect);
 		Vector3 dx = new Vector3(GetComponent<SpriteRenderer>().flipX ? meleeOffset : -meleeOffset, 0f);
 		(GameObject.Instantiate(meleeHitPrefab, transform.position + dx, Quaternion.identity) as GameObject).GetComponent<SpriteRenderer>().flipX = GetComponent<SpriteRenderer>().flipX;
+		movement.airDodgeCoroutine = movement.MoveAlongVectorByCurve(new Vector2(GetComponent<SpriteRenderer>().flipX ? 2 : -2, 0), meleeMoveTime, meleeMovementCurve);
+		movement.StartCoroutine(movement.airDodgeCoroutine);
 	}
 
 	// Triggered from the animator, tells us we're done shooting a fireball.
