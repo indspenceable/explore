@@ -8,9 +8,10 @@ public class DoorCollider : MonoBehaviour {
 		if (!gameObject.activeSelf) {
 			return;
 		}
-		if (other && other.gameObject.layer == LayerMask.NameToLayer("Player") ||
-		   (other.transform.parent && 
-				other.transform.parent.gameObject.layer == LayerMask.NameToLayer("Player"))) {
+		if (other && other.gameObject.layer == LayerMask.NameToLayer("Player") 
+//		   || (other.transform.parent && 
+//				other.transform.parent.gameObject.layer == LayerMask.NameToLayer("Player"))) 
+		) {
 			GameManager gm = GameManager.instance;
 
 			gameObject.SetActive(false);

@@ -16,7 +16,8 @@ public class PlayerAttacks : MonoBehaviour {
 	private PlayerMovement movement;
 	private PlayerInputManager inputManager;
 
-	public float meleeMoveTime;
+	public float meleeMoveTime = 0.1f;
+	public float meleeCooldown = 0.2f;
 	public AnimationCurve meleeMovementCurve;
 
 	public SerailizableGameState currentGameState {
@@ -59,8 +60,8 @@ public class PlayerAttacks : MonoBehaviour {
 		mayInitiateAttack = false;
 		GameManager.instance.PlaySound(meleeSoundEffect);
 		Vector3 dx = new Vector3(GetComponent<SpriteRenderer>().flipX ? meleeOffset : -meleeOffset, 0f);
-		(GameObject.Instantiate(meleeHitPrefab, transform.position + dx, Quaternion.identity) as GameObject).GetComponent<SpriteRenderer>().flipX = GetComponent<SpriteRenderer>().flipX;
-		movement.airDodgeCoroutine = movement.MoveAlongVectorByCurve(new Vector2(GetComponent<SpriteRenderer>().flipX ? 2 : -2, 0), meleeMoveTime, meleeMovementCurve);
+		(GameObject.Instantiate(meleeHitPrefab, transform.position + dx, Quaternion.identity, transform) as GameObject).GetComponent<SpriteRenderer>().flipX = GetComponent<SpriteRenderer>().flipX;
+		movement.airDodgeCoroutine = movement.MoveAlongVectorByCurve(new Vector2(GetComponent<SpriteRenderer>().flipX ? 2 : -2, 0), meleeMoveTime, meleeMovementCurve, meleeCooldown);
 		movement.StartCoroutine(movement.airDodgeCoroutine);
 	}
 

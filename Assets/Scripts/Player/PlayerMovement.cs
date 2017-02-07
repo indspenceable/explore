@@ -81,10 +81,10 @@ public class PlayerMovement : MonoBehaviour {
 		} else {
 			direction = Vector2.zero;
 		}
-		yield return MoveAlongVectorByCurve(direction, airDodgeDuration, airDodgeMovementCurve);
+		yield return MoveAlongVectorByCurve(direction, airDodgeDuration, airDodgeMovementCurve, 0f);
 	}
 
-	public IEnumerator MoveAlongVectorByCurve(Vector3 direction, float time, AnimationCurve curve) {
+	public IEnumerator MoveAlongVectorByCurve(Vector3 direction, float time, AnimationCurve curve, float cooldown) {
 		float dt = 0f;
 		Vector3 startPosition = transform.position;
 		Vector3 endPosition = transform.position + direction;
@@ -103,9 +103,16 @@ public class PlayerMovement : MonoBehaviour {
 			vert.vy = dy;
 			horiz.MoveLeftOrRight(dx);
 			horiz.vx = dx;
-
 		}
+		controlsAreEnabled = false;
+		horiz.vx = 0f;
 		FinishAirDodge();
+		dt = 0f;
+		while (dt <= cooldown) {
+			yield return null;
+			dt += GameManager.instance.ActiveGameDeltaTime;
+		}
+		controlsAreEnabled = true;
 	}
 
 	public void FinishAirDodge()
