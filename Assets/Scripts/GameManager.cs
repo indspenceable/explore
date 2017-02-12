@@ -333,10 +333,14 @@ public class GameManager : MonoBehaviour {
 		currentGameMode = oldGameMode;
 	}
 
-	void SaveGameState(int slot) {
+	public void SaveGameState(int slot, Vector3 pos=new Vector3()) {
 		BinaryFormatter bf = new BinaryFormatter();
 		FileStream file = File.Create (Application.persistentDataPath + "/game_ " + slot + ".gd"); //you can call it anything you want
-		bf.Serialize(file, player.currentGameState);
+		SerailizableGameState gs = player.currentGameState;
+		if (pos != Vector3.zero) {
+			gs.pos = pos;
+		}
+		bf.Serialize(file, gs);
 		file.Close();
 	}
 
@@ -344,8 +348,10 @@ public class GameManager : MonoBehaviour {
 		if(File.Exists(Application.persistentDataPath + "/game_ " + slot + ".gd")) {
 			BinaryFormatter bf = new BinaryFormatter();
 			FileStream file = File.Open(Application.persistentDataPath + "/game_ " + slot + ".gd", FileMode.Open);
-			player.GetComponent<SerailizableGameStateComponent>().state = (SerailizableGameState)bf.Deserialize(file);
+			SerailizableGameState gs = player.GetComponent<SerailizableGameStateComponent>().state;
+			gs = (SerailizableGameState)bf.Deserialize(file);
 			file.Close();
+			StartCoroutine(DoRoomTransitionFull(gs.pos));
 		}
 	}
 

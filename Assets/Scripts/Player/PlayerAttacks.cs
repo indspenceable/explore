@@ -38,6 +38,8 @@ public class PlayerAttacks : MonoBehaviour {
 			ShootMissile();
 		} else if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.enabled(GameStateFlag.MELEE) && movement.vert.CheckGrounded() ) {
 			Melee();
+		} else if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT)) {
+			Debug.Log(movement.vert.CheckGrounded());
 		}
 	}
 

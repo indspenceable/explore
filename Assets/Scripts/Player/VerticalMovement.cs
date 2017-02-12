@@ -58,13 +58,13 @@ public class VerticalMovement : MonoBehaviour {
 
 	void RestOnGround() {
 		Vector3 step = new Vector3(0f, VerticalMovement.tinyMovementStep);
-		while (CheckCollisionVerticalAtDistance(-tinyMovementStep))
+		while (CheckCollisionVerticalAtDistance(-tinyMovementStep, true))
 			transform.Translate(step);
 		transform.Translate(-step);
 	}
 
 	public bool CheckGrounded() {
-		if (CheckCollisionVerticalAtDistance(-tinyMovementStep) && vy <= 0f) {
+		if (CheckCollisionVerticalAtDistance(-tinyMovementStep, true) && vy <= 0f) {
 //			Fall(-tinyMovementStep);
 			RestOnGround();
 			return true;

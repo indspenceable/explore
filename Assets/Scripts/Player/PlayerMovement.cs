@@ -56,7 +56,9 @@ public class PlayerMovement : MonoBehaviour {
 
 	public SerailizableGameState currentGameState {
 		get {
-			return GetComponent<SerailizableGameStateComponent>().state;
+			SerailizableGameStateComponent gsc = GetComponent<SerailizableGameStateComponent>();
+			gsc.state.pos = transform.position;
+			return gsc.state;
 		}
 	}
 
@@ -123,7 +125,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	public void VisitCurrentLocation ()
 	{
-		currentGameState.visitedLocations.Add (GameManager.instance.levels.MapCoordsTolevelCoords (transform.position.x, transform.position.y));
+//		currentGameState.visitedLocations.Add (GameManager.instance.levels.MapCoordsTolevelCoords (transform.position.x, transform.position.y));
 	}
 
 	// Woo not fixedupdate

@@ -17,8 +17,17 @@ public enum GameStateFlag {
 
 [System.Serializable]
 public class SerailizableGameState {
-	public int mapX;
-	public int mapY;
+	public float mapX;
+	public float mapY;
+	public Vector3 pos {
+		get {
+			return new Vector3(mapX, mapY);
+		}
+		set {
+			this.mapX = value.x;
+			this.mapY = value.y;
+		}
+	}
 
 	[EnumFlagsAttribute]
 	public GameStateFlag upgrades;
@@ -30,10 +39,10 @@ public class SerailizableGameState {
 		upgrades = (flag | upgrades);
 	}
 
-	public HashSet<KeyValuePair<int,int>> visitedLocations = new HashSet<KeyValuePair<int, int>>();
-	public bool hasVisited(int x, int y) {
-		return visitedLocations.Contains (new KeyValuePair<int, int> (x, y));
-	}
+//	public HashSet<KeyValuePair<int,int>> visitedLocations = new HashSet<KeyValuePair<int, int>>();
+//	public bool hasVisited(int x, int y) {
+//		return visitedLocations.Contains (new KeyValuePair<int, int> (x, y));
+//	}
 }
 
 // For the editor.

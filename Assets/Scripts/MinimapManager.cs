@@ -37,16 +37,16 @@ public class MinimapManager : MonoBehaviour {
 		left = right = up = down = false;
 		// Find the actual Level that the cell represents
 		Level cellLevel = gm.levels.FindLevelByMapCoords(lx, ly);
-		if (cellLevel != null && gm.player.currentGameState.hasVisited(lx, ly)) {
-			cell.gameObject.SetActive (true);
-			left = gm.levels.FindLevelByMapCoords  (lx - 1, ly)     != cellLevel;
-			right = gm.levels.FindLevelByMapCoords (lx + 1, ly)     != cellLevel;
-			up = gm.levels.FindLevelByMapCoords    (lx,     ly + 1) != cellLevel;
-			down = gm.levels.FindLevelByMapCoords  (lx,     ly - 1) != cellLevel;
-		} else {
-//			Debug.Log ("DEACTIVATING A CELL.");
-			cell.gameObject.SetActive (false);
-		}
+//		if (cellLevel != null && gm.player.currentGameState.hasVisited(lx, ly)) {
+//			cell.gameObject.SetActive (true);
+//			left = gm.levels.FindLevelByMapCoords  (lx - 1, ly)     != cellLevel;
+//			right = gm.levels.FindLevelByMapCoords (lx + 1, ly)     != cellLevel;
+//			up = gm.levels.FindLevelByMapCoords    (lx,     ly + 1) != cellLevel;
+//			down = gm.levels.FindLevelByMapCoords  (lx,     ly - 1) != cellLevel;
+//		} else {
+////			Debug.Log ("DEACTIVATING A CELL.");
+//			cell.gameObject.SetActive (false);
+//		}
 		cell.leftBorder.SetActive (left);
 		cell.rightBorder.SetActive (right);
 		cell.topBorder.SetActive (up);
