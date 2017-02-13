@@ -8,8 +8,9 @@ public class DestroyWhenFarAway : MonoBehaviour, IActivatableObject {
 	}
 
 	void Update() {
-//		Debug.Log(currentLevel.BottomBorder());
-//		Debug.Log(transform.position.y);
+		if (!currentLevel) {
+			return;
+		}
 		if (currentLevel.BottomBorder() > transform.position.y) {
 			Destroy(gameObject);
 		}

@@ -106,9 +106,9 @@ public class LevelEditorPaletteWindow : EditorWindow {
 	void RenderPrefabTileButton(string guid) {
 		string assetPath = AssetDatabase.GUIDToAssetPath(guid);
 		// Get the current sprite we're rendering
-		GameObject[] gameObjects = AssetDatabase.LoadAllAssetsAtPath(assetPath).OfType<GameObject>().ToArray();
-		if (gameObjects.Length == 0) return;
-		GameObject go = gameObjects[0];
+		GameObject go = AssetDatabase.LoadAssetAtPath(assetPath, typeof(GameObject)) as GameObject;
+//		if (gameObjects.Length == 0) return;
+
 
 		// Get the position it's button should be at, using autolayout
 		Rect re = EditorGUILayout.GetControlRect (GUILayout.Width (64), GUILayout.Height (64));
@@ -132,7 +132,7 @@ public class LevelEditorPaletteWindow : EditorWindow {
 
 		int i = 0;
 		int numberOfTilesPerRow = Screen.width / 38;
-		numberOfTilesPerRow = 8;
+		numberOfTilesPerRow = 6;
 		int numberOfRows = (objs.Length + numberOfTilesPerRow - 1) / numberOfTilesPerRow;
 		for (int y = 0; y < numberOfRows; y += 1) {
 			EditorGUILayout.BeginHorizontal ();
