@@ -6,6 +6,7 @@ public class Savepoint : MonoBehaviour {
 	public bool currentlyTouchingPlayer = false;
 	public Collider2D col;
 	public LayerMask playerLayers;
+	public AudioClip saveSoundEffect;
 	public void Start() {
 		col = GetComponent<Collider2D>();
 	}
@@ -14,6 +15,7 @@ public class Savepoint : MonoBehaviour {
 		if (newTouching != currentlyTouchingPlayer) {
 			if ( newTouching ) {
 				GameManager.instance.SaveGameState(0, transform.position);
+				GameManager.instance.PlaySound(saveSoundEffect);
 			}
 			currentlyTouchingPlayer = newTouching;
 		}

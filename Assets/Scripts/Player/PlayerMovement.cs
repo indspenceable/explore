@@ -194,10 +194,12 @@ public class PlayerMovement : MonoBehaviour {
 	public float knockbackXVel = 6f;
 	public float knockbackYVel = 5f;
 	public float knockbackDisableDuration = 0.25f;
+	public AudioClip knockbackSound;
 	public void KnockBack() {
 		horiz.vx = (facingLeft ? knockbackXVel : -knockbackXVel);
 		vert.vy = knockbackYVel;
 		StartCoroutine(DisableControlsWhileInjured(knockbackDisableDuration));
+		GameManager.instance.PlaySound(knockbackSound);
 	}
 
 	public bool airControlAllowed = true;

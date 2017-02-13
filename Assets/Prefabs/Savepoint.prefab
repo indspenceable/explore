@@ -85,6 +85,7 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 2048
+  saveSoundEffect: {fileID: 8300000, guid: 2d45200112def4821819ec30ca3152f7, type: 3}
 --- !u!198 &198000013390250112
 ParticleSystem:
   m_ObjectHideFlags: 1

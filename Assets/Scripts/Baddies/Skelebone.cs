@@ -62,6 +62,7 @@ public class Skelebone : Shooter, IActivatableObject {
 				if (!checkCurrentDirection()) {
 					facingRight = !facingRight;
 					GetComponent<SpriteRenderer>().flipX = !facingRight;
+					this.speed *= -1;
 //					break;
 				}
 			}

@@ -182,7 +182,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 103860}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 268.7, y: -235.4, z: 0}
+  m_LocalPosition: {x: 146.4, y: -296.6, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children:
   - {fileID: 488426}
@@ -419,7 +419,7 @@ MonoBehaviour:
   jumpStrength: 12
   highJumpStrength: 14
   gravityStrength: 30
-  jumpSoundEffect: {fileID: 8300000, guid: 74be8f18e47d94f60b63d025e68dc56c, type: 3}
+  jumpSoundEffect: {fileID: 8300000, guid: c16258005a2e3437f88b2ca6acea0415, type: 3}
   maxGravity: 10
   floatSpeed: 1
   initiatedJump: 0
@@ -476,7 +476,7 @@ MonoBehaviour:
   missilePrefab: {fileID: 11461256, guid: ac85b1d6be22f4b5eab7cba61bed2c60, type: 2}
   shootSoundEffect: {fileID: 8300000, guid: 5ce4c1225cdcf45bd81212877aabb6ab, type: 3}
   meleeHitPrefab: {fileID: 116276, guid: 4793699bcde4a45cbbafc20f01730a4b, type: 2}
-  meleeSoundEffect: {fileID: 8300000, guid: 35119a950d33e46a29eca1efd4d9f3f1, type: 3}
+  meleeSoundEffect: {fileID: 8300000, guid: 74be8f18e47d94f60b63d025e68dc56c, type: 3}
   meleeMoveTime: 0.1
   meleeCooldown: 0.2
   meleeMovementCurve:
@@ -566,7 +566,7 @@ SpriteRenderer:
   m_SortingLayerID: -1107350559
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 491aa43cfd651412bbb985b99542ccfb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
