@@ -29,9 +29,9 @@ public class MagnetPullMove : MonoBehaviour {
 	}
 
 	void Update () {
-		if (!currentGameState.enabled(GameStateFlag.MAGNET)) {
+//		if (!currentGameState.enabled(GameStateFlag.MAGNET)) {
 			return;
-		}
+//		}
 		bool spriteEnabledState = false;
 		if (inputManager.GetAxis("MagnetPositive", GameMode.MOVEMENT) > 0
 			|| inputManager.GetButton("MagnetPositive", GameMode.MOVEMENT) ) {

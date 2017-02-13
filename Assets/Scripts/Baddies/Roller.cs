@@ -11,11 +11,15 @@ public class Roller : MonoBehaviour, IActivatableObject {
 	public float drag = 0.95f;
 	public int direction = 1;
 
+	public void Update(){}
+
 	// Use this for initialization
 	public void Activate(Level l) {
-		vert = GetComponent<VerticalMovement>();
-		horiz = GetComponent<HorizontalMovement>();
-		StartCoroutine(Fall());
+		if (enabled) {
+			vert = GetComponent<VerticalMovement>();
+			horiz = GetComponent<HorizontalMovement>();
+			StartCoroutine(Fall());
+		}
 	}
 
 	private IEnumerator Fall() {
@@ -25,6 +29,7 @@ public class Roller : MonoBehaviour, IActivatableObject {
 			vert.RiseOrFall(GameManager.instance.ActiveGameDeltaTime * vert.vy);
 			yield return null;
 		}
+		yield return null;
 		StartCoroutine(FullSpeedAhead());
 	}
 
@@ -69,7 +74,7 @@ public class Roller : MonoBehaviour, IActivatableObject {
 				}
 			}
 			if (vert.CheckGrounded()) {
-				horiz.vx *= 0.99f;
+				horiz.vx *= 0.6f;
 			}
 			yield return null;
 		}

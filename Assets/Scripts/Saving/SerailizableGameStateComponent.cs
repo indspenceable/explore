@@ -7,12 +7,16 @@ public class SerailizableGameStateComponent : MonoBehaviour {
 }
 [System.Flags]
 public enum GameStateFlag {
-	HIGH_JUMP = 1 << 0,
-	DOUBLE_JUMP = 1 << 1,
-	MAGNET = 1 << 2,
-	MELEE = 1 << 3,
-	RANGED = 1 << 4,
-	SHADOW_STEP = 1 << 5,
+	// Back from metroidvania times... Sigh
+//	HIGH_JUMP = 1 << 0,
+//	DOUBLE_JUMP = 1 << 1,
+//	MAGNET = 1 << 2,
+//	MELEE = 1 << 3,
+//	RANGED = 1 << 4,
+//	SHADOW_STEP = 1 << 5,
+
+	// Environmental concerns
+	BOSS_ONE_FINISHED = 1 << 0,
 }
 
 [System.Serializable]
@@ -30,13 +34,13 @@ public class SerailizableGameState {
 	}
 
 	[EnumFlagsAttribute]
-	public GameStateFlag upgrades;
+	public GameStateFlag flags;
 
 	public bool enabled(GameStateFlag flag) {
-		return (flag & upgrades) != 0;
+		return (flag & flags) != 0;
 	}
 	public void enable(GameStateFlag flag) {
-		upgrades = (flag | upgrades);
+		flags = (flag | flags);
 	}
 
 //	public HashSet<KeyValuePair<int,int>> visitedLocations = new HashSet<KeyValuePair<int, int>>();

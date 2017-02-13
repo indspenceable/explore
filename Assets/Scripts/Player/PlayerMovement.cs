@@ -135,11 +135,11 @@ public class PlayerMovement : MonoBehaviour {
 		if (currentlyPerformingAirDodge)
 			return;
 	
-		if (inputManager.GetButtonDown("Airdodge", GameMode.MOVEMENT) && currentGameState.enabled(GameStateFlag.SHADOW_STEP)) {
-			airDodgeCoroutine = AirDodge ();
-			StartCoroutine(airDodgeCoroutine);
-			return;
-		}
+//		if (inputManager.GetButtonDown("Airdodge", GameMode.MOVEMENT) && currentGameState.enabled(GameStateFlag.SHADOW_STEP)) {
+//			airDodgeCoroutine = AirDodge ();
+//			StartCoroutine(airDodgeCoroutine);
+//			return;
+//		}
 
 		if (inputManager.GetButtonDown("Interact", GameMode.MOVEMENT)) {
 			InteractIfAble();
@@ -253,7 +253,8 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	float getJumpStrength() {
-		return currentGameState.enabled(GameStateFlag.HIGH_JUMP) ? highJumpStrength :jumpStrength;
+//		return currentGameState.enabled(GameStateFlag.HIGH_JUMP) ? highJumpStrength :jumpStrength;
+		return jumpStrength;
 	}
 
 
@@ -288,11 +289,11 @@ public class PlayerMovement : MonoBehaviour {
 				vert.vy = -maxGravity;
 
 			if (inputManager.GetButtonDown("Jump", GameMode.MOVEMENT) && controlsAreEnabled) {
-				if (currentGameState.enabled(GameStateFlag.DOUBLE_JUMP) && doubleJumpAvailable) {
-					GameManager.instance.PlaySound(doubleJumpSoundEffect);
-					vert.vy = getJumpStrength()*2/3f;
-					doubleJumpAvailable = false;
-				}
+//				if (currentGameState.enabled(GameStateFlag.DOUBLE_JUMP) && doubleJumpAvailable) {
+//					GameManager.instance.PlaySound(doubleJumpSoundEffect);
+//					vert.vy = getJumpStrength()*2/3f;
+//					doubleJumpAvailable = false;
+//				}
 			} else if (inputManager.GetButtonUp("Jump", GameMode.MOVEMENT) && vert.vy > 0 && initiatedJump) {
 				vert.vy /= 2f;
 				initiatedJump = false;

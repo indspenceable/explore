@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PeriodicShooter : Shooter, IActivatableObject {
 	public float startingDelay = 0f;
+	public float dt = 1f;
 
 	public void Activate(Level l) {
 		StartCoroutine(ShootFireballs());

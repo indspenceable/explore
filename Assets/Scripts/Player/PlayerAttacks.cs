@@ -34,12 +34,14 @@ public class PlayerAttacks : MonoBehaviour {
 	}
 	// Update is called once per frame
 	public void Update () {
-		if (inputManager.GetButtonDown("Ranged", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.enabled(GameStateFlag.RANGED)) {
-			ShootMissile();
-		} else if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.enabled(GameStateFlag.MELEE) && movement.vert.CheckGrounded() ) {
+//		if (inputManager.GetButtonDown("Ranged", GameMode.MOVEMENT) && MayInitiateAttack() && currentGameState.enabled(GameStateFlag.RANGED)) {
+//			ShootMissile();
+//		} else
+		if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT) && MayInitiateAttack() && movement.vert.CheckGrounded() ) {
 			Melee();
 		} else if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT)) {
 			Debug.Log(movement.vert.CheckGrounded());
+//			Debug.Log(currentGameState.enabled(GameStateFlag.MELEE));
 		}
 	}
 

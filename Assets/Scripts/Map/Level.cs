@@ -40,7 +40,7 @@ public class Level : MonoBehaviour {
 		public int editLayerId;
 	}
 
-	public Color color;
+	public Color color = Color.magenta;
 
 	public List<TileLocation> tiles;
 
