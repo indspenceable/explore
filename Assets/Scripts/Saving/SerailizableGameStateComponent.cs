@@ -17,6 +17,7 @@ public enum GameStateFlag {
 
 	// Environmental concerns
 	BOSS_ONE_FINISHED = 1 << 0,
+	BOSS_TWO_FINISHED = 1 << 1,
 }
 
 [System.Serializable]

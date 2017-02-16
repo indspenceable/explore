@@ -2,7 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoomEye : MonoBehaviour {
+public abstract class AbstractBoss : MonoBehaviour {
+	public AudioClip bossMusic;
+	public abstract void StartUp();
+	public abstract void GetHit();
+	public IEnumerator FadeIn(float time) {
+		if (GetComponent<SpriteRenderer>() == null) {
+			yield break;
+		}
+		float dt = 0f;
+		Color start = new Color(1f, 1f, 1f, 0f);
+		Color end = new Color(1f, 1f, 1f, 1f);
+		SpriteRenderer sr = GetComponent<SpriteRenderer>();
+		while (dt < time) {
+			yield return null;
+			dt += GameManager.instance.ActiveGameDeltaTime;
+			sr.color = Color.Lerp(start, end, dt/time);
+		}
+		sr.color = end;
+	}
+}
+
+public class DoomEye : AbstractBoss {
 	public Transform rightSensor;
 	public Transform leftSensor;
 	public GameObject VulnerableTarget;
@@ -27,24 +48,15 @@ public class DoomEye : MonoBehaviour {
 
 	public StartBoss starterEnder;
 
-	public void StartUp() {
+	public override void StartUp() {
 		shooter = GetComponent<Shooter>();
 		startingYPosition = transform.position.y;
 		Debug.Log(startingYPosition);
 		StartCoroutine(MoveInSinWave());
 	}
 
-	public IEnumerator FadeIn(float time) {
-		float dt = 0f;
-		Color start = new Color(1f, 1f, 1f, 0f);
-		Color end = new Color(1f, 1f, 1f, 1f);
-		SpriteRenderer sr = GetComponent<SpriteRenderer>();
-		while (dt < time) {
-			yield return null;
-			dt += GameManager.instance.ActiveGameDeltaTime;
-			sr.color = Color.Lerp(start, end, dt/time);
-		}
-		sr.color = end;
+	public void SetGameObjectActive() {
+		gameObject.SetActive(true);
 	}
 
 	public IEnumerator MoveInSinWave() {
@@ -104,7 +116,7 @@ public class DoomEye : MonoBehaviour {
 		StartCoroutine(MoveInSinWave());
 	}
 
-	public void GetHit(){
+	public override void GetHit(){
 		Debug.Log("GoT HIT!");
 		sinAmplication += 0.5f;
 		xVel += 0.5f;
@@ -119,8 +131,10 @@ public class DoomEye : MonoBehaviour {
 		}
 	}
 	public IEnumerator Explode() {
+		yield return GameManager.instance.FadeOutMusic();
 		yield return null;
 		starterEnder.StartCoroutine(starterEnder.DisableBossNStuff());
+		GameManager.instance.player.currentGameState.enable(GameStateFlag.BOSS_ONE_FINISHED);
 		Destroy(gameObject);
 	}
 }

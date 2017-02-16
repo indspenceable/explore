@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour {
 		inputManager = player.GetComponent<PlayerInputManager>();
 
 		DealWithActiveObjects(currentLevel);
-		InstallAndPlayMusic(GetComponent<AudioSource> (), currentLevel.backgroundMusic);
+		InstallAndPlayMusic(GetComponent<AudioSource> (), currentLevel.currentMusic);
 		backgroundImage.sprite = currentLevel.backgroundImage;
 		foreach (Level l in levels.levels) {
 			l.gameObject.SetActive(l == currentLevel);
@@ -80,6 +80,9 @@ public class GameManager : MonoBehaviour {
 
 	GameObject deactivatedActiveObjectsContainer = null;
 
+	public void InstantDestroyActiveObjects() {
+		Destroy(currentActiveObjects);
+	}
 	public void DealWithActiveObjects(Level targetLevel) {
 		// Re-activate their activeObjects container
 		if (deactivatedActiveObjectsContainer != null) {
@@ -87,7 +90,7 @@ public class GameManager : MonoBehaviour {
 			deactivatedActiveObjectsContainer = null;
 		}
 		// Destroy the old room's activated objects
-		Destroy(currentActiveObjects);
+		InstantDestroyActiveObjects();
 		currentActiveObjects = null;
 
 		Transform AOTransform = targetLevel.transform.FindChild("ActiveObjects");
@@ -108,19 +111,38 @@ public class GameManager : MonoBehaviour {
 		audioSource.Play ();
 	}
 
-	public IEnumerator SwapToNewMusic(Level nextLevel) {
-		AudioSource audioSource = GetComponent<AudioSource> ();
-		if (nextLevel.backgroundMusic != audioSource.clip && nextLevel.backgroundMusic != null) {
-			while (audioSource.volume > 0) {
-				yield return null;
-				audioSource.volume -= GameManager.instance.ActiveGameDeltaTime;
-			}
-			InstallAndPlayMusic(audioSource, nextLevel.backgroundMusic);
-			while (audioSource.volume < 1) {
-				yield return null;
-				audioSource.volume += GameManager.instance.ActiveGameDeltaTime;
-			}
+	public IEnumerator FadeOutMusic(AudioSource audioSource=null) {
+		if (audioSource == null ) {
+			audioSource = GetComponent<AudioSource> ();
+		}
+		while (audioSource.volume > 0) {
+			yield return null;
+			audioSource.volume -= GameManager.instance.ActiveGameDeltaTime;
+		}
+		audioSource.volume = 0f;
+	}
+
+	public IEnumerator FadeInMusic(AudioClip music, AudioSource audioSource=null, bool instant=false) {
+		if (audioSource == null ) {
+			audioSource = GetComponent<AudioSource> ();
+		}
+		InstallAndPlayMusic(audioSource, music);
+		if (instant) {
 			audioSource.volume = 1;
+		}
+		while (audioSource.volume < 1) {
+			yield return null;
+			audioSource.volume += GameManager.instance.ActiveGameDeltaTime;
+		}
+		audioSource.volume = 1f;
+	}
+
+	public IEnumerator SwapToNewMusicByLevel(Level nextLevel) {
+		AudioSource audioSource = GetComponent<AudioSource> ();
+		if (nextLevel.currentMusic != audioSource.clip && nextLevel.currentMusic != null) {
+			yield return FadeOutMusic(audioSource);
+
+			yield return FadeInMusic(nextLevel.currentMusic, audioSource);
 		}
 	}
 
@@ -135,7 +157,7 @@ public class GameManager : MonoBehaviour {
 		targetLevel.gameObject.SetActive(true);
 
 		DealWithActiveObjects(targetLevel);
-		yield return SwapToNewMusic(targetLevel);
+		yield return SwapToNewMusicByLevel(targetLevel);
 		currentLevel.gameObject.SetActive(false);
 
 		currentLevel = targetLevel;
@@ -188,6 +210,7 @@ public class GameManager : MonoBehaviour {
 
 		player.enabled = true;
 		player.controlsAreEnabled = true;
+		player.GetComponent<Collider2D>().enabled = true;
 	}
 
 	public IEnumerator DoorCollision(DoorCollider door) {
@@ -268,12 +291,12 @@ public class GameManager : MonoBehaviour {
 			currentGameMode = GameMode.MOVEMENT;
 		}
 
-		if (Input.GetKeyDown(KeyCode.S)) {
-			SaveGameState(0);
-		}
-		if (Input.GetKeyDown(KeyCode.L)) {
-			LoadGameState(0);
-		}
+//		if (Input.GetKeyDown(KeyCode.S)) {
+//			SaveGameState(0);
+//		}
+//		if (Input.GetKeyDown(KeyCode.L)) {
+//			LoadGameState(0);
+//		}
 	}
 
 	public void MoveCameraToCameraTargetInstantly(Vector2 p) {
@@ -344,13 +367,17 @@ public class GameManager : MonoBehaviour {
 		file.Close();
 	}
 
-	void LoadGameState(int slot) {
+	public void LoadGameState(int slot) {
 		if(File.Exists(Application.persistentDataPath + "/game_ " + slot + ".gd")) {
 			BinaryFormatter bf = new BinaryFormatter();
 			FileStream file = File.Open(Application.persistentDataPath + "/game_ " + slot + ".gd", FileMode.Open);
 			SerailizableGameState gs = player.GetComponent<SerailizableGameStateComponent>().state;
 			gs = (SerailizableGameState)bf.Deserialize(file);
 			file.Close();
+			// Hackity hack. Disable stuff here just to make sure it gets disabled before next frame.
+			player.controlsAreEnabled = false;
+			player.enabled = false;
+			player.GetComponent<Collider2D>().enabled = false;
 			StartCoroutine(DoRoomTransitionFull(gs.pos));
 		}
 	}

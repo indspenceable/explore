@@ -11,7 +11,21 @@ public class Level : MonoBehaviour {
 	public Vector2 mapSize = new Vector2(1, 1);
 	public Vector2 mapPosition = new Vector2(0,0);
 	public Sprite backgroundImage;
-	public AudioClip backgroundMusic;
+	[SerializeField]
+	private AudioClip backgroundMusic;
+	[SerializeField]
+	private AudioClip overrideBackgroundMusic;
+	public GameStateFlag flagToOverrideMusic;
+	public AudioClip currentMusic {
+		get {
+			if (GameManager.instance.player.currentGameState.enabled(flagToOverrideMusic) && overrideBackgroundMusic != null) {
+				return overrideBackgroundMusic;
+			} else {
+				return backgroundMusic;
+			}
+		}
+	}
+
 	public string levelName;
 
 	public float LeftBorder() {

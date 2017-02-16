@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4595095504139916}
   - component: {fileID: 61306311500230792}
-  - component: {fileID: 114436683646984192}
   - component: {fileID: 212617090276542842}
+  - component: {fileID: 114683894999761872}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -84,13 +84,16 @@ GameObject:
   - component: {fileID: 4269982045491518}
   - component: {fileID: 212916935799232484}
   - component: {fileID: 114460780663878816}
+  - component: {fileID: 58717836272277836}
+  - component: {fileID: 114945259350939172}
+  - component: {fileID: 114010351975956642}
   m_Layer: 0
   m_Name: DoomEye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1969434399835458
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,6 +193,21 @@ Transform:
   m_Father: {fileID: 4269982045491518}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &58717836272277836
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1806806675849790}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 2
 --- !u!61 &61306311500230792
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -215,18 +233,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &114436683646984192
+--- !u!114 &114010351975956642
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1084416494060926}
+  m_GameObject: {fileID: 1806806675849790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c4f4d2d6b3b408d8c7174468fbbd88, type: 3}
+  m_Script: {fileID: 11500000, guid: 2696f6ad0c7b940a18fb57a75ec59a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  main: {fileID: 114460780663878816}
+  damage: 1
 --- !u!114 &114460780663878816
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -238,6 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74f59aa27e42f4f809d0ad857912db56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bossMusic: {fileID: 8300000, guid: 67df9063b13df49dfb80e6964e49389f, type: 3}
   rightSensor: {fileID: 4159349111415054}
   leftSensor: {fileID: 4047030977737586}
   VulnerableTarget: {fileID: 1084416494060926}
@@ -248,10 +267,41 @@ MonoBehaviour:
   startingYPosition: 0
   sinAmplication: 3
   theta: 0
+  thetaSpeed: 1
   movementDirection: 1
   xVel: 2
-  vulnerabilityPeriod: 2
-  GOT_HIT: 0
+  raiseLowerTime: 1
+  movePeriod: 10
+  vulnerabilityPeriod: 5
+  shooter: {fileID: 0}
+  shotPeriod: 3
+  starterEnder: {fileID: 0}
+--- !u!114 &114683894999761872
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1084416494060926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b6551c66433449b8020702f3655865, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 114460780663878816}
+--- !u!114 &114945259350939172
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1806806675849790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a761a431499349c9aab464327c9b339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  timeAlive: 1
+  FireballPrefab: {fileID: 165622, guid: fcb85e4679cb646b18428a2751bcb514, type: 2}
 --- !u!212 &212617090276542842
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -325,7 +375,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0966ba0bf781f4c0c84702ba4147bfcf, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

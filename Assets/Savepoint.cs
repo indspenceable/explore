@@ -14,6 +14,7 @@ public class Savepoint : MonoBehaviour {
 		bool newTouching = col.IsTouchingLayers(playerLayers);
 		if (newTouching != currentlyTouchingPlayer) {
 			if ( newTouching ) {
+				GameManager.instance.player.gameObject.GetComponent<PlayerTakeDamage>().Start();
 				GameManager.instance.SaveGameState(0, transform.position);
 				GameManager.instance.PlaySound(saveSoundEffect);
 			}
