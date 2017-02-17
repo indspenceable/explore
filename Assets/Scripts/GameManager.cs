@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour {
 		if (nextLevel.currentMusic != audioSource.clip && nextLevel.currentMusic != null) {
 			yield return FadeOutMusic(audioSource);
 
-			yield return FadeInMusic(nextLevel.currentMusic, audioSource);
+			yield return FadeInMusic(nextLevel.currentMusic, audioSource, true);
 		}
 	}
 
