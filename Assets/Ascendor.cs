@@ -8,6 +8,9 @@ public class Ascendor : MonoBehaviour {
 	private BoxCollider2D coll;
 	public LayerMask playerLayer;
 	// Use this for initialization
+
+	public float speedUp;
+	public float speedRight;
 	void Start () {
 		this.coll = GetComponent<BoxCollider2D>();
 	}
@@ -22,7 +25,7 @@ public class Ascendor : MonoBehaviour {
 
 	private IEnumerator Ascend() {
 		while (true) {
-			transform.Translate(Vector2.up * GameManager.instance.ActiveGameDeltaTime);
+			transform.Translate((Vector2.up*speedUp + Vector2.right * speedRight) * GameManager.instance.ActiveGameDeltaTime);
 			yield return null;
 		}
 	}
