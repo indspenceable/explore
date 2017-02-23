@@ -17,7 +17,13 @@ public class FinalBossController : AbstractBoss {
 	public float gravity = 30f;
 	public float SHOTSPEED = 10f;
 	private VerticalMovement vert;
-	private Shooter shooter;
+	[SerializeField]
+	private Shooter[] shooters;
+	private Shooter shooter {
+		get {
+			return shooters[Random.Range(0, shooters.Length)];
+		}
+	}
 
 	private Spike spike;
 	public BossTarget target;
@@ -45,7 +51,7 @@ public class FinalBossController : AbstractBoss {
 		GameManager.instance.PlaySound(Laugh);
 		vert = GetComponent<VerticalMovement>();
 		GetComponent<SpriteRenderer>().flipX = facingRight;
-		this.shooter = GetComponent<Shooter>();
+//		this.shooter = GetComponent<Shooter>();
 		this.spike = GetComponent<Spike>();
 		CURRENT_AI_STUFF = StartCoroutine(ChooseMove());
 	}
@@ -139,8 +145,9 @@ public class FinalBossController : AbstractBoss {
 	}
 
 	public IEnumerator ShootFireball() {
-		shooter.speed = SHOTSPEED * scaleByDirection();
-		shooter.ShootFireball();
+		Shooter cShoot = shooter;
+		cShoot.speed = SHOTSPEED * scaleByDirection();
+		cShoot.ShootFireball();
 		float dt = 0f;
 		float time = WAIT_AFTER_FIRING;
 		while (dt < time) {
