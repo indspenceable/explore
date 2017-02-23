@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour {
 	}
 	public static readonly Vector2 SCREEN_SIZE = new Vector2(16, 12);
 
-	private GameObject currentActiveObjects;
+	public GameObject currentActiveObjects;
 
 	[SerializeField]
 	public DoorMap doors;
