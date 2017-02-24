@@ -5,9 +5,19 @@ using UnityEngine;
 public class PeriodicShooter : Shooter, IActivatableObject {
 	public float startingDelay = 0f;
 	public float dt = 1f;
+	public bool DO_SPRITE_STUFF;
 
 	public void Activate(Level l) {
 		StartCoroutine(ShootFireballs());
+	}
+	private SpriteRenderer sr;
+	public void Start() {
+		this.sr = GetComponent<SpriteRenderer>();
+	}
+	public void Update() {
+		if (DO_SPRITE_STUFF) {
+			this.sr.flipX = speed < 0;
+		}
 	}
 
 	public IEnumerator ShootFireballs() {
