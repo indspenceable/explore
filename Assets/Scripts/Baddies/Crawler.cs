@@ -48,6 +48,7 @@ public class Crawler : MonoBehaviour, IActivatableObject {
 
 	private IEnumerator Walk() {
 		float dt = 0f;
+		GetComponent<Animator>().SetTrigger("start");
 		while (dt < crawlPeriod) {
 			yield return null;
 			dt += GameManager.instance.ActiveGameDeltaTime;

@@ -131,7 +131,6 @@ public class DoomEye : AbstractBoss {
 		}
 	}
 	public IEnumerator Explode() {
-		yield return GameManager.instance.FadeOutMusic();
 		yield return null;
 		starterEnder.StartCoroutine(starterEnder.DisableBossNStuff());
 		GameManager.instance.player.currentGameState.enable(GameStateFlag.BOSS_ONE_FINISHED);

@@ -43,6 +43,8 @@ public class StartBoss : MonoBehaviour {
 
 	public IEnumerator DisableBossNStuff() {
 		GameManager.instance.player.controlsAreEnabled = false;
+		yield return GameManager.instance.FadeOutMusic();
+		yield return null;
 		GameManager.instance.player.horiz.vx = 0f;
 		foreach(GameObject wall in walls) {
 			float dt = 0f;
