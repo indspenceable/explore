@@ -116,6 +116,8 @@ MonoBehaviour:
   spike: {fileID: 114839669145711504}
   pillarSprite: {fileID: 212361883244522506}
   pillarParticleSystem: {fileID: 198935815414719708}
+  warmupSound: {fileID: 8300000, guid: 4cab2c8575590438ba29a91580970521, type: 3}
+  activateSound: {fileID: 8300000, guid: 3a1a4fd4880fc4d4a9c531037adf4612, type: 3}
 --- !u!114 &114839669145711504
 MonoBehaviour:
   m_ObjectHideFlags: 1

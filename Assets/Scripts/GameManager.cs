@@ -268,6 +268,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Update() {
+		// New frame! no sounds have played yet!
+		SoundsThatHavePlayedThisFrame.Clear();
 		// find the target camera position. This involves keeping the camera within the bounds of the level.
 		Vector2 targetP = FindTarget();
 
@@ -382,11 +384,13 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	private HashSet<AudioClip> SoundsThatHavePlayedThisFrame = new HashSet<AudioClip>();
 
 	public void PlaySound(AudioClip soundEffect) {
-		if (soundEffect == null) {
+		if (soundEffect == null || SoundsThatHavePlayedThisFrame.Contains(soundEffect)) {
 			return;
 		}
 		AudioSource.PlayClipAtPoint (soundEffect, Vector3.zero);
+		SoundsThatHavePlayedThisFrame.Add(soundEffect);
 	}
 }

@@ -6,6 +6,7 @@ public class BuzzOrb : MonoBehaviour, IActivatableObject {
 	public float TimeOff=4f;
 	public float TimeOn=1f;
 	public GameObject spike;
+	public AudioClip buzz;
 	public void Activate(Level l){
 		StartCoroutine(ChangeSize());
 	}
@@ -18,14 +19,15 @@ public class BuzzOrb : MonoBehaviour, IActivatableObject {
 				yield return null;
 				dt += GameManager.instance.ActiveGameDeltaTime;
 			}
-			spike.transform.localScale = Vector3.one * 2;
+			spike.SetActive(true);
+			GameManager.instance.PlaySound(buzz);
 			yield return null;
 			dt = 0;
 			while (dt < TimeOn) {
 				yield return null;
 				dt += GameManager.instance.ActiveGameDeltaTime;
 			}
-			spike.transform.localScale = Vector3.one;
+			spike.SetActive(false);
 			yield return null;
 		}
 	}

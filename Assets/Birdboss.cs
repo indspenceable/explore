@@ -11,6 +11,7 @@ public class Birdboss : AbstractBoss {
 	public AudioClip Hurt;
 
 	private int direction = 1;
+	private float velocity = 1f;
 	private float baselineY;
 
 	private float swoopTime = 4f;
@@ -37,6 +38,7 @@ public class Birdboss : AbstractBoss {
 		delayTime *= 5f/6f;
 		LazerTime *= 7f/8f;
 		lazerSpeed += 0.25f;
+		velocity *= 1.2f;
 		StopCoroutine(LAZERS);
 		LAZERS = StartCoroutine(FireLazers());
 
@@ -67,7 +69,7 @@ public class Birdboss : AbstractBoss {
 		float time = 1f;
 		while (dt < time) {
 			yield return null;
-			transform.position = new Vector3(transform.position.x + direction * GameManager.instance.ActiveGameDeltaTime, 
+			transform.position = new Vector3(transform.position.x + direction * GameManager.instance.ActiveGameDeltaTime * velocity, 
 				baselineY - flightPatternY.Evaluate(dt/time) * height);
 			dt += GameManager.instance.ActiveGameDeltaTime;
 			if (transform.position.x > rightBorder.position.x) {

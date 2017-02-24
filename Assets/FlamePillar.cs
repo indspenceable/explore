@@ -11,6 +11,9 @@ public class FlamePillar : MonoBehaviour, IActivatableObject {
 	public SpriteRenderer pillarSprite;
 	public ParticleSystem pillarParticleSystem;
 
+	public AudioClip warmupSound;
+	public AudioClip activateSound;
+
 	public void Activate(Level l) {
 		StartCoroutine(SpitFire());
 	}
@@ -33,6 +36,7 @@ public class FlamePillar : MonoBehaviour, IActivatableObject {
 		while (true) {
 			em.rateOverTime = rateOverTime;
 			dt = 0f;
+			GameManager.instance.PlaySound(warmupSound);
 			while (dt < warmUp) {
 				yield return null;
 				dt += GameManager.instance.ActiveGameDeltaTime;
@@ -40,6 +44,7 @@ public class FlamePillar : MonoBehaviour, IActivatableObject {
 			spike.enabled = true;
 			pillarSprite.enabled = true;
 			dt = 0f;
+			GameManager.instance.PlaySound(activateSound);
 			while (dt < period/2f - warmUp) {
 				yield return null;
 				dt += GameManager.instance.ActiveGameDeltaTime;
