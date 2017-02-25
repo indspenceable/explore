@@ -35,12 +35,12 @@ public class PlayerSpeechManager : MonoBehaviour {
 			}
 			speechUIText.text = pendingSpeech;
 		} else {
-			if (inputManager.GetButtonDown("Speech", GameMode.MOVEMENT)) {
-				GameManager.instance.currentGameMode = GameMode.SPEECH;
-				speechUIText.gameObject.SetActive(true);
-				pendingSpeech = "";
-				speechUIText.text = "";
-			}
+//			if (inputManager.GetButtonDown("Speech", GameMode.MOVEMENT)) {
+//				GameManager.instance.currentGameMode = GameMode.SPEECH;
+//				speechUIText.gameObject.SetActive(true);
+//				pendingSpeech = "";
+//				speechUIText.text = "";
+//			}
 		}
 	}
 }

@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour {
 	public Level currentLevel;
 	public SpriteRenderer backgroundImage;
 	public LevelContainer levels;
+	private int GameIsActiveState = 0;
+	public GameObject titleScreen;
 
 	public float ActiveGameDeltaTime {
 		get {
@@ -45,17 +47,19 @@ public class GameManager : MonoBehaviour {
 	// SINGLETON
 	public static GameManager instance;
 
-	void Start () {
+	public void Start() {
 		instance = this;
 		levels.BuildCache(true);
+		inputManager = player.GetComponent<PlayerInputManager>();
+	}
+
+	void StartGame () {
 		currentLevel = levels.FindLevelByWorldCoords(player.transform.position);
 		if (currentLevel == null) {
 			Debug.LogError("Player is starting outside of a room!");
 		}
 
 		GetComponent<AudioSource>().Play();
-
-		inputManager = player.GetComponent<PlayerInputManager>();
 
 		DealWithActiveObjects(currentLevel);
 		InstallAndPlayMusic(GetComponent<AudioSource> (), currentLevel.currentMusic);
@@ -268,6 +272,16 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Update() {
+		if (GameIsActiveState == 0) {
+			if (inputManager.GetButtonDown("Melee", GameMode.MOVEMENT)) {
+				GameIsActiveState = 1;
+				StartGame();
+				titleScreen.SetActive(false);
+				player.gameObject.SetActive(true);
+			}
+			return;
+		}
+
 		// New frame! no sounds have played yet!
 		SoundsThatHavePlayedThisFrame.Clear();
 		// find the target camera position. This involves keeping the camera within the bounds of the level.
