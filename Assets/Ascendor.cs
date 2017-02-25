@@ -11,6 +11,8 @@ public class Ascendor : MonoBehaviour {
 
 	public float speedUp;
 	public float speedRight;
+	public AudioClip sound;
+
 	void Start () {
 		this.coll = GetComponent<BoxCollider2D>();
 	}
@@ -20,6 +22,7 @@ public class Ascendor : MonoBehaviour {
 		if (!started && coll.IsTouchingLayers(playerLayer)) {
 			started = true;
 			StartCoroutine(Ascend());
+			StartCoroutine(PlaySound());
 		}
 	}
 
@@ -27,6 +30,17 @@ public class Ascendor : MonoBehaviour {
 		while (true) {
 			transform.Translate((Vector2.up*speedUp + Vector2.right * speedRight) * GameManager.instance.ActiveGameDeltaTime);
 			yield return null;
+		}
+	}
+
+	private IEnumerator PlaySound() {
+		while (true) {
+			GameManager.instance.PlaySound(sound);
+			float dt = 0;
+			while (dt < 1f) {
+				yield return null;
+				dt += GameManager.instance.ActiveGameDeltaTime;
+			}
 		}
 	}
 }
