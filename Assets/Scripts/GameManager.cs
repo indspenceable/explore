@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
 	public LevelContainer levels;
 	private int GameIsActiveState = 0;
 	public GameObject titleScreen;
+	public AudioClip titleScreenMusic;
 
 	public float ActiveGameDeltaTime {
 		get {
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour {
 		instance = this;
 		levels.BuildCache(true);
 		inputManager = player.GetComponent<PlayerInputManager>();
+		StartCoroutine(FadeInMusic(titleScreenMusic, null, true));
 	}
 
 	void StartGame () {
