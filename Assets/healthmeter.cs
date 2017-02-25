@@ -1,16 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class healthmeter : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public Image[] hearts;
+	public void SetHealth(int amt) {
+		for( int i = 0 ; i < hearts.Length; i += 1) {
+			hearts[i].gameObject.SetActive(i < amt);
+		}
 	}
 }

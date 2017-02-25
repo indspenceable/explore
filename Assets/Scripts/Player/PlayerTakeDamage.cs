@@ -10,9 +10,13 @@ public class PlayerTakeDamage : MonoBehaviour {
 	public bool currentlyInIframes = false;
 	public bool ValidToGetHitNow = true;
 
+	public healthmeter meter;
+
 	public void Start() {
 		ValidToGetHitNow = true;
+		meter.gameObject.SetActive(true);
 		currentHealth = maxHealth;
+		meter.SetHealth(currentHealth);
 	}
 
 	public void GetHit(int damage = 1) {
@@ -22,6 +26,7 @@ public class PlayerTakeDamage : MonoBehaviour {
 		}
 		if (!currentlyInIframes) {
 			currentHealth -= damage;
+			meter.SetHealth(currentHealth);
 			if (currentHealth <= 0) {
 				ValidToGetHitNow = false;
 				GameManager.instance.LoadGameState(0);
@@ -29,6 +34,7 @@ public class PlayerTakeDamage : MonoBehaviour {
 			}
 			StartCoroutine(enableIFrames(iframesDurations));
 			GetComponent<PlayerMovement>().KnockBack();
+
 		}
 
 

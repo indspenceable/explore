@@ -5,13 +5,14 @@ using UnityEngine.UI;
 [RequireComponent(typeof(PlayerTakeDamage))]
 public class PlayerUI : MonoBehaviour {
 	private PlayerTakeDamage health;
-	public Text playerHealthText;
+//	public healthmeter healthMeter;
 
 	public void Start() {
 		health = GetComponent<PlayerTakeDamage>();
 	}
 
 	public void Update() {
-		playerHealthText.text = "Health: " + health.currentHealth;
+//		playerHealthText.text = "Health: " + health.currentHealth;
+//		healthMeter.
 	}
 }
