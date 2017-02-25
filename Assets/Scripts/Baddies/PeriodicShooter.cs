@@ -32,6 +32,8 @@ public class PeriodicShooter : Shooter, IActivatableObject {
 		}
 	}
 
+
+
 	public void OnDrawGizmos() {
 //		Gizmos.DrawWireSphere(transform.position, speed*timeAlive);
 	}
