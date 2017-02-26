@@ -357,7 +357,7 @@ MonoBehaviour:
   speed: 10
   timeAlive: 1
   FireballPrefab: {fileID: 165622, guid: fcb85e4679cb646b18428a2751bcb514, type: 2}
-  sound: {fileID: 0}
+  sound: {fileID: 8300000, guid: 49048a2d34d434c7d819e3d7530a8bfd, type: 3}
   rightGround: {fileID: 462930}
   rightWall: {fileID: 410144}
   leftGround: {fileID: 435616}

@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
 	public Level currentLevel;
 	public SpriteRenderer backgroundImage;
 	public LevelContainer levels;
-	private int GameIsActiveState = 0;
+	public int GameIsActiveState = 0;
 	public GameObject titleScreen;
 	public AudioClip titleScreenMusic;
 
@@ -175,9 +175,9 @@ public class GameManager : MonoBehaviour {
 		backgroundImage.sprite = targetLevel.backgroundImage;
 		MoveCameraToCameraTargetInstantly(FindTarget());
 
-		if (! currentLevel.gameObject.activeSelf) {
-			Debug.LogError("Current level is not active?");
-		}
+//		if (! currentLevel.gameObject.activeSelf) {
+//			Debug.LogError("Current level is not active?");
+//		}
 	}
 
 
@@ -282,6 +282,12 @@ public class GameManager : MonoBehaviour {
 				player.gameObject.SetActive(true);
 			}
 			return;
+		} else if (GameIsActiveState == 2) {
+			Debug.Log("yo!");
+			if (Input.GetButtonDown("Melee")) {
+				Debug.Log("Yeah?");
+				Application.Quit();
+			}
 		}
 
 		// New frame! no sounds have played yet!
