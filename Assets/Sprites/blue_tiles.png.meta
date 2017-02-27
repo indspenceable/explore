@@ -103,12 +103,12 @@ TextureImporter:
     21300192: blue_tiles_96
     21300194: blue_tiles_97
     21300196: blue_tiles_98
-  serializedVersion: 2
+  serializedVersion: 4
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
     mipMapFadeDistanceStart: 1
@@ -120,10 +120,8 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 1024
@@ -134,9 +132,7 @@ TextureImporter:
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
@@ -144,12 +140,36 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 1024
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: blue_tiles_0
+    - serializedVersion: 2
+      name: blue_tiles_0
       rect:
         serializedVersion: 2
         x: 17
@@ -160,7 +180,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_1
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_1
       rect:
         serializedVersion: 2
         x: 34
@@ -171,7 +193,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_2
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_2
       rect:
         serializedVersion: 2
         x: 51
@@ -182,7 +206,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_3
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_3
       rect:
         serializedVersion: 2
         x: 68
@@ -193,7 +219,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_4
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_4
       rect:
         serializedVersion: 2
         x: 85
@@ -204,7 +232,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_5
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_5
       rect:
         serializedVersion: 2
         x: 102
@@ -215,7 +245,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_6
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_6
       rect:
         serializedVersion: 2
         x: 119
@@ -226,7 +258,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_7
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_7
       rect:
         serializedVersion: 2
         x: 136
@@ -237,7 +271,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_8
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_8
       rect:
         serializedVersion: 2
         x: 153
@@ -248,7 +284,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_9
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_9
       rect:
         serializedVersion: 2
         x: 0
@@ -259,7 +297,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_10
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_10
       rect:
         serializedVersion: 2
         x: 17
@@ -270,7 +310,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_11
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_11
       rect:
         serializedVersion: 2
         x: 34
@@ -281,7 +323,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_12
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_12
       rect:
         serializedVersion: 2
         x: 51
@@ -292,7 +336,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_13
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_13
       rect:
         serializedVersion: 2
         x: 68
@@ -303,7 +349,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_14
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_14
       rect:
         serializedVersion: 2
         x: 85
@@ -314,7 +362,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_15
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_15
       rect:
         serializedVersion: 2
         x: 102
@@ -325,7 +375,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_16
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_16
       rect:
         serializedVersion: 2
         x: 119
@@ -336,7 +388,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_17
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_17
       rect:
         serializedVersion: 2
         x: 136
@@ -347,7 +401,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_18
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_18
       rect:
         serializedVersion: 2
         x: 153
@@ -358,7 +414,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_19
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_19
       rect:
         serializedVersion: 2
         x: 0
@@ -369,7 +427,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_20
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_20
       rect:
         serializedVersion: 2
         x: 17
@@ -380,7 +440,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_21
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_21
       rect:
         serializedVersion: 2
         x: 34
@@ -391,7 +453,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_22
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_22
       rect:
         serializedVersion: 2
         x: 51
@@ -402,7 +466,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_23
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_23
       rect:
         serializedVersion: 2
         x: 68
@@ -413,7 +479,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_24
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_24
       rect:
         serializedVersion: 2
         x: 85
@@ -424,7 +492,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_25
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_25
       rect:
         serializedVersion: 2
         x: 102
@@ -435,7 +505,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_26
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_26
       rect:
         serializedVersion: 2
         x: 119
@@ -446,7 +518,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_27
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_27
       rect:
         serializedVersion: 2
         x: 136
@@ -457,7 +531,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_28
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_28
       rect:
         serializedVersion: 2
         x: 153
@@ -468,7 +544,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_29
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_29
       rect:
         serializedVersion: 2
         x: 0
@@ -479,7 +557,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_30
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_30
       rect:
         serializedVersion: 2
         x: 17
@@ -490,7 +570,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_31
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_31
       rect:
         serializedVersion: 2
         x: 34
@@ -501,7 +583,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_32
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_32
       rect:
         serializedVersion: 2
         x: 51
@@ -512,7 +596,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_33
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_33
       rect:
         serializedVersion: 2
         x: 68
@@ -523,7 +609,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_34
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_34
       rect:
         serializedVersion: 2
         x: 85
@@ -534,7 +622,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_35
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_35
       rect:
         serializedVersion: 2
         x: 102
@@ -545,7 +635,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_36
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_36
       rect:
         serializedVersion: 2
         x: 119
@@ -556,7 +648,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_37
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_37
       rect:
         serializedVersion: 2
         x: 136
@@ -567,7 +661,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_38
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_38
       rect:
         serializedVersion: 2
         x: 153
@@ -578,7 +674,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_39
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_39
       rect:
         serializedVersion: 2
         x: 0
@@ -589,7 +687,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_40
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_40
       rect:
         serializedVersion: 2
         x: 17
@@ -600,7 +700,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_41
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_41
       rect:
         serializedVersion: 2
         x: 34
@@ -611,7 +713,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_42
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_42
       rect:
         serializedVersion: 2
         x: 51
@@ -622,7 +726,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_43
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_43
       rect:
         serializedVersion: 2
         x: 68
@@ -633,7 +739,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_44
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_44
       rect:
         serializedVersion: 2
         x: 85
@@ -644,7 +752,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_45
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_45
       rect:
         serializedVersion: 2
         x: 102
@@ -655,7 +765,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_46
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_46
       rect:
         serializedVersion: 2
         x: 119
@@ -666,7 +778,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_47
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_47
       rect:
         serializedVersion: 2
         x: 136
@@ -677,7 +791,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_48
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_48
       rect:
         serializedVersion: 2
         x: 153
@@ -688,7 +804,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_49
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_49
       rect:
         serializedVersion: 2
         x: 0
@@ -699,7 +817,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_50
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_50
       rect:
         serializedVersion: 2
         x: 17
@@ -710,7 +830,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_51
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_51
       rect:
         serializedVersion: 2
         x: 34
@@ -721,7 +843,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_52
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_52
       rect:
         serializedVersion: 2
         x: 51
@@ -732,7 +856,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_53
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_53
       rect:
         serializedVersion: 2
         x: 68
@@ -743,7 +869,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_54
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_54
       rect:
         serializedVersion: 2
         x: 85
@@ -754,7 +882,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_55
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_55
       rect:
         serializedVersion: 2
         x: 102
@@ -765,7 +895,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_56
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_56
       rect:
         serializedVersion: 2
         x: 119
@@ -776,7 +908,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_57
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_57
       rect:
         serializedVersion: 2
         x: 136
@@ -787,7 +921,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_58
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_58
       rect:
         serializedVersion: 2
         x: 153
@@ -798,7 +934,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_59
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_59
       rect:
         serializedVersion: 2
         x: 0
@@ -809,7 +947,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_60
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_60
       rect:
         serializedVersion: 2
         x: 17
@@ -820,7 +960,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_61
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_61
       rect:
         serializedVersion: 2
         x: 34
@@ -831,7 +973,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_62
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_62
       rect:
         serializedVersion: 2
         x: 51
@@ -842,7 +986,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_63
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_63
       rect:
         serializedVersion: 2
         x: 68
@@ -853,7 +999,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_64
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_64
       rect:
         serializedVersion: 2
         x: 85
@@ -864,7 +1012,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_65
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_65
       rect:
         serializedVersion: 2
         x: 102
@@ -875,7 +1025,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_66
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_66
       rect:
         serializedVersion: 2
         x: 119
@@ -886,7 +1038,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_67
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_67
       rect:
         serializedVersion: 2
         x: 136
@@ -897,7 +1051,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_68
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_68
       rect:
         serializedVersion: 2
         x: 153
@@ -908,7 +1064,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_69
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_69
       rect:
         serializedVersion: 2
         x: 0
@@ -919,7 +1077,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_70
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_70
       rect:
         serializedVersion: 2
         x: 17
@@ -930,7 +1090,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_71
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_71
       rect:
         serializedVersion: 2
         x: 34
@@ -941,7 +1103,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_72
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_72
       rect:
         serializedVersion: 2
         x: 51
@@ -952,7 +1116,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_73
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_73
       rect:
         serializedVersion: 2
         x: 68
@@ -963,7 +1129,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_74
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_74
       rect:
         serializedVersion: 2
         x: 85
@@ -974,7 +1142,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_75
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_75
       rect:
         serializedVersion: 2
         x: 102
@@ -985,7 +1155,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_76
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_76
       rect:
         serializedVersion: 2
         x: 119
@@ -996,7 +1168,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_77
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_77
       rect:
         serializedVersion: 2
         x: 136
@@ -1007,7 +1181,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_78
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_78
       rect:
         serializedVersion: 2
         x: 153
@@ -1018,7 +1194,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_79
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_79
       rect:
         serializedVersion: 2
         x: 0
@@ -1029,7 +1207,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_80
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_80
       rect:
         serializedVersion: 2
         x: 17
@@ -1040,7 +1220,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_81
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_81
       rect:
         serializedVersion: 2
         x: 34
@@ -1051,7 +1233,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_82
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_82
       rect:
         serializedVersion: 2
         x: 51
@@ -1062,7 +1246,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_83
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_83
       rect:
         serializedVersion: 2
         x: 68
@@ -1073,7 +1259,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_84
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_84
       rect:
         serializedVersion: 2
         x: 85
@@ -1084,7 +1272,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_85
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_85
       rect:
         serializedVersion: 2
         x: 102
@@ -1095,7 +1285,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_86
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_86
       rect:
         serializedVersion: 2
         x: 119
@@ -1106,7 +1298,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_87
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_87
       rect:
         serializedVersion: 2
         x: 136
@@ -1117,7 +1311,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_88
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_88
       rect:
         serializedVersion: 2
         x: 153
@@ -1128,7 +1324,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_89
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_89
       rect:
         serializedVersion: 2
         x: 0
@@ -1139,7 +1337,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_90
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_90
       rect:
         serializedVersion: 2
         x: 17
@@ -1150,7 +1350,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_91
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_91
       rect:
         serializedVersion: 2
         x: 34
@@ -1161,7 +1363,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_92
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_92
       rect:
         serializedVersion: 2
         x: 51
@@ -1172,7 +1376,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_93
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_93
       rect:
         serializedVersion: 2
         x: 68
@@ -1183,7 +1389,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_94
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_94
       rect:
         serializedVersion: 2
         x: 85
@@ -1194,7 +1402,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_95
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_95
       rect:
         serializedVersion: 2
         x: 102
@@ -1205,7 +1415,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_96
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_96
       rect:
         serializedVersion: 2
         x: 119
@@ -1216,7 +1428,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_97
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_97
       rect:
         serializedVersion: 2
         x: 136
@@ -1227,7 +1441,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: blue_tiles_98
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: blue_tiles_98
       rect:
         serializedVersion: 2
         x: 153
@@ -1238,6 +1454,7 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     outline: []
   spritePackingTag: 
   userData: 

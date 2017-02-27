@@ -48,6 +48,8 @@ public class DoomEye : AbstractBoss {
 
 	public StartBoss starterEnder;
 
+	public GameObject[] Chains;
+
 	public override void StartUp() {
 		shooter = GetComponent<Shooter>();
 		startingYPosition = transform.position.y;
@@ -86,6 +88,21 @@ public class DoomEye : AbstractBoss {
 		yield return LowerTarget();
 	}
 
+	public void LerpTargetPosition(float amt, bool reverse) {
+		Vector3 spot;
+		if (reverse) {
+			spot = Vector3.Lerp(targetPositionTarget.position, transform.position, amt);
+		} else {
+			spot = Vector3.Lerp(transform.position, targetPositionTarget.position, amt);
+		}
+		VulnerableTarget.transform.position = spot;
+		int numChains = Chains.Length;
+		for (int i = 0; i < numChains; i+=1) {
+			GameObject c = Chains[i];
+			c.transform.position = Vector3.Lerp(transform.position, spot, ((float)i) / numChains);
+		}
+	}
+
 	public IEnumerator LowerTarget() {
 		// TIME TO GET VULNERABLE!;
 		(VulnerableTarget.GetComponent<IPlayerHittable>() as MonoBehaviour).enabled = true;
@@ -94,7 +111,7 @@ public class DoomEye : AbstractBoss {
 		while (dt < raiseLowerTime) {
 			yield return null;
 			dt += GameManager.instance.ActiveGameDeltaTime;
-			VulnerableTarget.transform.position = Vector3.Lerp(transform.position, targetPositionTarget.position, dt/raiseLowerTime);
+			LerpTargetPosition(dt/raiseLowerTime, false);
 		}
 		dt = 0f;
 		while (dt < vulnerabilityPeriod) {
@@ -111,7 +128,7 @@ public class DoomEye : AbstractBoss {
 		while (dt < raiseLowerTime) {
 			yield return null;
 			dt += GameManager.instance.ActiveGameDeltaTime;
-			VulnerableTarget.transform.position = Vector3.Lerp(targetPositionTarget.position, transform.position, dt/raiseLowerTime);
+			LerpTargetPosition(dt/raiseLowerTime, true);
 		}
 		StartCoroutine(MoveInSinWave());
 	}
