@@ -35,7 +35,7 @@ public class StartBoss : MonoBehaviour {
 			wall.SetActive(true);
 		}
 		boss.gameObject.SetActive(true);
-		yield return boss.FadeIn(3f);
+		yield return boss.Arrive(3f);
 		boss.StartUp();
 		StartCoroutine(GameManager.instance.FadeInMusic(boss.bossMusic, null, true));
 		GameManager.instance.player.controlsAreEnabled = true;

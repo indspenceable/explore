@@ -379,7 +379,7 @@ MonoBehaviour:
   movementDirection: 1
   xVel: 2
   raiseLowerTime: 1
-  movePeriod: 1
+  movePeriod: 10
   vulnerabilityPeriod: 5
   shooter: {fileID: 0}
   shotPeriod: 3

@@ -6,7 +6,7 @@ public abstract class AbstractBoss : MonoBehaviour {
 	public AudioClip bossMusic;
 	public abstract void StartUp();
 	public abstract void GetHit();
-	public IEnumerator FadeIn(float time) {
+	public virtual IEnumerator Arrive(float time) {
 		if (GetComponent<SpriteRenderer>() == null) {
 			yield break;
 		}
