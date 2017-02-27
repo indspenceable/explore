@@ -20,6 +20,11 @@ public abstract class AbstractBoss : MonoBehaviour {
 			sr.color = Color.Lerp(start, end, dt/time);
 		}
 		sr.color = end;
+		OnFadeInComplete();
+
+	}
+
+	public virtual void OnFadeInComplete() {
 	}
 }
 
@@ -55,6 +60,13 @@ public class DoomEye : AbstractBoss {
 		startingYPosition = transform.position.y;
 		Debug.Log(startingYPosition);
 		StartCoroutine(MoveInSinWave());
+	}
+
+	public override void OnFadeInComplete() {
+		foreach (GameObject c in Chains) {
+			c.SetActive(true);
+		}
+		VulnerableTarget.SetActive(true);
 	}
 
 	public void SetGameObjectActive() {
@@ -141,7 +153,7 @@ public class DoomEye : AbstractBoss {
 		shotPeriod *= 3f/4f;
 		StopAllCoroutines();
 		hits += 1;
-		if (hits < 1) {
+		if (hits < 5) {
 			StartCoroutine(RetractTarget());
 		} else {
 			StartCoroutine(Explode());
