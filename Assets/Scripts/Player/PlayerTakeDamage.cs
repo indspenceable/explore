@@ -11,6 +11,7 @@ public class PlayerTakeDamage : MonoBehaviour {
 	public bool ValidToGetHitNow = true;
 
 	public healthmeter meter;
+	public AudioClip hurt;
 
 	public void Start() {
 		ValidToGetHitNow = true;
@@ -34,7 +35,7 @@ public class PlayerTakeDamage : MonoBehaviour {
 			}
 			StartCoroutine(enableIFrames(iframesDurations));
 			GetComponent<PlayerMovement>().KnockBack();
-
+			GameManager.instance.PlaySound(hurt);
 		}
 
 
