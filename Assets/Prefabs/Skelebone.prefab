@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 11409270}
   - component: {fileID: 11451036}
   - component: {fileID: 95021362025349660}
+  - component: {fileID: 114729354273627308}
   m_Layer: 0
   m_Name: Skelebone
   m_TagString: Untagged
@@ -343,6 +344,18 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114729354273627308
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 130052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01bfd1b7fdb914c6f94b1fc14961fe21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExplosionPrefab: {fileID: 123798, guid: 6bbf4d3d80e14480480ca01dcd0de0ea, type: 2}
 --- !u!114 &114790458619935656
 MonoBehaviour:
   m_ObjectHideFlags: 1

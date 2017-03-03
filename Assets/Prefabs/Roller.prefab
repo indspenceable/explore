@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 11478218}
   - component: {fileID: 11410542}
   - component: {fileID: 95915180750065978}
+  - component: {fileID: 114321098504009020}
   m_Layer: 0
   m_Name: Roller
   m_TagString: Untagged
@@ -343,6 +344,18 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114321098504009020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 129608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01bfd1b7fdb914c6f94b1fc14961fe21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExplosionPrefab: {fileID: 123798, guid: 6bbf4d3d80e14480480ca01dcd0de0ea, type: 2}
 --- !u!114 &114797511988464424
 MonoBehaviour:
   m_ObjectHideFlags: 1
