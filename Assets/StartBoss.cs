@@ -12,6 +12,8 @@ public class StartBoss : MonoBehaviour {
 	public float wallEnableDelay = 0.25f;
 	public GameStateFlag bossFlag;
 
+	public GameObject onDeathExplosion;
+
 	public void Update() {
 		if (!GameManager.instance.player.currentGameState.enabled(bossFlag) && !started &&
 			box.IsTouchingLayers(playerLayer)) {
@@ -42,6 +44,7 @@ public class StartBoss : MonoBehaviour {
 	}
 
 	public IEnumerator DisableBossNStuff() {
+		Instantiate(onDeathExplosion, boss.transform.position, Quaternion.identity, GameManager.instance.currentActiveObjects.transform);
 		GameManager.instance.player.controlsAreEnabled = false;
 		yield return GameManager.instance.FadeOutMusic();
 		yield return null;
