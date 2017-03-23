@@ -77,6 +77,7 @@ public class FinalBossController : AbstractBoss {
 	}
 
 	private IEnumerator Pace() {
+		GetComponent<Animator>().SetInteger("state", 2);
 		float dt = 0f;
 		while (dt < crawlPeriod) {
 			yield return null;
@@ -145,6 +146,7 @@ public class FinalBossController : AbstractBoss {
 	}
 
 	public IEnumerator ShootFireball() {
+		GetComponent<Animator>().SetInteger("state", 0);
 		Shooter cShoot = shooter;
 		cShoot.speed = SHOTSPEED * scaleByDirection();
 		cShoot.ShootFireball();
@@ -157,15 +159,18 @@ public class FinalBossController : AbstractBoss {
 //		Debug.Log('we did it"
 	}
 	public IEnumerator BecomeVulnerable() {
+		GetComponent<Animator>().SetInteger("state", 1);
 		spike.enabled = false;
 		target.enabled = true;
-		GetComponent<SpriteRenderer>().color = Color.blue;
+//		GetComponent<SpriteRenderer>().color = Color.blue;
 		float dt = 0f;
 		float time = LENGTH_OF_TIME_VULNERABLE;
 		while (dt < time) {
 			yield return null;
 			dt += GameManager.instance.ActiveGameDeltaTime;
 		}
+		GetComponent<Animator>().SetInteger("state", 0);
+
 		spike.enabled = true;
 		target.enabled = false;
 		GetComponent<SpriteRenderer>().color = Color.white;

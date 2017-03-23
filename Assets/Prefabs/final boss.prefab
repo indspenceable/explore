@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 114689427311596414}
   - component: {fileID: 114249092572843896}
   - component: {fileID: 58771071238311628}
+  - component: {fileID: 95844978985401926}
   m_Layer: 0
   m_Name: final boss
   m_TagString: Untagged
@@ -380,6 +381,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &95844978985401926
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1471388300398146}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b10f1202a147d45f3b6c5bc051103fb7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114055781712911560
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -394,6 +412,7 @@ MonoBehaviour:
   speed: 10
   timeAlive: 1
   FireballPrefab: {fileID: 0}
+  sound: {fileID: 0}
 --- !u!114 &114063320568307450
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -461,6 +480,7 @@ MonoBehaviour:
   speed: 10
   timeAlive: 1
   FireballPrefab: {fileID: 165622, guid: fcb85e4679cb646b18428a2751bcb514, type: 2}
+  sound: {fileID: 0}
 --- !u!114 &114132201092684612
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -475,6 +495,7 @@ MonoBehaviour:
   speed: 10
   timeAlive: 1
   FireballPrefab: {fileID: 0}
+  sound: {fileID: 0}
 --- !u!114 &114212596144157300
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -513,6 +534,7 @@ MonoBehaviour:
   speed: 10
   timeAlive: 1
   FireballPrefab: {fileID: 165622, guid: fcb85e4679cb646b18428a2751bcb514, type: 2}
+  sound: {fileID: 0}
 --- !u!114 &114381670366018066
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -547,6 +569,7 @@ MonoBehaviour:
   speed: 10
   timeAlive: 1
   FireballPrefab: {fileID: 165622, guid: fcb85e4679cb646b18428a2751bcb514, type: 2}
+  sound: {fileID: 0}
 --- !u!114 &114689427311596414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -561,6 +584,7 @@ MonoBehaviour:
   speed: 10
   timeAlive: 1
   FireballPrefab: {fileID: 165622, guid: 9a862e98f091d415b93519331177441f, type: 2}
+  sound: {fileID: 0}
 --- !u!114 &114772867262841888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -575,6 +599,7 @@ MonoBehaviour:
   speed: 10
   timeAlive: 1
   FireballPrefab: {fileID: 0}
+  sound: {fileID: 0}
 --- !u!212 &212726149665751986
 SpriteRenderer:
   m_ObjectHideFlags: 1
