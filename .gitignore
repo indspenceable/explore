@@ -23,6 +23,9 @@ obj/
 *.unityproj
 *.booproj
 *.app
+*.exe
+*_Data/
+*.zip
 
 # ============ #
 # OS generated #
